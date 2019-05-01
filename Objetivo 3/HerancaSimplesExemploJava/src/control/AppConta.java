@@ -26,11 +26,16 @@ public class AppConta {
 //        System.out.println(conta2.getSaldo());
         
         /*
-        *   A ideia aqui foi demonstrar que podemos reutilizar código a partir da associação entre classes. Nesse caso, utilizamos a
-        *   associação conhecida como herança (observe que as classes ContaCorrente e ContaPoupança quase não tem código, ele é reutilizado).
-        *   Através da cláusula extends na assinatura das classes ContaCorrente e ContaPoupança fizemos tal associação.
-        *   Observe a classe ContaCorrente, nela nós estamos sobreescrevendo o comportamento saca(double) da classe Conta. Isso é muito comum,
-        *   geralmente utilizamos a associação por herança para reescrever os nossos próprios comportamentos (sobreescrever comportamentos) e,
+        *   A ideia aqui foi demonstrar que podemos reutilizar 
+        *   código a partir da associação entre classes. Nesse caso, utilizamos a
+        *   associação conhecida como herança (observe que as classes ContaCorrente 
+        *   e ContaPoupança quase não tem código, ele é reutilizado).
+        *   Através da cláusula extends na assinatura das classes ContaCorrente e
+        *   ContaPoupança fizemos tal associação.
+        *   Observe a classe ContaCorrente, nela nós estamos sobreescrevendo o comportamento 
+        *   saca(double) da classe Conta. Isso é muito comum,
+        *   geralmente utilizamos a associação por herança para reescrever os nossos próprios 
+        *   comportamentos (sobreescrever comportamentos) e,
         *   também, reutilizar código que já está escrito na superclasse.
         */
         
@@ -46,8 +51,10 @@ public class AppConta {
     
         
         /*
-            Adicionamos mais uma funcionalidade a aplicação. Agora ele pode realizar transações numa conta empresarial. Para isso,
-            bastou adiconar uma classe na hierarquia de classes e reprogramar o comportamente para saques (nesse exemplo).
+            Adicionamos mais uma funcionalidade a aplicação. Agora ele pode realizar transações numa
+            conta empresarial. Para isso,
+            bastou adiconar uma classe na hierarquia de classes e reprogramar o comportamente para 
+            saques (nesse exemplo).
             Observe como é fácil escalonar uma aplcação utilizando o paradigma OO.
         */
         ContaEmpresarial ce = new ContaEmpresarial();

@@ -1,0 +1,11 @@
+Os modificadores private, protected, public, e sem modificador, representam a implementação do conceito de encapsulamento. Encapsular nada mais é do que proteger (ou proteger parcialmente, ou desproteger) uma classe ou um membro de uma classe.
+
+Private: membro acessível somente para outros membros da própria classe. Exemplo: Mesmo que coloquemos duas classes em um mesmo arquivo, a classe A e B, os membros marcados como private em A só serão acessíveis para membros da própria classe A. Isto é, membros da classe B, mesmo que estejam no mesmo arquivo, não poderão acessar um membro private na classe A. Isso também é válido para import (Java) e/ou include_once (PHP) e/ou requeri_once (PHP), pois essas cláusulas, o que fazem na realidade, é ligar os dois arquivos, tornando-os, de certa forma, um único arquivo.
+
+Public: membro acessível em todo o projeto. Isto é, a partir de uma classe A pode-se acessar o membro público de uma classe B de qualquer ponto do projeto.
+
+Protected: membro público para outros membros na mesma hierarquia de classes.
+
+Sem modificador: membro público para membros de outras classes, desde que, sejam classes do mesmo pacote (ou pasta no PHP).
+
+

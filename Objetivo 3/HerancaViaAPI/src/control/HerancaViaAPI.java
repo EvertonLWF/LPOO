@@ -34,24 +34,24 @@ public class HerancaViaAPI extends JFrame{
         *    JPanel, JButton e ActionEvent.
         *    O resultado é que  podemos adicionar componentes de UI simplesmente reutilizando código da API de javax.swing.
         */
-//        JPanel painel = new JPanel(); //agrega um objeto da classe JPanel
-//        painel.setSize(200,500); //utiliza o método setSize de JPanel
-//        JButton botao = new JButton(); //agrega um objeto da classe JButton
-//        botao.setText("Clique aqui"); //utiliza o método setText de JButton
-//        botao.addActionListener(new ActionListener() { //utiliza o método addActionListener de JButton para adiconar um objeto que trata eventos
-//
-//            @Override
-//            public void actionPerformed(ActionEvent e) { //utiliza o método actionPerformed da interface ActionListener para tratar o envento
-//                JDialog d = new JDialog(janela, "Olá", true);
-//                d.setSize(200,200);
-//                d.setLocationRelativeTo(janela);
-//                JLabel jl = new JLabel("Você clicou no botão.");
-//                d.add(jl);
-//                d.setVisible(true);
-//            }
-//        });
-//        painel.add(botao);
-//        janela.add(painel);
+       JPanel painel = new JPanel(); //agrega um objeto da classe JPanel
+        painel.setSize(200,500); //utiliza o método setSize de JPanel
+        JButton botao = new JButton(); //agrega um objeto da classe JButton
+        botao.setText("Press Where"); //utiliza o método setText de JButton
+        botao.addActionListener(new ActionListener() { //utiliza o método addActionListener de JButton para adiconar um objeto que trata eventos
+
+            @Override
+            public void actionPerformed(ActionEvent e) { //utiliza o método actionPerformed da interface ActionListener para tratar o envento
+                JDialog d = new JDialog(janela, "Olá", true);
+                d.setSize(200,200);
+                d.setLocationRelativeTo(janela);
+                JLabel jl = new JLabel("clicou no botão.");
+                d.add(jl);
+                d.setVisible(true);
+            }
+        });
+        painel.add(botao);
+        janela.add(painel);
         
         
         /*

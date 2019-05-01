@@ -6,7 +6,7 @@ import model.ContaPoupanca;
 
 /**
  *
- * @author Feijo
+ * @author Everton Feijo
  */
 public class AppConta {
     public static void main(String[] args) {

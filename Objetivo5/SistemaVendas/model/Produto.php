@@ -18,12 +18,8 @@ class Produto {
     private $valor;
     private $situacao;
     
-    function __construct($id_produto, $nome, $descricao, $valor, $situacao) {
-        $this->id_produto = $id_produto;
-        $this->nome = $nome;
-        $this->descricao = $descricao;
-        $this->valor = $valor;
-        $this->situacao = $situacao;
+    function __construct() {
+        
     }
     function getId_produto() {
         return $this->id_produto;

@@ -31,11 +31,8 @@ class ProdutoPDO extends Conexao{
         $stmt = $this->conn->prepare("SELECT * FROM produtos");
         if($stmt->execute()){
             $produtos = Array();
-            $result = $stmt->fetchAll();
-
-            foreach ($result as $key) {
-                array_push($produtos, $key);
-
+            while($rs = $stmt->fetch(PDO::FETCH_OBJ)){
+               array_push($produtos, $this->resultSetProduto($rs));
             }
             return $produtos;
         }
@@ -49,12 +46,11 @@ class ProdutoPDO extends Conexao{
     }
     private function resultSetProduto($rs){
             $produto = new Produto();
-            $produto->setId_produto($rs->id);
-            $produto->setNome_produto($rs->nome);
-            $produto->setDescricao_produto($rs->descricao);
-            $produto->setSituacao_produto($rs->situacao);
-            $produto->setValor_produto($rs->valor);
-            $produto->set_produto($rs->valor);
+            $produto->setId_produto($rs->id_produto);
+            $produto->setNome($rs->nome);
+            $produto->setDescricao($rs->descricao);
+            $produto->setSituacao($rs->situacao);
+            $produto->setValor($rs->valor);
             return $produto;
         }
     

@@ -13,7 +13,7 @@
  */
 class Pedido {
     private $id_pedido; 
-    private $idformaPagamento; 
+    private $idFormaPagamento; 
     private $estado; 
     private $dtCriacao; 
     private $dtModific; 
@@ -38,7 +38,7 @@ class Pedido {
         return $this->id_pedido;
     }
 
-    function getIdformaPagamento() {
+    function getIdFormaPagamento() {
         return $this->idformaPagamento;
     }
 
@@ -74,7 +74,7 @@ class Pedido {
         $this->id_pedido = $id_pedido;
     }
 
-    function setIdformaPagamento($idformaPagamento) {
+    function setIdFormaPagamento($idformaPagamento) {
         $this->idformaPagamento = $idformaPagamento;
     }
 

@@ -68,7 +68,9 @@ body {
 /* ===================
     ALL: Orange Theme
    =================== */
-
+.main-container{
+    height: auto;
+}
 .header-container {
     border-bottom: 20px solid #e44d26;
 }
@@ -153,7 +155,13 @@ nav a:hover {
 /* ==========================================================================
    Author's custom styles
    ========================================================================== */
-
+.btn{
+    float: right;
+    margin-right: 100px;
+    width: 35px;
+    height: 35px;
+    font-size: 13px;
+}
 
 
 

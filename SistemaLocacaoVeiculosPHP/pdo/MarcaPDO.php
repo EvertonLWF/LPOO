@@ -12,5 +12,21 @@
  * @author feijo
  */
 class MarcaPDO extends ConnectPDO{
+    private $conn;
     
+    function __construct() {
+        $this->conn = parent::getConnect();
+    }
+    function select(){
+        
+    }
+    function insert(){
+        
+    }
+    function update(){
+        
+    }
+    function delete(){
+        
+    }
 }

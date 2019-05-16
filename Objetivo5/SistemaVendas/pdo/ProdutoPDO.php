@@ -16,8 +16,14 @@ class ProdutoPDO extends Conexao{
         $this->conn = parent::getConnect();
     }
 
-    public function insert(){
-        
+    public function insert(Produto $produto){
+        $stmt = $this->conn->prepare('INSERT INTO produtos (nome,valor,descricao,situacao,quantidade) VALUES(?,?,?,?,?)');
+        $stmt->bindValue(1, $produto->getNome());
+        $stmt->bindValue(2, $produto->getValor());
+        $stmt->bindValue(3, $produto->getDescricao());
+        $stmt->bindValue(4, $produto->getSituacao());
+        $stmt->bindValue(5, $produto->getQuantidade());
+        return $stmt;
     }
     
     public function select(){

@@ -17,6 +17,7 @@ class Produto {
     private $descricao;
     private $valor;
     private $situacao;
+    private $quantidade;
     
     function __construct() {
         
@@ -40,7 +41,12 @@ class Produto {
     function getSituacao() {
         return $this->situacao;
     }
-
+    function getQuantidade(){
+        return $this->quantidade;
+    }
+    function setQuantidade($quantidade){
+        $this->quantidade = $quantidade;
+    }
     function setId_produto($id_produto) {
         $this->id_produto = $id_produto;
     }

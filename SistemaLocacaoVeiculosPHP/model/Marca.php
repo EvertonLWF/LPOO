@@ -12,31 +12,24 @@
  * @author feijo
  */
 class Marca {
-    private $modelo;
+   
     private $marca;
     
-    function __construct($modelo, $marca) {
-        $this->modelo = $modelo;
+    function __construct($modelo) {
         $this->marca = $marca;
     }
-    function getModelo() {
-        return $this->modelo;
-    }
-
+    
     function getMarca() {
         return $this->marca;
     }
 
-    function setModelo($modelo) {
-        $this->modelo = $modelo;
-    }
-
+   
     function setMarca($marca) {
         $this->marca = $marca;
     }
 
     function __toString() {
-        return "MODELO = $this->modelo; MARCA = $this->marca";
+        return "MARCA = $this->marca";
     }
 
 }

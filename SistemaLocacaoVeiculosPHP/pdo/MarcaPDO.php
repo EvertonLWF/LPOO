@@ -7,6 +7,7 @@ include_once "ConnectPDO.php";
  * @author feijo
  */
 class MarcaPDO extends ConnectPDO{
+    private $conn;
     
     private $conn;
     

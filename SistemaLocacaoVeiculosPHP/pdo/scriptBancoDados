@@ -1,0 +1,40 @@
+create table clientes(
+	cpf_cli int primary key not null,
+	nome_cli varchar(255) not null,
+	end_cli varchar(255) not null,
+	tel_cliente varchar(255),
+	email_cli varchar(255)
+);
+
+create table marca(
+	descricao varchar(255) not null primary key
+);
+
+create table modelo(
+	descModelo varchar(255) not null primary key,
+	descMarca varchar(255) not null references marca(descricao)
+);
+
+create table automovel(
+	renavan bigint not null primary key,
+	placa varchar(255) not null,
+	cor varchar(255) not null,
+	numPortas int not null,
+	tipo_combust int not null,
+	chassi varchar(255) not null,
+	valor_locacao numeric(5,2) not null,
+	descModelo varchar(255) not null references modelo(descModelo)
+);
+
+create table locacao(
+	id_locacao serial not null primary key,
+	dt_locacao date not null,
+	hr_locacao time not null,
+	dt_devolucao date not null,
+	hr_devolucao time not null,
+	km bigint not null,
+	valor_caucao decimal(5,2) not null,
+	valor_locacao decimal(5,2) not null,
+	cpf_cli int not null references clientes(cpf_cli),
+	renavan bigint not null references automovel(renavan)
+);

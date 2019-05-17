@@ -23,7 +23,7 @@ class ProdutoPDO extends Conexao{
         $stmt->bindValue(3, $produto->getDescricao());
         $stmt->bindValue(4, $produto->getSituacao());
         $stmt->bindValue(5, $produto->getQuantidade());
-        return $stmt;
+        return $stmt->execute();
     }
     
     public function select(){
@@ -51,6 +51,7 @@ class ProdutoPDO extends Conexao{
             $produto->setDescricao($rs->descricao);
             $produto->setSituacao($rs->situacao);
             $produto->setValor($rs->valor);
+            $produto->setQuantidade($rs->quantidade);
             return $produto;
         }
     

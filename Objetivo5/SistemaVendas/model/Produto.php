@@ -68,7 +68,7 @@ class Produto {
     }
 
     function __toString() {
-        return "$this->descricao + $this->id_produto + $this->nome + $this->situacao + $this->valor";
+        return "$this->descricao + $this->id_produto + $this->nome + $this->situacao + $this->valor + $this->quantidade";
     }
 
 }

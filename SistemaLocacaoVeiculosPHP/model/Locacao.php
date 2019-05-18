@@ -12,6 +12,7 @@
  * @author feijo
  */
 class Locacao {
+    private $id_locacao;
     private $dt_locacao;
     private $hora_locacao;
     private $dt_devolucao;
@@ -24,8 +25,9 @@ class Locacao {
     private $automovel;
     private $situacao;
     
-    function __construct($dt_locacao, $hora_locacao, $dt_devolucao, $hora_devolucao, $km, $vl_calcao, $vl_locacao, $devolvido, $cliente, $automovel, $situacao) {
+    function __construct($id_locacao, $dt_locacao, $hora_locacao, $dt_devolucao, $hora_devolucao, $km, $vl_calcao, $vl_locacao, $devolvido, $cliente, $automovel, $situacao) {
         $this->dt_locacao = $dt_locacao;
+        $this->id_locacao = $id_locacao;
         $this->hora_locacao = $hora_locacao;
         $this->dt_devolucao = $dt_devolucao;
         $this->hora_devolucao = $hora_devolucao;
@@ -72,6 +74,12 @@ class Locacao {
 
     function getCliente() {
         return $this->cliente;
+    }
+    function getId() {
+        return $this->cliente;
+    }
+    function setSet($id) {
+        $this->cliente = $id;
     }
 
     function setDt_locacao($dt_locacao) {
@@ -124,7 +132,7 @@ class Locacao {
     }
     
     function __toString() {
-        return "SITUACAO = $this->situacao; CLIENTE = $this->cliente; DEVOLVIDO $this->devolvido; DATA DEVOLUCAO $this->dt_devolucao;DATA LOCACAO $this->dt_locacao;HORA DEVOLUCAO = $this->hora_devolucao; HORA LOCACAO = $this->hora_locacao; KILOMETRAGEM $this->km KM; VALOR CALCAO = $this->vl_calcao; VALOR LOCACAO = $this->vl_locacao; AUTOMOVEL =  $this->automovel";
+        return "ID = $this->id_locacao; SITUACAO = $this->situacao; CLIENTE = $this->cliente; DEVOLVIDO $this->devolvido; DATA DEVOLUCAO $this->dt_devolucao;DATA LOCACAO $this->dt_locacao;HORA DEVOLUCAO = $this->hora_devolucao; HORA LOCACAO = $this->hora_locacao; KILOMETRAGEM $this->km KM; VALOR CALCAO = $this->vl_calcao; VALOR LOCACAO = $this->vl_locacao; AUTOMOVEL =  $this->automovel";
     }
 
 

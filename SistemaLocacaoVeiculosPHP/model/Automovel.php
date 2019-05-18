@@ -21,10 +21,11 @@ class Automovel {
     private $chassi;
     private $valorLocacao;
     private $situacao;
-    
+    private $modelo;
+            
     private $locacao;    
     
-    function __construct($placa, $cor, $nroPortas, $tipoCombustivel, $Km, $renavan, $chassi, $valorLocacao, $situacao) {
+    function __construct($placa, $cor, $nroPortas, $tipoCombustivel, $Km, $renavan, $chassi, $valorLocacao, $situacao,$modelo) {
         $this->placa = $placa;
         $this->cor = $cor;
         $this->nroPortas = $nroPortas;
@@ -34,6 +35,7 @@ class Automovel {
         $this->chassi = $chassi;
         $this->valorLocacao = $valorLocacao;
         $this->situacao = $situacao;
+        $this->modelo = $modelo;
     }
     function setLocacao($locacao){
         $this->locacao = $locacao;
@@ -41,6 +43,13 @@ class Automovel {
     
     function getLocacao(){
         return $this->locacao;
+    }
+    function setModelo($modelo){
+        $this->modelo = $modelo;
+    }
+    
+    function getModelo(){
+        return $this->modelo;
     }
     function getPlaca() {
         return $this->placa;
@@ -112,7 +121,7 @@ class Automovel {
         $this->valorLocacao = $valorLocacao;
     }
     function __toString() {
-        return "SITUACAO = $this->situacao; KM = $this->Km; CHASSI = $this->chassi; COR = $this->cor; NUMERO PORTAS = $this->nroPortas; RENAVAN = $this->placa $this->renavan; TIPO COMBUSTIVEL $this->tipoCombustivel; VALOR LOCACAO $this->valorLocacao";
+        return "MODELO = $this->modelo; SITUACAO = $this->situacao; KM = $this->Km; CHASSI = $this->chassi; COR = $this->cor; NUMERO PORTAS = $this->nroPortas; RENAVAN = $this->placa $this->renavan; TIPO COMBUSTIVEL $this->tipoCombustivel; VALOR LOCACAO $this->valorLocacao";
     }
 
 }

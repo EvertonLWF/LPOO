@@ -19,48 +19,47 @@ class ModeloPDO extends ConnectPDO{
     }
     function findAll(){
         try {
-            $stmt = $this->conn->prepare("SELECT * FROM modelo");
+            $stmt = $this->conn->prepare("SELECT * FROM automovel WHERE situacao = true");
             if($stmt->execute()){
-                $modelos= Array();
+                $auto= Array();
                 while($rs = $stmt->fetch(PDO::FETCH_OBJ)){
-                    array_push($modelos, $this->resultSetProduto($rs));
+                    array_push($auto, $this->resultSetProduto($rs));
                 }
-                return $modelos;
+                return $auto;
             }else{
                 return null;
             }
         } catch (Exception $exc) {
-            echo $exc->getTraceAsString();
+            echo $exc->getTraceAsString()+'Erro findAll Automovel !!!!';
             return null;
         }
 
         
     }
-    function findByModelo($marca){
+    function findByAutomovel($auto){
         try {
-            $stmt = $this->conn->prepare("SELECT * FROM modelo WHERE descricao like ?");
-            $stmt->bindValue(1, $marca+'%');
+            $stmt = $this->conn->prepare("SELECT * FROM modelo WHERE descricao like ? AND situacao = true");
+            $stmt->bindValue(1, $auto+'%');
             if($stmt->execute()){
-                $modelos= Array();
+                $autos= Array();
                 while($rs = $stmt->fetch(PDO::FETCH_OBJ)){
-                    array_push($modelos, $this->resultSetProduto($rs));
+                    array_push($autos, $this->resultSetProduto($rs));
                 }
-                return $modelos;
+                return $autos;
             }else{
                 return null;
             }
         } catch (Exception $exc) {
-            echo $exc->getTraceAsString();
+            echo $exc->getTraceAsString()+' Erro findByAuto !!!!!';
             return null;
         }
 
         
     }
-    function update($modelo){
-        $stmt = $this->conn->prepare('UPDATE modelo SET descricao = ? marca = ? situacao = ?');
-        $stmt->bindValue(1, $modelo->getDescricao());
-        $stmt->bindValue(2, $modelo->getMarca());
-        $stmt->bindValue(3, $modelo->getSituacao());
+    function update(Automovel $auto){
+        $stmt = $this->conn->prepare('UPDATE modelo SET descricao = ?, marca = ?, situacao = ?');
+        $stmt->bindValue(1, $auto->getDescricao());
+        
       
         return $stmt->execute();
     }
@@ -73,7 +72,7 @@ class ModeloPDO extends ConnectPDO{
         return $stmt->execute();
         
     }
-    function deleteSoft($modelo){
+    function deleteSoft($auto){
         $stmt = $this->conn->prepare('UPDATE modelo SET situacao = ? WHERE descricao = ?');
         $stmt->bindValue(1, null);
         $stmt->bindValue(2, $modelo->getDescricao());

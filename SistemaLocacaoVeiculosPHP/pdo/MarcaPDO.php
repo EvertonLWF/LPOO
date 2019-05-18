@@ -9,14 +9,12 @@ include_once "ConnectPDO.php";
 class MarcaPDO extends ConnectPDO{
     private $conn;
     
-    private $conn;
-    
     function __construct() {
         $this->conn = parent::getConnect() ;
     }
     function findAll(){
         try {
-            $stmt = $this->conn->prepare("SELECT * FROM marca");
+            $stmt = $this->conn->prepare("SELECT * FROM marca WHERE situacao = true");
             if($stmt->execute()){
                 $marcas= Array();
                 while($rs = $stmt->fetch(PDO::FETCH_OBJ)){
@@ -27,7 +25,7 @@ class MarcaPDO extends ConnectPDO{
                 return null;
             }
         } catch (Exception $exc) {
-            echo $exc->getTraceAsString();
+            echo $exc->getTraceAsString()+' Erro findAll Marca!!!';
             return null;
         }
 
@@ -35,8 +33,8 @@ class MarcaPDO extends ConnectPDO{
     }
     function findByMarca($marca){
         try {
-            $stmt = $this->conn->prepare("SELECT * FROM marca WHERE descricao = ?");
-            $stmt->bindValue(1, $marca);
+            $stmt = $this->conn->prepare("SELECT * FROM marca WHERE descricao LIKE ? AND situacao = true");
+            $stmt->bindValue(1, $marca+'%');
             if($stmt->execute()){
                 $marcas= Array();
                 while($rs = $stmt->fetch(PDO::FETCH_OBJ)){
@@ -47,22 +45,24 @@ class MarcaPDO extends ConnectPDO{
                 return null;
             }
         } catch (Exception $exc) {
-            echo $exc->getTraceAsString();
+            echo $exc->getTraceAsString()+'Erro findByMarca !!!';
             return null;
         }
 
         
     }
     function update($marca){
-        $stmt = $this->conn->prepare('UPDATE marca SET descricao = ?');
-        $stmt->bindValue(1, $marca->get());
+        $stmt = $this->conn->prepare('UPDATE marca SET descricao = ?,situacao = ?');
+        $stmt->bindValue(1, $marca->getMarca());
+        $stmt->bindValue(2, $marca->getSituacao());
       
         return $stmt->execute();
     }
     
     function insert($marca){
-        $stmt = $this->conn->prepare('INSERT INTO marca (descricao) VALUES(?,?)');
-        $stmt->bindValue(1, $marca->getNome());
+        $stmt = $this->conn->prepare('INSERT INTO marca (descricao,situacao) VALUES(?,?)');
+        $stmt->bindValue(1, $marca->getMarca());
+        $stmt->bindValue(2, $marca->getSituacao());
         
       
         return $stmt->execute();

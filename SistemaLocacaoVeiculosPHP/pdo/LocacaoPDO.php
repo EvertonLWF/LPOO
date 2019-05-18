@@ -56,27 +56,41 @@ class LocacaoPDO extends ConnectPDO{
 
         
     }
-    function update(Locacao $loc){
-        $stmt = $this->conn->prepare('UPDATE marca SET id_locacao = ?,dt_locacao = ?,hr_locacao = ?,dt_devolucao = ?,hr_devolucao = ?, km = ?, valor_caucao = ?, valor_locacao = ?, cpf_cli = ?, renavan = ?, situacao = ?');
+    function update($loc){
+        $stmt = $this->conn->prepare('UPDATE marca SET dt_devolucao = ?,hr_devolucao = ?, km = ?, valor_caucao = ?, valor_locacao = ?, cpf_cli = ?, renavan = ?, situacao = ? WHERE id_locacao = ?');
+        $stmt->bindValue(1, $loc->getDt_devolucao());
+        $stmt->bindValue(2, $loc->getHora_devolucao());
+        $stmt->bindValue(3, $loc->getKm());
+        $stmt->bindValue(4, $loc->getVl_calcao());
+        $stmt->bindValue(5, $loc->getCliente());
+        $stmt->bindValue(6, $loc->getAutomovel());
+        $stmt->bindValue(7, $loc->getSituacao());
+        $stmt->bindValue(8, $loc->getId());
+        
+        return $stmt->execute();
+    }
+    
+    function insert(Locacao $loc){
+        $stmt = $this->conn->prepare('INSERT INTO locacao (id_locacao,dt_locacao,hr_locacao,dt_devolocao,hr_devolucao,km,valor_caucao,valor_locacao,cpf_cli,renavan) VALUES(?,?,?,?,?,?,?,?,?,?)');
         $date = DateTime::createFromFormat('U.u', microtime(TRUE));
         $stmt->bindValue(1, md5($date->format('Y-m-d H:i:s.u')));
-        
+        $stmt->bindValue(2, $date->format('Y-m-d'));
+        $stmt->bindValue(3, $date->format('H:i:s.u'));
+        $stmt->bindValue(4, $loc->getDt_devolucao());
+        $stmt->bindValue(5, $loc->getHora_devolucao());
+        $stmt->bindValue(6, $loc->getKm());
+        $stmt->bindValue(7, $loc->getVl_calcao());
+        $stmt->bindValue(8, $loc->getVl_locacao());
+        $stmt->bindValue(9, $loc->getCliente());
+        $stmt->bindValue(10, $loc->getAutomovel());
+       
         return $stmt->execute();
     }
     
-    function insert($marca){
-        $stmt = $this->conn->prepare('INSERT INTO marca (descricao,situacao) VALUES(?,?)');
-        $stmt->bindValue(1, $marca->getMarca());
-        $stmt->bindValue(2, $marca->getSituacao());
-        
-      
-        return $stmt->execute();
-    }
-    
-    function deleteSoft($descricao){
-        $stmt = $this->conn->prepare('UPDATE marca SET situacao = ? WHERE descricao = ?');
+    function deleteSoft($id){
+        $stmt = $this->conn->prepare('UPDATE locacao SET situacao = ? WHERE id_locacao = ?');
         $stmt->bindValue(1, null);
-        $stmt->bindValue(2, $descricao);
+        $stmt->bindValue(2,$id);
         
         return $stmt->execute();
     }

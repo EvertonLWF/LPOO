@@ -13,31 +13,40 @@
  */
 class Modelo {
     private $descricao;
-    private $automoveis = Array();
-    
-    function __construct($descricao, $automovel) {
+    private $marca;
+    private $situacao;
+    function __construct($descricao, $marca, $situacao) {
         $this->descricao = $descricao;
-        array_push($this->automoveis,$automovel);
+        $this->marca = $marca;
+        $this->situacao = $situacao;
     }
     function getDescricao() {
         return $this->descricao;
     }
 
-    function getAutomoveis() {
-        return $this->automoveis;
+    function getMarca() {
+        return $this->marca;
+    }
+
+    function getSituacao() {
+        return $this->situacao;
     }
 
     function setDescricao($descricao) {
         $this->descricao = $descricao;
     }
 
-    function setAutomoveis($automoveis) {
-        $this->automoveis = $automoveis;
+    function setMarca($marca) {
+        $this->marca = $marca;
     }
 
-            
+    function setSituacao($situacao) {
+        $this->situacao = $situacao;
+    }
+
+        
     function __toString() {
-        return "DESCRICAO = $this->descricao";
+        return "DESCRICAO = $this->descricao MARCA = $this->marca Situacao = $this->situacao";
     }
     
 }

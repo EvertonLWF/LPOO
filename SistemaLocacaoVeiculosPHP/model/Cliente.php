@@ -18,13 +18,15 @@ class Cliente {
     private $end_cli;
     private $tel_cli;
     private $email_cli;
+    private $situacao;
 
-    function __construct($cpf_cli, $nome_cli, $end_cli, $tel_cli, $email_cli) {
+    function __construct($cpf_cli, $nome_cli, $end_cli, $tel_cli, $email_cli,$situacao) {
         $this->cpf_cli = $cpf_cli;
         $this->nome_cli = $nome_cli;
         $this->end_cli = $end_cli;
         $this->tel_cli = $tel_cli;
         $this->email_cli = $email_cli;
+        $this->situacao = $situacao;
     }
     function getCpf_cli() {
         return $this->cpf_cli;
@@ -44,6 +46,9 @@ class Cliente {
 
     function getEmail_cli() {
         return $this->email_cli;
+    }
+    function getSituacao_cli() {
+        return $this->situacao;
     }
 
     function setCpf_cli($cpf_cli) {
@@ -65,9 +70,12 @@ class Cliente {
     function setEmail_cli($email_cli) {
         $this->email_cli = $email_cli;
     }
+    function setSituacao_cli($situacao) {
+        $this->situacao = $situacao;
+    }
 
     function __toString() {
-        return "CPF = $this->cpf_cli; EMAIL = $this->email_cli; ENDERECO = $this->end_cli; NOME = $this->nome_cli; TELEFONE = $this->tel_cli";
+        return "CPF = $this->cpf_cli; EMAIL = $this->email_cli; ENDERECO = $this->end_cli; NOME = $this->nome_cli; TELEFONE = $this->tel_cli SITUACAO = $this->situacao";
     }
 
     

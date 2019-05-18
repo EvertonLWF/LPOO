@@ -36,10 +36,10 @@ class ModeloPDO extends ConnectPDO{
 
         
     }
-    function findByMarca($marca){
+    function findByModelo($marca){
         try {
-            $stmt = $this->conn->prepare("SELECT * FROM modelo WHERE descricao = ?");
-            $stmt->bindValue(1, $marca);
+            $stmt = $this->conn->prepare("SELECT * FROM modelo WHERE descricao like ?");
+            $stmt->bindValue(1, $marca+'%');
             if($stmt->execute()){
                 $modelos= Array();
                 while($rs = $stmt->fetch(PDO::FETCH_OBJ)){
@@ -57,22 +57,26 @@ class ModeloPDO extends ConnectPDO{
         
     }
     function update($modelo){
-        $stmt = $this->conn->prepare('UPDATE modelo SET descricao = ?');
-        $stmt->bindValue(1, $modelo->get());
+        $stmt = $this->conn->prepare('UPDATE modelo SET descricao = ? marca = ? situacao = ?');
+        $stmt->bindValue(1, $modelo->getDescricao());
+        $stmt->bindValue(2, $modelo->getMarca());
+        $stmt->bindValue(3, $modelo->getSituacao());
       
         return $stmt->execute();
     }
     function insert($modelo){
-        $stmt = $this->conn->prepare('INSERT INTO modelo (descricao) VALUES(?)');
+        $stmt = $this->conn->prepare('INSERT INTO modelo (descricao,marca,situacao) VALUES(?,?,?)');
         $stmt->bindValue(1, $modelo->getNome());
+        $stmt->bindValue(2, $modelo->getMarca());
+        $stmt->bindValue(2, $modelo->getSituacao());
       
         return $stmt->execute();
         
     }
     function deleteSoft($modelo){
-        $stmt = $this->conn->prepare('UPDATE modelo SET situacao = ? WHERE id = ?');
-        $stmt->bindValue(1, $modelo->getSituacao());
-        $stmt->bindValue(2, null);
+        $stmt = $this->conn->prepare('UPDATE modelo SET situacao = ? WHERE descricao = ?');
+        $stmt->bindValue(1, null);
+        $stmt->bindValue(2, $modelo->getDescricao());
         return $stmt->execute();
     }
 }

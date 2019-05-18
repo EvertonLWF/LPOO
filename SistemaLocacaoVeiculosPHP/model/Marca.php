@@ -14,9 +14,11 @@
 class Marca {
    
     private $marca;
+    private $situacao;
     
-    function __construct($modelo) {
+    function __construct($modelo,$situacao) {
         $this->marca = $marca;
+        $this->situacao = $situacao;
     }
     
     function getMarca() {
@@ -27,9 +29,18 @@ class Marca {
     function setMarca($marca) {
         $this->marca = $marca;
     }
+    
+    function getSituacao() {
+        return $this->Situacao;
+    }
+
+   
+    function setSituacao($Situacao) {
+        $this->Situacao = $Situacao;
+    }
 
     function __toString() {
-        return "MARCA = $this->marca";
+        return "MARCA = $this->marca SITUACAO = $this->situacao";
     }
 
 }

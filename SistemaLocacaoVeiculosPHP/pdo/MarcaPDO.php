@@ -59,17 +59,20 @@ class MarcaPDO extends ConnectPDO{
       
         return $stmt->execute();
     }
+    
     function insert($marca){
-        $stmt = $this->conn->prepare('INSERT INTO marca (descricao) VALUES(?)');
+        $stmt = $this->conn->prepare('INSERT INTO marca (descricao) VALUES(?,?)');
         $stmt->bindValue(1, $marca->getNome());
+        
       
         return $stmt->execute();
-        
     }
-    function deleteSoft($marca){
-        $stmt = $this->conn->prepare('UPDATE marca SET situacao = ? WHERE id = ?');
-        $stmt->bindValue(1, $marca->getSituacao());
-        $stmt->bindValue(2, null);
+    
+    function deleteSoft($descricao){
+        $stmt = $this->conn->prepare('UPDATE marca SET situacao = ? WHERE descricao = ?');
+        $stmt->bindValue(1, null);
+        $stmt->bindValue(2, $descricao);
+        
         return $stmt->execute();
     }
 }

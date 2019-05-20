@@ -15,7 +15,7 @@ import java.sql.SQLException;
  */
 class  ConnectDAO {
 
-    public Connection Connect() throws SQLException {
+    public Connection getConnect() throws SQLException {
         Connection conn = null;
     try
         {
@@ -39,6 +39,6 @@ class  ConnectDAO {
     }
     public static void main(String[] args) throws SQLException {
         ConnectDAO connectDAO = new ConnectDAO();
-        connectDAO.Connect();
+        connectDAO.getConnect();
     }
 }

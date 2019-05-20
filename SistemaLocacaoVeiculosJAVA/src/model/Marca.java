@@ -5,6 +5,9 @@
  */
 package model;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 /**
  *
  * @author feijo
@@ -12,8 +15,13 @@ package model;
 public class Marca {
     private String descricao;
     private boolean status;
+
     public Marca() {
+    }
     
+    public Marca(ResultSet resultSet) throws SQLException {
+        this.descricao = resultSet.getString("descricao");
+        this.status = resultSet.getBoolean("status");
     }
 
     public Marca(String descricao, boolean status) {

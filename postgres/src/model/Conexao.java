@@ -61,5 +61,6 @@ public class Conexao {
     public String toString() {
         return "Conexao{" + "driver=" + driver + ", user=" + user + ", senha=" + senha + ", url=" + url + ", query=" + query + '}';
     }
+    
             
 }

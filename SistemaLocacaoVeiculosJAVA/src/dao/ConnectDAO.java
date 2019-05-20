@@ -15,14 +15,14 @@ import java.sql.SQLException;
  */
 class  ConnectDAO {
 
-    public Connection ConnectDAO() throws SQLException {
+    public Connection Connect() throws SQLException {
         Connection conn = null;
     try
         {
             Class.forName("org.postgresql.Driver");
             
-            conn = (Connection) DriverManager.getConnection("jdbc:postgresql://localhost:5432/java", "postgres", "root");
-            
+            conn = (Connection) DriverManager.getConnection("jdbc:postgresql://localhost:5432/locacaoVeiculos", "postgres", "root");
+            System.out.println("ok");
             return conn;
         }
         catch (ClassNotFoundException ex)
@@ -36,5 +36,9 @@ class  ConnectDAO {
             System.err.print(e.getMessage());
         }
         return conn;
+    }
+    public static void main(String[] args) throws SQLException {
+        ConnectDAO connectDAO = new ConnectDAO();
+        connectDAO.Connect();
     }
 }

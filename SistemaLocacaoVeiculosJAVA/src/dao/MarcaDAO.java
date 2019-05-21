@@ -96,4 +96,32 @@ public class MarcaDAO extends ConnectDAO{
         }
         return false;
     }
+    
+    public boolean update(Marca marca){
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        try {
+             conn = super.getConnect();
+             statement = conn.prepareStatement("UPDATE marca SET descricao = ?,status = ?");
+             statement.setString(1, marca.getDescricao());
+             statement.setBoolean(2, true);
+             int count = statement.executeUpdate();            
+             
+             resultSet.close();
+             statement.close();
+             conn.close();
+             
+             if(count == 0){
+                 return false;
+             }else{
+                 return true;
+             }
+            
+             
+        }
+        catch(Exception ex){
+            System.out.println("Erro INSERT Marca "+ex);
+        }
+        return false;
+    }
 }

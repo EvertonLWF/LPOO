@@ -69,34 +69,34 @@ public class MarcaDAO extends ConnectDAO{
         return resultado;
     }
     
-    public boolean insert(Marca marca){
+    public boolean insert(Marca marca) throws SQLException{
         PreparedStatement statement = null;
         ResultSet resultSet = null;
+        int count = 0;
         try {
              conn = super.getConnect();
              statement = conn.prepareStatement("INSERT INTO marca(descricao,status) VALUES(?,?)");
              statement.setString(1, marca.getDescricao());
              statement.setBoolean(2, true);
-             int count = statement.executeUpdate();            
+             count = statement.executeUpdate(); 
              
-             resultSet.close();
-             statement.close();
-             conn.close();
              
-             if(count == 0){
-                 return false;
-             }else{
-                 return true;
-             }
-            
-             
+                                
         }
-        catch(Exception ex){
+        catch(SQLException ex){
             System.out.println("Erro INSERT Marca "+ex);
         }
-        return false;
+        //resultSet.close();
+        statement.close();
+        conn.close();
+        
+        if(count == 0){
+            return false;
+        }else{
+            return true;
+        }
     }
-    
+
     public boolean update(Marca marca){
         PreparedStatement statement = null;
         ResultSet resultSet = null;

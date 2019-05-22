@@ -22,7 +22,6 @@ class  ConnectDAO {
             Class.forName("org.postgresql.Driver");
             
             conn = (Connection) DriverManager.getConnection("jdbc:postgresql://localhost:5432/locacaoVeiculos", "postgres", "root");
-            System.out.println("ok");
             return conn;
         }
         catch (ClassNotFoundException ex)

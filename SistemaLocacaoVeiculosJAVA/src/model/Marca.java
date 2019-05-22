@@ -47,6 +47,6 @@ public class Marca {
 
     @Override
     public String toString() {
-        return "Marca{" + "descricao=" + descricao + ", status=" + status + '}';
+        return "\nMarca{" + "descricao=" + descricao + ", status=" + status + '}';
     }   
 }

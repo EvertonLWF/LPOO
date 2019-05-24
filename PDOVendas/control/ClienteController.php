@@ -25,6 +25,7 @@ class ClienteController {
             echo "\n4. Listar todos os clientes";
             echo "\n5. Listar clientes pelo nome";
             echo "\n6. Listar cliente pelo código";
+            echo "\n7. Reativar cliente pelo código";
             echo "\nOpção (ZERO para sair): "; 
             $exit = fgets(STDIN);
             switch ($exit){
@@ -46,7 +47,10 @@ class ClienteController {
                     $this->listarClientesPeloNome();
                     break;
                 case 6:
-                    $this->listarClietnePeloCodigo();
+                    $this->listarClientePeloCodigo();
+                    break;
+                case 7:
+                    $this->reativarClientePeloCodigo();
                     break;
                 default:
                     echo "\nOpção inexistente.";
@@ -74,13 +78,18 @@ class ClienteController {
         echo "\nEm desenvolvimento.";
     }
     
-    //update (case 5)
+    //find for name ou SELECT com filtros (case 5)
     private function listarClientesPeloNome(){
         echo "\nEm desenvolvimento.";
     }
     
-    //update (case 6)
-    private function listarClietnePeloCodigo(){
+    //find for id ou SELECT com filtros (case 6)
+    private function listarClientePeloCodigo(){
+        echo "\nEm desenvolvimento.";
+    }
+    
+    //update (case 7)
+    private function reativarClientePeloCodigo(){
         echo "\nEm desenvolvimento.";
     }
 }

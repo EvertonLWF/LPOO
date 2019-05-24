@@ -21,6 +21,8 @@ class ProdutoController{
             echo "\n4. Listar todos os produtos";
             echo "\n5. Listar produtos pelo nome";
             echo "\n6. Listar produto pelo código";
+            echo "\n7. Reativar produto pelo código";
+
             echo "\nOpção (ZERO para sair): "; 
             $exit = fgets(STDIN);
             switch ($exit){
@@ -44,6 +46,9 @@ class ProdutoController{
                 case 6:
                     $this->listarProdutosPeloCodigo();
                     break;
+                case 7:
+                    $this->reativarProdutoPeloCodigo();
+                    break;
                 default:
                     echo "\nOpção inexistente.";
             }
@@ -54,14 +59,14 @@ class ProdutoController{
     private function inserirProduto(){
         $produto = new Produto();
         echo"\nNome do Produto: ";
-        $produto->setNome(fgets(STDIN));
+        $produto->setNome(rtrim(fgets(STDIN)));
         echo"\nDescrição do Produto: ";
-        $produto->setDescricao(fgets(STDIN));
+        $produto->setDescricao(rtrim(fgets(STDIN)));
         echo"\nValor do Produto (sistema americano): ";
-        $produto->setValor(fgets(STDIN));
+        $produto->setValor(rtrim(fgets(STDIN)));
         $produto->setSituacao(true); //nasce como registro válido no bd
         echo"\nQuantidade em estoque: ";
-        $produto->setQuantidade(fgets(STDIN));
+        $produto->setQuantidade(rtrim(fgets(STDIN)));
         if($this->produtoPDO->insert($produto)){
             echo "\nProduto salvo.";
         }else{
@@ -71,12 +76,58 @@ class ProdutoController{
     
     //update (case 2)
     private function alterarProduto(){
-        echo "\nEm desenvolvimento.";
+        echo "\nDigite o código do produto que você deseja alterar: ";
+        $produto = $this->produtoPDO->findById(rtrim(fgets(STDIN)));
+        if($produto != null){
+            print_r($produto);
+            echo "\nDigite o nome do produto: ";
+            $nome = fgets(STDIN);
+            if($nome != "\n"){
+                $produto->setNome(rtrim($nome));
+            }
+            echo"\nDescrição do Produto: ";
+            $descricao = fgets(STDIN);
+            if($descricao != "\n"){
+                $produto->setDescricao(rtrim($descricao));
+            }
+            echo"\nValor do Produto (sistema americano): ";
+            $valor = fgets(STDIN);
+            if($valor != "\n"){
+                $produto->setValor(rtrim($valor));
+            }
+            echo"\nQuantidade em estoque: ";
+            $quantidade = fgets(STDIN);
+            if($quantidade != "\n"){
+                $produto->setQuantidade(rtrim($quantidade));
+            }
+            if($this->produtoPDO->update($produto)){
+                echo "\nProduto alterado.";
+            }else{
+                echo "\nErro ao alterar o produto. Contate o administrador do sistema.";
+            }
+        }else{
+            echo "\nNão há produtos cadastrados com esse código.";
+        }
     }
     
     //update (case 3)
     private function excluirProduto(){
-        echo "\nEm desenvolvimento.";
+        echo "\nDigite o código do produto que você deseja tornar inativo: ";
+        $produto = $this->produtoPDO->findById(rtrim(fgets(STDIN)));
+        print_r($produto);
+        echo "\nConfirmar a operação (s/n)? ";
+        $operacao = rtrim(fgets(STDIN));
+        
+        if(!strcasecmp($operacao, "s")){
+            if($this->produtoPDO->deleteSoft($produto->getId())){
+                echo "\nProduto excluído.";
+            }else{
+                echo "\nFalha ao reativar o produto. Contate o administrador do sistema.";
+            }       
+        }
+        if(!strcasecmp($operacao, "n")){
+            echo "\nOperação cancelada.";
+        }
     }
 
     //findAll ou SELECT sem filtros (case 4)
@@ -87,13 +138,38 @@ class ProdutoController{
     
     //update (case 5)
     private function listarProdutosPeloNome(){
-        echo "\nEm desenvolvimento.";
+        echo "\nDigite o nome para pesquisa: ";
+        $nome = rtrim(fgets(STDIN));   
+        print_r($this->produtoPDO->findByNome($nome));
     }
     
     //update (case 6)
     private function listarProdutosPeloCodigo(){
-        echo "\nEm desenvolvimento.";
+        echo "\nDigite o código para pesquisa: ";
+        $codigo = rtrim(fgets(STDIN));
+        print_r($this->produtoPDO->findById($codigo));
     }
+    
+    //update (case 7)
+    private function reativarProdutoPeloCodigo(){
+        echo "\nDigite o código do produto que você deseja reativar: ";
+        $produto = $this->produtoPDO->findById(rtrim(fgets(STDIN)));
+        print_r($produto);
+        echo "\nConfirmar a operação (s/n)? ";
+        $operacao = rtrim(fgets(STDIN));
+        
+        if(!strcasecmp($operacao, "s")){
+            if($this->produtoPDO->reativarProdutoPeloId($produto->getId())){
+                echo "\nProduto reativado.";
+            }else{
+                echo "\nFalha ao reativar o produto. Contate o administrador do sistema.";
+            }       
+        }
+        if(!strcasecmp($operacao, "n")){
+            echo "\nOperação cancelada.";
+        }   
+    }
+        
     
 }
    

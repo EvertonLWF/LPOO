@@ -66,6 +66,20 @@ class ProdutoPDO extends Conexao {
             return false;
         }
     }
+    
+    public function reativarProdutoPeloId($id){
+        try{
+            $stmt = $this->conn->prepare("UPDATE produtos SET situacao=? WHERE id=?");
+            $stmt->bindValue(1, true);
+            $stmt->bindValue(2, $id);
+         
+            return $stmt->execute();
+            
+        } catch (PDOException $ex) {
+            echo "\nExceção em ProdutoPDO->deleteSoft: " . $ex->getMessage();
+            return false;
+        }
+    }
 
     public function findAll(){
         try{
@@ -90,11 +104,11 @@ class ProdutoPDO extends Conexao {
             $stmt = $this->conn->prepare("SELECT * FROM produtos WHERE nome LIKE ? ORDER BY nome");
             $stmt->bindValue(1, $nome . '%');
             if ($stmt->execute()) {
-                    $produtos = Array();
-                    while ($rs = $stmt->fetch(PDO::FETCH_OBJ)) {
-                        array_push($produtos, $this->resultSetToProduto($rs));
-                    }
-                    return $produtos;
+                $produtos = Array();
+                while ($rs = $stmt->fetch(PDO::FETCH_OBJ)) {
+                    array_push($produtos, $this->resultSetToProduto($rs));
+                }
+                return $produtos;
             }
             
         } catch (PDOException $ex) {
@@ -114,10 +128,9 @@ class ProdutoPDO extends Conexao {
                     return null;
                 }
             } else {
-                echo "Id não localizado.";
                 return null;
             }
-        } catch (PDOException $ex1) {
+        } catch (PDOException $ex) {
             echo "\nExceção no findById da classe ProdutoPDO: " . $ex->getMessage();
             return null;
         }

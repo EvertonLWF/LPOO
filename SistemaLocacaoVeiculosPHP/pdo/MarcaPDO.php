@@ -1,5 +1,7 @@
 <?php
 
+include_once "../model/Marca.php";
+
 include_once "ConnectPDO.php";
 /**
  * Description of MarcaPDO
@@ -10,35 +12,35 @@ class MarcaPDO extends ConnectPDO{
     private $conn;
     
     function __construct() {
-        $this->conn = parent::getConnect() ;
+        $this->conn = parent::getConnect();
     }
     function findAll(){
-        try {
-            $stmt = $this->conn->prepare("SELECT * FROM marca WHERE situacao = true");
+            
+            try {
+            $stmt = $this->conn->prepare("SELECT * FROM marca WHERE status = true");
             if($stmt->execute()){
-                $marcas= Array();
+                $marcas = Array();
                 while($rs = $stmt->fetch(PDO::FETCH_OBJ)){
-                    array_push($marcas, $this->resultSetProduto($rs));
+                    array_push($marcas, $this->resultSetToMarcas($rs));
                 }
                 return $marcas;
-            }else{
-                return null;
             }
-        } catch (Exception $exc) {
+        } catch (SQLException $exc) {
             echo $exc->getTraceAsString()+' Erro findAll Marca!!!';
-            return null;
+            
         }
+                return $marcas;
 
         
     }
     function findByMarca($marca){
         try {
-            $stmt = $this->conn->prepare("SELECT * FROM marca WHERE descricao LIKE ? AND situacao = true");
+            $stmt = $this->conn->prepare("SELECT * FROM marca WHERE descricao LIKE ? AND status = true");
             $stmt->bindValue(1, $marca+'%');
             if($stmt->execute()){
                 $marcas= Array();
                 while($rs = $stmt->fetch(PDO::FETCH_OBJ)){
-                    array_push($marcas, $this->resultSetProduto($rs));
+                    array_push($marcas, $this->resultSetToMarcas($rs));
                 }
                 return $marcas;
             }else{
@@ -74,5 +76,12 @@ class MarcaPDO extends ConnectPDO{
         $stmt->bindValue(2, $descricao);
         
         return $stmt->execute();
+    }
+    
+    private function resultSetToMarcas($rs){
+        $marca = new Marca();
+        $marca->setMarca($rs->descricao);
+        $marca->setSituacao($rs->status);
+        return $marca;
     }
 }

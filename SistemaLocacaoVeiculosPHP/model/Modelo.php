@@ -15,10 +15,8 @@ class Modelo {
     private $descricao;
     private $marca;
     private $situacao;
-    function __construct($descricao, $marca, $situacao) {
-        $this->descricao = $descricao;
-        $this->marca = $marca;
-        $this->situacao = $situacao;
+    function __construct() {
+        
     }
     function getDescricao() {
         return $this->descricao;
@@ -46,7 +44,7 @@ class Modelo {
 
         
     function __toString() {
-        return "DESCRICAO = $this->descricao MARCA = $this->marca Situacao = $this->situacao";
+        return "DESCRICAO = $this->descricao MARCA = $this->marca SITUACAO = $this->situacao \n";
     }
     
 }

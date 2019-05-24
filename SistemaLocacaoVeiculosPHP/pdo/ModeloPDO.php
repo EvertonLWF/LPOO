@@ -1,5 +1,9 @@
 <?php
 
+include_once "../model/Modelo.php";
+
+include_once "ConnectPDO.php";
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -18,64 +22,73 @@ class ModeloPDO extends ConnectPDO{
         $this->conn = parent::getConnect() ;
     }
     function findAll(){
+        $auto = null;
         try {
-            $stmt = $this->conn->prepare("SELECT * FROM automovel WHERE situacao = true");
+            $stmt = $this->conn->prepare("SELECT * FROM modelo");
             if($stmt->execute()){
                 $auto= Array();
                 while($rs = $stmt->fetch(PDO::FETCH_OBJ)){
-                    array_push($auto, $this->resultSetProduto($rs));
+                    array_push($auto, $this->resultSetToModelo($rs));
                 }
-                return $auto;
-            }else{
-                return null;
             }
-        } catch (Exception $exc) {
-            echo $exc->getTraceAsString()+'Erro findAll Automovel !!!!';
-            return null;
+        } catch (SQLException $exc) {
+            echo $exc->getTraceAsString()+'Erro findAll Modelo !!!!';
         }
-
-        
+                return $auto;
     }
-    function findByAutomovel($auto){
+    
+    
+    
+    function findByModelo($modelo){
+            
         try {
             $stmt = $this->conn->prepare("SELECT * FROM modelo WHERE descricao like ? AND situacao = true");
             $stmt->bindValue(1, $auto+'%');
             if($stmt->execute()){
-                $autos= Array();
+                $modelos= Array();
                 while($rs = $stmt->fetch(PDO::FETCH_OBJ)){
-                    array_push($autos, $this->resultSetProduto($rs));
+                    array_push($modelos, $this->resultSetToModelo($rs));
                 }
-                return $autos;
-            }else{
-                return null;
+          
             }
-        } catch (Exception $exc) {
+        } catch (SQLException $exc) {
             echo $exc->getTraceAsString()+' Erro findByAuto !!!!!';
-            return null;
+            $modelos = null;
         }
+                return $modelos;
 
         
     }
-    function update(Automovel $auto){
-        $stmt = $this->conn->prepare('UPDATE modelo SET descricao = ?, marca = ?, situacao = ?');
-        $stmt->bindValue(1, $auto->getDescricao());
-        
+    function update($modelo,$chave){
+        $stmt = $this->conn->prepare('UPDATE modelo SET descmodelo= ?, descmarca = ?, status = ? WHERE descmodelo = ?');
+        $stmt->bindValue(1, $modelo->getDescricao());
+        $stmt->bindValue(2, $modelo->getMarca());
+        $stmt->bindValue(3, $modelo->getSituacao());
+        $stmt->bindValue(4, $chave);
       
         return $stmt->execute();
     }
     function insert($modelo){
-        $stmt = $this->conn->prepare('INSERT INTO modelo (descricao,marca,situacao) VALUES(?,?,?)');
-        $stmt->bindValue(1, $modelo->getNome());
+        $stmt = $this->conn->prepare('INSERT INTO modelo (descmodelo,descmarca,status) VALUES(?,?,?)');
+        $stmt->bindValue(1, $modelo->getDescricao());
         $stmt->bindValue(2, $modelo->getMarca());
-        $stmt->bindValue(2, $modelo->getSituacao());
+        $stmt->bindValue(3, $modelo->getSituacao());
+        
       
         return $stmt->execute();
         
     }
     function deleteSoft($auto){
-        $stmt = $this->conn->prepare('UPDATE modelo SET situacao = ? WHERE descricao = ?');
+        $stmt = $this->conn->prepare('UPDATE modelo SET status = ? WHERE descricao = ?');
         $stmt->bindValue(1, null);
         $stmt->bindValue(2, $modelo->getDescricao());
         return $stmt->execute();
+    }
+    private function resultSetToModelo($rs){
+        $modelo = new Modelo();
+        $modelo->setDescricao($rs->descmodelo);
+        $modelo->setMarca($rs->descmarca);
+        $modelo->setSituacao($rs->status);
+        return $modelo;
     }
 }

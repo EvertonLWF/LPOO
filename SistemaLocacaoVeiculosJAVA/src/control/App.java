@@ -5,11 +5,12 @@
  */
 package control;
 
-import dao.MarcaDAO;
+import dao.ModeloDAO;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import model.Marca;
+import model.Modelo;
 
 /**
  *
@@ -17,15 +18,18 @@ import model.Marca;
  */
 public class App {
     public static void main(String[] args) throws SQLException {
-        MarcaDAO marcaDAO = new MarcaDAO();
+        Boolean res;
         Marca marca = new Marca();
-        List<Marca> resultado = new ArrayList<>();
-        marca.setDescricao("Toyota");
+        marca.setDescricao("Ford");
         marca.setStatus(true);
+        ModeloDAO modeloDAO = new ModeloDAO();
+        Modelo modelo = new Modelo("Ka",marca,true);
+        List<Modelo> resultado = new ArrayList<>();
         
-       // marcaDAO.insert(marca);
         
-        resultado = marcaDAO.findAll();
+        //res = modeloDAO.insert(modelo);
+        
+        resultado = modeloDAO.findAll();
         System.out.println(resultado);
     }
 }

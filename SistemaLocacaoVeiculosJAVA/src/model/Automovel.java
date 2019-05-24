@@ -110,7 +110,7 @@ public class Automovel {
         this.valorLocacao = valorLocacao;
     }
 
-    public boolean isStatus() {
+    public boolean getStatus() {
         return status;
     }
 

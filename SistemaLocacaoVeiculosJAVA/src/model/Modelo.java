@@ -17,9 +17,9 @@ public class Modelo {
     private Marca marca;
     private boolean status;
 
-    public Modelo(ResultSet resultSet) throws SQLException{
-        this.descricao = resultSet.getString("descricao");
-        this.marca = (Marca)resultSet.getObject("marca");
+    public Modelo(ResultSet resultSet) throws SQLException {
+        this.descricao = resultSet.getString("descmodelo");
+        this.marca.descricao = resultSet.getString("descmarca");
         this.status = resultSet.getBoolean("status");
     }
     
@@ -49,7 +49,7 @@ public class Modelo {
         this.marca = marca;
     }
 
-    public boolean isStatus() {
+    public boolean getStatus() {
         return status;
     }
 
@@ -59,7 +59,7 @@ public class Modelo {
 
     @Override
     public String toString() {
-        return "Modelo{" + "descricao=" + descricao + ", marca=" + marca + ", status=" + status + '}';
+        return "Modelo{" + "descricao=" + this.descricao + ", marca=" + this.marca + ", status=" + this.status + '}';
     }
    
 }

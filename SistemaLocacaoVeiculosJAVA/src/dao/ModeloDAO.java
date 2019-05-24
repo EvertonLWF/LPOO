@@ -43,9 +43,7 @@ public class ModeloDAO extends ConnectDAO {
         catch(SQLException ex){
             System.out.println("Erro findAll Modelo "+ex);
         }
-        catch(Exception ex){
-            System.out.println("Erro findAll Modelo "+ex);
-        }
+        
         return resultado;
         
     }

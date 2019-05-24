@@ -13,15 +13,15 @@ import java.sql.SQLException;
  * @author feijo
  */
 public class Marca {
-    private String descricao;
-    private boolean status;
+    protected String descricao;
+    protected boolean status;
 
     public Marca() {
     }
     
     public Marca(ResultSet resultSet) throws SQLException {
         this.descricao = resultSet.getString("descricao");
-        this.status = resultSet.getBoolean("status");
+        //this.status = resultSet.getBoolean("status");
     }
 
     public Marca(String descricao, boolean status) {
@@ -37,7 +37,7 @@ public class Marca {
         this.descricao = descricao;
     }
 
-    public boolean isStatus() {
+    public boolean getStatus() {
         return status;
     }
 
@@ -48,5 +48,5 @@ public class Marca {
     @Override
     public String toString() {
         return "\nMarca{" + "descricao=" + descricao + ", status=" + status + '}';
-    }   
+    }
 }

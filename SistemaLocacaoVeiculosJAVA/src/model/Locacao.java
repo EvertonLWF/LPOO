@@ -124,7 +124,7 @@ public class Locacao {
         this.automovel = automovel;
     }
 
-    public boolean isStatus() {
+    public boolean getStatus() {
         return status;
     }
 

@@ -14,7 +14,7 @@ import java.sql.SQLException;
  */
 public class Modelo {
     private String descricao;
-    private Marca marca;
+    Marca marca = new Marca();
     private boolean status;
 
     public Modelo(ResultSet resultSet) throws SQLException {
@@ -59,7 +59,7 @@ public class Modelo {
 
     @Override
     public String toString() {
-        return "Modelo{" + "descricao=" + this.descricao + ", marca=" + this.marca + ", status=" + this.status + '}';
+        return "\n Modelo {" + "descricao=" + this.descricao + "," + this.marca + ", status=" + this.status + "}";
     }
    
 }

@@ -24,10 +24,10 @@ public class Cliente {
     }
     public Cliente(ResultSet resultSet) throws SQLException {
         this.cpf = resultSet.getLong("cpf_cli");
-        this.nome = resultSet.getString("cpf_nome");
-        this.end = resultSet.getString("cpf_end");
-        this.tel = resultSet.getString("cpf_tel");
-        this.email = resultSet.getString("cpf_email");
+        this.nome = resultSet.getString("nome_cli");
+        this.end = resultSet.getString("end_cli");
+        this.tel = resultSet.getString("tel_cliente");
+        this.email = resultSet.getString("email_cli");
         this.status = resultSet.getBoolean("status");
     }
 
@@ -41,7 +41,7 @@ public class Cliente {
     }
 
     public Long getCpf() {
-        return cpf;
+        return this.cpf;
     }
 
     public void setCpf(Long cpf) {
@@ -49,7 +49,7 @@ public class Cliente {
     }
 
     public String getNome() {
-        return nome;
+        return this.nome;
     }
 
     public void setNome(String nome) {

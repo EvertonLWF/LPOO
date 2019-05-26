@@ -129,7 +129,7 @@ public class ClienteDAO extends ConnectDAO {
             return true;
         }
     }
-    public boolean deletSoft(Long cpf) throws SQLException{
+    public boolean deletSoft(int cpf) throws SQLException{
         PreparedStatement statement = null;
         int count = 0;
         try {
@@ -152,7 +152,7 @@ public class ClienteDAO extends ConnectDAO {
             return true;
         }
     }
-    public boolean reactivateClient(Long cpf) throws SQLException{
+    public boolean reactivateClient(int cpf) throws SQLException{
         PreparedStatement statement = null;
         int count = 0;
         try {

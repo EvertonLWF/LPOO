@@ -1,5 +1,7 @@
 <?php
 
+include_once "../model/Marca.php";
+
 include_once "../pdo/ModeloPDO.php";
 
 include_once "../model/Modelo.php";
@@ -12,18 +14,22 @@ include_once "../model/Modelo.php";
  */
 
 $modeloPDO = new ModeloPDO();
-
 $modelo = new Modelo();
-$modelo->setDescricao("Fiorino");
-$modelo->setMarca("Fiat");
+$marca = new Marca();
+$marca->setMarca("Mercedes");
+$marca->setSituacao(true);
+
+$marca = serialize($marca);
+$marca = unserialize($marca);
+$modelo->setDescricao("Classe-A");
+$modelo->setMarca($marca);
 $modelo->setSituacao(TRUE);
 
-//$insert = $modeloPDO->insert($modelo);
+echo $marca;
+//$modeloPDO->insert($modelo);
 
+//$res = $modeloPDO->findAll();
 
-
-$res = $modeloPDO->findAll();
-
-foreach ($res as $key) {
-    echo $key;
-}
+//foreach ($res as $key) {
+//    echo $key;
+//}

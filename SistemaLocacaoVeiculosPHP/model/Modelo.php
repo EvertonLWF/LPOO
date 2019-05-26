@@ -1,5 +1,7 @@
 <?php
 
+include_once "Marca.php";
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -16,7 +18,7 @@ class Modelo {
     private $marca;
     private $situacao;
     function __construct() {
-        
+      
     }
     function getDescricao() {
         return $this->descricao;

@@ -30,16 +30,16 @@ class Marca {
     }
     
     function getSituacao() {
-        return $this->Situacao;
+        return $this->situacao;
     }
 
    
-    function setSituacao($Situacao) {
-        $this->Situacao = $Situacao;
+    function setSituacao($situacao) {
+        $this->situacao = $situacao;
     }
 
     function __toString() {
-        return "DESCRICAO = $this->marca STATUS = $this->Situacao \n";
+        return "DESCRICAO = $this->marca STATUS = $this->situacao ";
     }
 
 }

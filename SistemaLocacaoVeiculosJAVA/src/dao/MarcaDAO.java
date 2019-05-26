@@ -128,13 +128,37 @@ public class MarcaDAO extends ConnectDAO{
         try {
              conn = super.getConnect();
              statement = conn.prepareStatement("UPDATE marca SET status = ? WHERE descricao = ?");
-             statement.setString(2, marca.getDescricao());
              statement.setBoolean(1, false);
+             statement.setString(2, marca.getDescricao());
              count = statement.executeUpdate();            
              
         }
         catch(Exception ex){
-            System.out.println("Erro INSERT Marca "+ex);
+            System.out.println("Erro deletSoft "+ex);
+        }
+        statement.close();
+        conn.close();
+             
+        if(count == 0){
+            return false;
+        }else{
+            return true;
+        }
+    }
+    public boolean reactivateMarca(Marca marca) throws SQLException{
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        int count = 0;
+        try {
+             conn = super.getConnect();
+             statement = conn.prepareStatement("UPDATE marca SET status = ? WHERE descricao = ?");
+             statement.setBoolean(1, true);
+             statement.setString(2, marca.getDescricao());
+             count = statement.executeUpdate();            
+             
+        }
+        catch(Exception ex){
+            System.out.println("Erro reactivateMarca "+ex);
         }
         statement.close();
         conn.close();

@@ -12,86 +12,83 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import model.Cliente;
 import model.Marca;
-import model.Modelo;
 
 /**
  *
  * @author feijo
  */
-public class ModeloDAO extends ConnectDAO {
-    private Connection conn;
+public class ClienteDAO extends ConnectDAO {
+        private Connection conn;
    
-    public List<Modelo> findAll(){
+    public List<Cliente> findAll(){
         
-        List<Modelo> resultado = new ArrayList<>();
+        List<Cliente> resultado = new ArrayList<>();
         Statement statement = null;
         ResultSet resultSet = null;
         
         try {
              conn = super.getConnect();
              statement = conn.createStatement();
-             resultSet = statement.executeQuery("SELECT * FROM modelo");
+             resultSet = statement.executeQuery("SELECT * FROM clientes");
              while(resultSet.next()){
-                 Modelo modelo = new Modelo(resultSet);
-                 resultado.add(modelo);
+                 Cliente cliente = new Cliente(resultSet);
+                 resultado.add(cliente);
              }
              resultSet.close();
              statement.close();
              conn.close();
         }
         catch(SQLException ex){
-            System.out.println("Erro findAll Modelo "+ex);
+            System.out.println("Erro findAll Cliente "+ex);
         }
-        
         return resultado;
         
     }
-    public List<Modelo> findByModelo(String descricao){
-        List<Modelo> resultado = new ArrayList<>();
+    public List<Cliente> findByMarca(String descricao){
+        List<Cliente> resultado = new ArrayList<>();
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         try {
              conn = super.getConnect();
-             statement = conn.prepareStatement("SELECT * FROM Modelo WHERE descmodelo = ?");
+             statement = conn.prepareStatement("SELECT * FROM clientes WHERE descricao = ?");
              statement.setString(1, descricao);
              resultSet = statement.executeQuery();
              
              while(resultSet.next()){
-                 Modelo marca = new Modelo(resultSet);
-                 resultado.add(marca);
+                 Cliente cliente = new Cliente(resultSet);
+                 resultado.add(cliente);
              }
              resultSet.close();
              statement.close();
              conn.close();
         }
-        catch(SQLException ex){
-            System.out.println("Erro findByMarca "+ex);
-        }
         catch(Exception ex){
-            System.out.println("Erro findByMarca "+ex);
+            System.out.println("Erro findByCliente "+ex);
         }
         return resultado;
     }
     
-    public boolean insert(Modelo modelo) throws SQLException{
+    public boolean insert(Cliente cliente) throws SQLException{
         PreparedStatement statement = null;
-        ResultSet resultSet = null;
+         
         int count = 0;
         try {
              conn = super.getConnect();
-             statement = conn.prepareStatement("INSERT INTO modelo(descmodelo,descmarca,status) VALUES(?,?,?)");
-             statement.setString(1, modelo.getDescricao());
-             
-             statement.setObject(2,modelo.getMarca());
-             statement.setBoolean(3, true);
+             statement = conn.prepareStatement("INSERT INTO clientes(cpf_cli,nome_cli,end_cli,tel_cliente,email_cli,status) VALUES(?,?,?,?,?,?)");
+             statement.setLong(1, cliente.getCpf());
+             statement.setString(2, cliente.getNome());
+             statement.setString(3, cliente.getEnd());
+             statement.setString(4, cliente.getTel());
+             statement.setString(5, cliente.getEmail());
+             statement.setBoolean(6, true);
              count = statement.executeUpdate(); 
+                
+                                
         }
         catch(SQLException ex){
-            System.out.println("Erro INSERT Modelo "+ex);
-        }
-        catch(Exception ex){
-            System.out.println("Erro INSERT Modelo "+ex);
+            System.out.println("Erro INSERT Clientes "+ex);
         }
         //resultSet.close();
         statement.close();
@@ -104,48 +101,24 @@ public class ModeloDAO extends ConnectDAO {
         }
     }
 
-    public boolean update(Modelo modelo) throws SQLException{
+    public boolean update(Cliente cliente) throws SQLException{
         PreparedStatement statement = null;
-        ResultSet resultSet = null;
+        
         int count = 0;
         try {
              conn = super.getConnect();
-             statement = conn.prepareStatement("UPDATE modelo SET descmodelo = ?,descmarca = ?,status = ?");
-             statement.setString(1, modelo.getDescricao());
-             statement.setString(2, modelo.getMarca().getDescricao());
-             statement.setBoolean(3, true);
-             count = statement.executeUpdate();            
-             
-        }
-        catch(SQLException ex){
-            System.out.println("Erro INSERT Modelo "+ex);
-        }
-        catch(Exception ex){
-            System.out.println("Erro INSERT Modelo "+ex);
-        }
-        statement.close();
-             conn.close();
-             
-             if(count == 0){
-                 return false;
-             }else{
-                 return true;
-             }
-    }
-     public boolean deletSoft(Modelo modelo) throws SQLException{
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
-        int count = 0;
-        try {
-             conn = super.getConnect();
-             statement = conn.prepareStatement("UPDATE Modelo SET status = ? WHERE descricao = ?");
-             statement.setBoolean(1, false);
-             statement.setString(2, modelo.getDescricao());
+             statement = conn.prepareStatement("UPDATE clientes SET cpf_cli = ?,nome_cli = ?,end_cli = ?,tel_cliente = ?,email_cli = ?,status = ? WHERE cpf_cli = ?");
+             statement.setLong(1, cliente.getCpf());
+             statement.setString(2, cliente.getNome());
+             statement.setString(3, cliente.getEnd());
+             statement.setString(4, cliente.getTel());
+             statement.setString(5, cliente.getEmail());
+             statement.setBoolean(6, true);
              count = statement.executeUpdate();            
              
         }
         catch(Exception ex){
-            System.out.println("Erro DeletSoft Marca "+ex);
+            System.out.println("Erro INSERT Cliente "+ex);
         }
         statement.close();
         conn.close();
@@ -156,19 +129,42 @@ public class ModeloDAO extends ConnectDAO {
             return true;
         }
     }
-     public boolean reactivateModelo(Modelo modelo) throws SQLException{
+    public boolean deletSoft(Long cpf) throws SQLException{
         PreparedStatement statement = null;
         int count = 0;
         try {
              conn = super.getConnect();
-             statement = conn.prepareStatement("UPDATE Modelo SET status = ? WHERE descricao = ?");
-             statement.setBoolean(1, true);
-             statement.setString(2, modelo.getDescricao());
+             statement = conn.prepareStatement("UPDATE cliente SET status = ? WHERE cpf_cli = ?");
+             statement.setBoolean(1, false);
+             statement.setLong(2, cpf);
              count = statement.executeUpdate();            
              
         }
         catch(Exception ex){
-            System.out.println("Erro reactivateModelo "+ex);
+            System.out.println("Erro deletSoft cliente "+ex);
+        }
+        statement.close();
+        conn.close();
+             
+        if(count == 0){
+            return false;
+        }else{
+            return true;
+        }
+    }
+    public boolean reactivateClient(Long cpf) throws SQLException{
+        PreparedStatement statement = null;
+        int count = 0;
+        try {
+             conn = super.getConnect();
+             statement = conn.prepareStatement("UPDATE cliente SET status = ? WHERE cpf_cli = ?");
+             statement.setBoolean(1, true);
+             statement.setLong(2, cpf);
+             count = statement.executeUpdate();            
+             
+        }
+        catch(Exception ex){
+            System.out.println("Erro ReactivityCliente "+ex);
         }
         statement.close();
         conn.close();

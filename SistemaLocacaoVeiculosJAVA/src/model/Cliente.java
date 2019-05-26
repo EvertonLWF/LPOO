@@ -5,6 +5,9 @@
  */
 package model;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 /**
  *
  * @author feijo
@@ -18,6 +21,14 @@ public class Cliente {
     private boolean status;
 
     public Cliente() {
+    }
+    public Cliente(ResultSet resultSet) throws SQLException {
+        this.cpf = resultSet.getLong("cpf_cli");
+        this.nome = resultSet.getString("cpf_nome");
+        this.end = resultSet.getString("cpf_end");
+        this.tel = resultSet.getString("cpf_tel");
+        this.email = resultSet.getString("cpf_email");
+        this.status = resultSet.getBoolean("status");
     }
 
     public Cliente(Long cpf, String nome, String end, String tel, String email, boolean status) {

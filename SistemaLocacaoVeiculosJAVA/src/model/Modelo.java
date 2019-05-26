@@ -14,7 +14,7 @@ import java.sql.SQLException;
  */
 public class Modelo {
     private String descricao;
-    Marca marca = new Marca();
+    private Marca marca = new Marca();
     private boolean status;
 
     public Modelo(ResultSet resultSet) throws SQLException {

@@ -17,7 +17,7 @@ class MarcaPDO extends ConnectPDO{
     function findAll(){
             
             try {
-            $stmt = $this->conn->prepare("SELECT * FROM marca WHERE status = true");
+            $stmt = $this->conn->prepare("SELECT * FROM marca WHERE situacao = true");
             if($stmt->execute()){
                 $marcas = Array();
                 while($rs = $stmt->fetch(PDO::FETCH_OBJ)){
@@ -35,8 +35,8 @@ class MarcaPDO extends ConnectPDO{
     }
     function findByMarca($marca){
         try {
-            $stmt = $this->conn->prepare("SELECT * FROM marca WHERE descricao LIKE ? AND status = true");
-            $stmt->bindValue(1, $marca+'%');
+            $stmt = $this->conn->prepare("SELECT * FROM marca WHERE descricao LIKE ? AND situacao = true");
+            $stmt->bindValue(1, $marca."%");
             if($stmt->execute()){
                 $marcas= Array();
                 while($rs = $stmt->fetch(PDO::FETCH_OBJ)){
@@ -72,7 +72,14 @@ class MarcaPDO extends ConnectPDO{
     
     function deleteSoft($descricao){
         $stmt = $this->conn->prepare('UPDATE marca SET situacao = ? WHERE descricao = ?');
-        $stmt->bindValue(1, null);
+        $stmt->bindValue(1, false);
+        $stmt->bindValue(2, $descricao);
+        
+        return $stmt->execute();
+    }
+    function reactivateModelo($descricao){
+        $stmt = $this->conn->prepare('UPDATE marca SET situacao = ? WHERE descricao = ?');
+        $stmt->bindValue(1, true);
         $stmt->bindValue(2, $descricao);
         
         return $stmt->execute();
@@ -81,7 +88,7 @@ class MarcaPDO extends ConnectPDO{
     private function resultSetToMarcas($rs){
         $marca = new Marca();
         $marca->setMarca($rs->descricao);
-        $marca->setSituacao($rs->status);
+        $marca->setSituacao($rs->situacao);
         return $marca;
     }
 }

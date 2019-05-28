@@ -16,20 +16,20 @@ include_once "../model/Modelo.php";
 $modeloPDO = new ModeloPDO();
 $modelo = new Modelo();
 $marca = new Marca();
-$marca->setMarca("Mercedes");
+
+$marca->setMarca("Ford");
 $marca->setSituacao(true);
 
-$marca = serialize($marca);
-$marca = unserialize($marca);
-$modelo->setDescricao("Classe-A");
-$modelo->setMarca($marca);
+$modelo->setDescricao("Fiesta");
+$modelo->setMarca("Ford");
 $modelo->setSituacao(TRUE);
 
-echo $marca;
-//$modeloPDO->insert($modelo);
+$modeloPDO->insert($modelo);
 
-//$res = $modeloPDO->findAll();
+$res = $modeloPDO->findAll();
 
 //foreach ($res as $key) {
 //    echo $key;
 //}
+
+print_r($res);

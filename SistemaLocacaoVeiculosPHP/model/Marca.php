@@ -13,8 +13,8 @@
  */
 class Marca {
    
-    private $marca;
-    private $situacao;
+    public $marca;
+    public $situacao;
     
     function __construct() {
         

@@ -60,7 +60,7 @@ class ModeloPDO extends ConnectPDO{
         
     }
     function update($modelo,$chave){
-        $stmt = $this->conn->prepare('UPDATE modelo SET descmodelo= ?, descmarca = ?, status = ? WHERE descmodelo = ?');
+        $stmt = $this->conn->prepare('UPDATE modelo SET descmodelo= ?, descmarca = ?, situacao = ? WHERE descmodelo = ?');
         $stmt->bindValue(1, $modelo->getDescricao());
         $stmt->bindValue(2, $modelo->getMarca());
         $stmt->bindValue(3, $modelo->getSituacao());
@@ -69,18 +69,22 @@ class ModeloPDO extends ConnectPDO{
         return $stmt->execute();
     }
     function insert($modelo){
-        $stmt = $this->conn->prepare('INSERT INTO modelo (descmodelo,descmarca,status) VALUES(?,?,?)');
+        $stmt = $this->conn->prepare('INSERT INTO modelo (descmodelo,descmarca,situacao) VALUES(?,?,?)');
         $stmt->bindValue(1, $modelo->getDescricao());
         $stmt->bindValue(2, $modelo->getMarca());
         $stmt->bindValue(3, $modelo->getSituacao());
-        
-      
         return $stmt->execute();
         
     }
     function deleteSoft($auto){
-        $stmt = $this->conn->prepare('UPDATE modelo SET status = ? WHERE descricao = ?');
-        $stmt->bindValue(1, null);
+        $stmt = $this->conn->prepare('UPDATE modelo SET situacao = ? WHERE descricao = ?');
+        $stmt->bindValue(1, false);
+        $stmt->bindValue(2, $modelo->getDescricao());
+        return $stmt->execute();
+    }
+    function reactivateModelo($auto){
+        $stmt = $this->conn->prepare('UPDATE modelo SET situacao = ? WHERE descricao = ?');
+        $stmt->bindValue(1, true);
         $stmt->bindValue(2, $modelo->getDescricao());
         return $stmt->execute();
     }
@@ -88,7 +92,7 @@ class ModeloPDO extends ConnectPDO{
         $modelo = new Modelo();
         $modelo->setDescricao($rs->descmodelo);
         $modelo->setMarca($rs->descmarca);
-        $modelo->setSituacao($rs->status);
+        $modelo->setSituacao($rs->situacao);
         return $modelo;
     }
 }

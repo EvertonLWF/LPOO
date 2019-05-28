@@ -20,13 +20,8 @@ class Cliente {
     private $email_cli;
     private $situacao;
 
-    function __construct($cpf_cli, $nome_cli, $end_cli, $tel_cli, $email_cli,$situacao) {
-        $this->cpf_cli = $cpf_cli;
-        $this->nome_cli = $nome_cli;
-        $this->end_cli = $end_cli;
-        $this->tel_cli = $tel_cli;
-        $this->email_cli = $email_cli;
-        $this->situacao = $situacao;
+    function __construct() {
+       
     }
     function getCpf_cli() {
         return $this->cpf_cli;
@@ -75,7 +70,7 @@ class Cliente {
     }
 
     function __toString() {
-        return "CPF = $this->cpf_cli; EMAIL = $this->email_cli; ENDERECO = $this->end_cli; NOME = $this->nome_cli; TELEFONE = $this->tel_cli SITUACAO = $this->situacao";
+        return "CPF = $this->cpf_cli  EMAIL = $this->email_cli  ENDERECO = $this->end_cli  NOME = $this->nome_cli  TELEFONE = $this->tel_cli SITUACAO = $this->situacao";
     }
 
     

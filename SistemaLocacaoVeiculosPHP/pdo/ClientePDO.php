@@ -1,6 +1,8 @@
 <?php
 
+include_once "ConnectPDO.php";
 
+include_once "../model/Cliente.php";
 
 /**
  * Description of ClientePDO
@@ -19,7 +21,7 @@ class ClientePDO extends ConnectPDO{
             if($stmt->execute()){
                 $clientes= Array();
                 while($rs = $stmt->fetch(PDO::FETCH_OBJ)){
-                    array_push($clientes, $this->resultSetProduto($rs));
+                    array_push($clientes, $this->resultSetToClientes($rs));
                 }
                 return $clientes;
             }else{
@@ -39,7 +41,7 @@ class ClientePDO extends ConnectPDO{
             if($stmt->execute()){
                 $clientes= Array();
                 while($rs = $stmt->fetch(PDO::FETCH_OBJ)){
-                    array_push($clientes, $this->resultSetProduto($rs));
+                    array_push($clientes, $this->resultSetToClientes($rs));
                 }
                 return $clientes;
             }else{
@@ -54,7 +56,7 @@ class ClientePDO extends ConnectPDO{
     }
     function update( $clientes){
         
-        $stmt = $this->conn->prepare('UPDATE clientes SET cpf_cli = ?, nome_cli = ?, end_cli = ?, tel_cli = ?, email_cli = ?, situacao = ?');
+        $stmt = $this->conn->prepare('UPDATE clientes SET cpf_cli = ?, nome_cli = ?, end_cli = ?, tel_cliente = ?, email_cli = ?, situacao = ?');
         $stmt->bindValue(1, $clientes->getCpf_cli());
         $stmt->bindValue(2, $clientes->getNome_cli());
         $stmt->bindValue(3, $clientes->getEnd_cli());
@@ -65,22 +67,39 @@ class ClientePDO extends ConnectPDO{
       
         return $stmt->execute();
     }
-    function insert( $clientes){
-        $stmt = $this->conn->prepare('INSERT INTO clientes (cpf_cli,nome_cli,end_cli,tel_cli,email_cli,situacao) VALUES(?,?,?,?,?,?)');
-        $stmt->bindValue(1, $clientes->getCpf_cli());
-        $stmt->bindValue(2, $clientes->getNome_cli());
-        $stmt->bindValue(3, $clientes->getEnd_cli());
-        $stmt->bindValue(4, $clientes->getTel_cli());
-        $stmt->bindValue(5, $clientes->getEmail_cli());
-        $stmt->bindValue(6, $clientes->getSituacao_cli());
+    function insert( $cliente){
+        $stmt = $this->conn->prepare('INSERT INTO clientes (cpf_cli,nome_cli,end_cli,tel_cliente,email_cli,situacao) VALUES(?,?,?,?,?,?)');
+        $stmt->bindValue(1, $cliente->getCpf_cli());
+        $stmt->bindValue(2, $cliente->getNome_cli());
+        $stmt->bindValue(3, $cliente->getEnd_cli());
+        $stmt->bindValue(4, $cliente->getTel_cli());
+        $stmt->bindValue(5, $cliente->getEmail_cli());
+        $stmt->bindValue(6, $cliente->getSituacao_cli());
         
         return $stmt->execute();
         
     }
-    function deleteSoft($clientes){
+    function deleteSoft($cliente){
         $stmt = $this->conn->prepare('UPDATE modelo SET situacao = ? WHERE cpf_cli = ?');
         $stmt->bindValue(1, null);
-        $stmt->bindValue(2, $modelo->getCpf_cli());
+        $stmt->bindValue(2, $cliente->getCpf_cli());
         return $stmt->execute();
+    }
+    function reactivateCliente(Cliente $cliente){
+        $stmt = $this->conn->prepare('UPDATE modelo SET situacao = ? WHERE cpf_cli = ?');
+        $stmt->bindValue(1, true);
+        $stmt->bindValue(2, $cliente->getCpf_cli());
+        return $stmt->execute();
+    }
+    private function resultSetToClientes($rs){
+        $cliente = new Cliente();
+        $cliente->setCpf_cli($rs->cpf_cli);
+        $cliente->setEmail_cli($rs->email_cli);
+        $cliente->setEnd_cli($rs->end_cli);
+        $cliente->setNome_cli($rs->nome_cli);
+        $cliente->setSituacao_cli($rs->situacao);
+        $cliente->setTel_cli($rs->tel_cliente);
+      
+        return $cliente;
     }
 }

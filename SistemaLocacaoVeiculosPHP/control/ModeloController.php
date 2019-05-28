@@ -24,12 +24,8 @@ $modelo->setDescricao("Fiesta");
 $modelo->setMarca("Ford");
 $modelo->setSituacao(TRUE);
 
-$modeloPDO->insert($modelo);
+//$modeloPDO->insert($modelo);
 
 $res = $modeloPDO->findAll();
-
-//foreach ($res as $key) {
-//    echo $key;
-//}
 
 print_r($res);

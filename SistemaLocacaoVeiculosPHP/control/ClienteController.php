@@ -1,16 +1,25 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+include_once "../pdo/ClientePDO.php";
+
+include_once "../model/Cliente.php";
 
 /**
  * Description of ClienteController
  *
  * @author feijo
  */
-class ClienteController {
-    //put your code here
-}
+$cliente = new Cliente();
+$cliente->setCpf_cli(1703055039);
+$cliente->setEmail_cli("cliente@cliente.com");
+$cliente->setEnd_cli("Rua A");
+$cliente->setNome_cli("Zé");
+$cliente->setSituacao_cli(true);
+$cliente->setTel_cli(5399887766);
+
+
+$clientePDO = new ClientePDO();
+$resp = $clientePDO->findAll();
+//$res = $clientePDO->insert($cliente);
+print_r($resp);
+

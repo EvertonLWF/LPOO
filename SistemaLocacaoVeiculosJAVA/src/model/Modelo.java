@@ -19,7 +19,7 @@ public class Modelo {
 
     public Modelo(ResultSet resultSet) throws SQLException {
         this.descricao = resultSet.getString("descmodelo");
-        this.marca.descricao = resultSet.getString("descmarca");
+        this.marca.setDescricao(resultSet.getString("descmarca"));
         this.situacao = resultSet.getBoolean("situacao");
     }
     

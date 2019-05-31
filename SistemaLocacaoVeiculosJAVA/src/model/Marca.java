@@ -7,15 +7,18 @@ package model;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
  * @author feijo
  */
 public class Marca {
-    protected String descricao;
-    protected boolean situacao;
-
+    private String descricao;
+    private boolean situacao;
+    private List<Modelo> ArrayList;
+    
     public Marca() {
     }
     
@@ -28,6 +31,9 @@ public class Marca {
         this.situacao = situacao;
     }
 
+    
+
+
     public String getDescricao() {
         return descricao;
     }
@@ -36,7 +42,7 @@ public class Marca {
         this.descricao = descricao;
     }
 
-    public boolean getSituacao() {
+    public boolean isSituacao() {
         return situacao;
     }
 
@@ -44,6 +50,13 @@ public class Marca {
         this.situacao = situacao;
     }
 
+    public List<Modelo> getArrayList() {
+        return ArrayList;
+    }
+
+    public void setArrayList(List<Modelo> ArrayList) {
+        this.ArrayList = ArrayList;
+    }
     @Override
     public String toString() {
         return "Marca {" + "DESCRICAO = " + descricao + ", SITUACAO = " + situacao +"}";

@@ -13,7 +13,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import model.Cliente;
-import model.Marca;
 
 /**
  *
@@ -76,7 +75,7 @@ public class ClienteDAO extends ConnectDAO {
         int count = 0;
         try {
              conn = super.getConnect();
-             statement = conn.prepareStatement("INSERT INTO clientes(cpf_cli,nome_cli,end_cli,tel_cliente,email_cli,status) VALUES(?,?,?,?,?,?)");
+             statement = conn.prepareStatement("INSERT INTO clientes(cpf_cli,nome_cli,end_cli,tel_cliente,email_cli,situacao) VALUES(?,?,?,?,?,?)");
              statement.setLong(1, cliente.getCpf());
              statement.setString(2, cliente.getNome());
              statement.setString(3, cliente.getEnd());
@@ -107,7 +106,7 @@ public class ClienteDAO extends ConnectDAO {
         int count = 0;
         try {
              conn = super.getConnect();
-             statement = conn.prepareStatement("UPDATE clientes SET cpf_cli = ?,nome_cli = ?,end_cli = ?,tel_cliente = ?,email_cli = ?,status = ? WHERE cpf_cli = ?");
+             statement = conn.prepareStatement("UPDATE clientes SET cpf_cli = ?,nome_cli = ?,end_cli = ?,tel_cliente = ?,email_cli = ?,situacao = ? WHERE cpf_cli = ?");
              statement.setLong(1, cliente.getCpf());
              statement.setString(2, cliente.getNome());
              statement.setString(3, cliente.getEnd());
@@ -134,7 +133,7 @@ public class ClienteDAO extends ConnectDAO {
         int count = 0;
         try {
              conn = super.getConnect();
-             statement = conn.prepareStatement("UPDATE cliente SET status = ? WHERE cpf_cli = ?");
+             statement = conn.prepareStatement("UPDATE cliente SET situacao = ? WHERE cpf_cli = ?");
              statement.setBoolean(1, false);
              statement.setLong(2, cpf);
              count = statement.executeUpdate();            
@@ -157,7 +156,7 @@ public class ClienteDAO extends ConnectDAO {
         int count = 0;
         try {
              conn = super.getConnect();
-             statement = conn.prepareStatement("UPDATE cliente SET status = ? WHERE cpf_cli = ?");
+             statement = conn.prepareStatement("UPDATE cliente SET situacao = ? WHERE cpf_cli = ?");
              statement.setBoolean(1, true);
              statement.setLong(2, cpf);
              count = statement.executeUpdate();            

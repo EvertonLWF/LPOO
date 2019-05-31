@@ -80,7 +80,7 @@ public class ModeloDAO extends ConnectDAO {
         int count = 0;
         try {
              conn = super.getConnect();
-             statement = conn.prepareStatement("INSERT INTO modelo(descmodelo,descmarca,status) VALUES(?,?,?)");
+             statement = conn.prepareStatement("INSERT INTO modelo(descmodelo,descmarca,situacao) VALUES(?,?,?)");
              statement.setString(1, modelo.getDescricao());
              
              statement.setObject(2,modelo.getMarca());
@@ -110,7 +110,7 @@ public class ModeloDAO extends ConnectDAO {
         int count = 0;
         try {
              conn = super.getConnect();
-             statement = conn.prepareStatement("UPDATE modelo SET descmodelo = ?,descmarca = ?,status = ?");
+             statement = conn.prepareStatement("UPDATE modelo SET descmodelo = ?,descmarca = ?,situacao = ?");
              statement.setString(1, modelo.getDescricao());
              statement.setString(2, modelo.getMarca().getDescricao());
              statement.setBoolean(3, true);
@@ -138,7 +138,7 @@ public class ModeloDAO extends ConnectDAO {
         int count = 0;
         try {
              conn = super.getConnect();
-             statement = conn.prepareStatement("UPDATE Modelo SET status = ? WHERE descricao = ?");
+             statement = conn.prepareStatement("UPDATE Modelo SET situacao = ? WHERE descricao = ?");
              statement.setBoolean(1, false);
              statement.setString(2, modelo.getDescricao());
              count = statement.executeUpdate();            
@@ -161,7 +161,7 @@ public class ModeloDAO extends ConnectDAO {
         int count = 0;
         try {
              conn = super.getConnect();
-             statement = conn.prepareStatement("UPDATE Modelo SET status = ? WHERE descricao = ?");
+             statement = conn.prepareStatement("UPDATE Modelo SET situacao = ? WHERE descricao = ?");
              statement.setBoolean(1, true);
              statement.setString(2, modelo.getDescricao());
              count = statement.executeUpdate();            

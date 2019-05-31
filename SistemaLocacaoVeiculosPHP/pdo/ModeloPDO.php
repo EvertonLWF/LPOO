@@ -30,6 +30,7 @@ class ModeloPDO extends ConnectPDO{
                 while($rs = $stmt->fetch(PDO::FETCH_OBJ)){
                     array_push($auto, $this->resultSetToModelo($rs));
                 }
+                print_r($rs);
             }
         } catch (SQLException $exc) {
             echo $exc->getTraceAsString()+'Erro findAll Modelo !!!!';
@@ -76,13 +77,13 @@ class ModeloPDO extends ConnectPDO{
         return $stmt->execute();
         
     }
-    function deleteSoft($auto){
+    function deleteSoft($modelo){
         $stmt = $this->conn->prepare('UPDATE modelo SET situacao = ? WHERE descricao = ?');
         $stmt->bindValue(1, false);
         $stmt->bindValue(2, $modelo->getDescricao());
         return $stmt->execute();
     }
-    function reactivateModelo($auto){
+    function reactivateModelo($modelo){
         $stmt = $this->conn->prepare('UPDATE modelo SET situacao = ? WHERE descricao = ?');
         $stmt->bindValue(1, true);
         $stmt->bindValue(2, $modelo->getDescricao());

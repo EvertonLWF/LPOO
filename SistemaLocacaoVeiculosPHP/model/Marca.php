@@ -13,33 +13,42 @@
  */
 class Marca {
    
-    public $marca;
-    public $situacao;
+    private $marca;
+    private $situacao;
+    private $modelos;
     
     function __construct() {
         
     }
     
-    function getMarca() {
+    public function getMarca() {
         return $this->marca;
     }
 
-   
-    function setMarca($marca) {
-        $this->marca = $marca;
-    }
-    
-    function getSituacao() {
+    public function getSituacao() {
         return $this->situacao;
     }
 
-   
-    function setSituacao($situacao) {
+    public function getModelos() {
+        return $this->modelos;
+    }
+
+    public function setMarca($marca) {
+        $this->marca = $marca;
+    }
+
+    public function setSituacao($situacao) {
         $this->situacao = $situacao;
     }
 
-    function __toString() {
-        return "DESCRICAO = $this->marca STATUS = $this->situacao ";
+    public function setModelos($modelos) {
+        $this->modelos = $modelos;
+    }
+
+    
+    
+    public function __toString() {
+        return "DESCRICAO = $this->marca STATUS = $this->situacao ". print_r($this->modelos);
     }
 
 }

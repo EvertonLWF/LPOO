@@ -38,14 +38,8 @@ class Modelo{
         $this->descricao = $descricao;
     }
 
-    function setMarca($marca) {
-        $MarcaPDO = new MarcaPDO();
-        $res = $MarcaPDO->findByMarca($marca);
-        if(isset($res) != null && !empty($res)){
-            $this->marca = $res[0]->marca;
-        }else{
-            echo  "Esta marca não existe ou esta Inativa!";
-        }
+    function setMarca($marca) {//controlador
+        $this->marca = $marca;
     }
 
     function setSituacao($situacao) {
@@ -54,7 +48,7 @@ class Modelo{
 
         
     function __toString() {
-        return "DESCRICAO = $this->descricao MARCA = ".$this->marca[0]->marca ." SITUACAO = $this->situacao \n";
+        return "DESCRICAO = $this->descricao MARCA = ". var_dump($this->marca) ." SITUACAO = $this->situacao \n";
     }
     
 }

@@ -13,6 +13,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import model.Marca;
+import model.Modelo;
 
 /**
  *
@@ -65,6 +66,29 @@ public class MarcaDAO extends ConnectDAO{
         }
         catch(SQLException ex){
             System.out.println("Erro findByMarca "+ex);
+        }
+        return resultado;
+    }
+    public List<Modelo> findByModelo(String descricao){
+        List<Modelo> resultado = new ArrayList<>();
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        try {
+             conn = super.getConnect();
+             statement = conn.prepareStatement("SELECT * FROM modelo WHERE descmarca = initcap(?)");
+             statement.setString(1, descricao);
+             resultSet = statement.executeQuery();
+             
+             while(resultSet.next()){
+                 Modelo modelo = new Modelo(resultSet);
+                 resultado.add(modelo);
+             }
+             resultSet.close();
+             statement.close();
+             conn.close();
+        }
+        catch(SQLException ex){
+            System.out.println("Erro findByModelo em Marca "+ex);
         }
         return resultado;
     }

@@ -26,7 +26,7 @@ public class AppCliente {
         cliente.setEmail("Ze@Bolacha");
         cliente.setEnd("Rua A");
         cliente.setTel("987654321");
-        cliente.setStatus(true);
+        cliente.setSituacao(true);
         
         //clienteDAO.insert(cliente);
         

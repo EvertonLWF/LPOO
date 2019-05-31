@@ -14,19 +14,19 @@ import java.sql.SQLException;
  */
 public class Marca {
     protected String descricao;
-    protected boolean status;
+    protected boolean situacao;
 
     public Marca() {
     }
     
     public Marca(ResultSet resultSet) throws SQLException {
         this.descricao = resultSet.getString("descricao");
-        //this.status = resultSet.getBoolean("status");
+        //this.situacao = resultSet.getBoolean("situacao");
     }
 
-    public Marca(String descricao, boolean status) {
+    public Marca(String descricao, boolean situacao) {
         this.descricao = descricao;
-        this.status = status;
+        this.situacao = situacao;
     }
 
     public String getDescricao() {
@@ -37,16 +37,16 @@ public class Marca {
         this.descricao = descricao;
     }
 
-    public boolean getStatus() {
-        return status;
+    public boolean getSituacao() {
+        return situacao;
     }
 
-    public void setStatus(boolean status) {
-        this.status = status;
+    public void setSituacao(boolean situacao) {
+        this.situacao = situacao;
     }
 
     @Override
     public String toString() {
-        return "Marca {" + "descricao = " + descricao + ", status = " + status +"}";
+        return "Marca {" + "descricao = " + descricao + ", situacao = " + situacao +"}";
     }
 }

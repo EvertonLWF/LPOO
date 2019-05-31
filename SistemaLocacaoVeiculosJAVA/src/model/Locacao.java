@@ -23,14 +23,14 @@ public class Locacao {
     private int devolvido;
     private Cliente cliente;
     private Automovel automovel;
-    private boolean status;
+    private boolean situacao;
 
     public Locacao(Cliente cliente, Automovel automovel) {
         this.cliente = cliente;
         this.automovel = automovel;
     }
 
-    public Locacao(Date dtLocacao, Date dtDevolucao, Time hrLocacao, Time hrDevolucao, Long km, double vlCaucao, double vlLocacao, int devolvido, Cliente cliente, Automovel automovel, boolean status) {
+    public Locacao(Date dtLocacao, Date dtDevolucao, Time hrLocacao, Time hrDevolucao, Long km, double vlCaucao, double vlLocacao, int devolvido, Cliente cliente, Automovel automovel, boolean situacao) {
         this.dtLocacao = dtLocacao;
         this.dtDevolucao = dtDevolucao;
         this.hrLocacao = hrLocacao;
@@ -41,7 +41,7 @@ public class Locacao {
         this.devolvido = devolvido;
         this.cliente = cliente;
         this.automovel = automovel;
-        this.status = status;
+        this.situacao = situacao;
     }
 
     public Date getDtLocacao() {
@@ -124,17 +124,17 @@ public class Locacao {
         this.automovel = automovel;
     }
 
-    public boolean getStatus() {
-        return status;
+    public boolean getSituacao() {
+        return situacao;
     }
 
-    public void setStatus(boolean status) {
-        this.status = status;
+    public void setSituacao(boolean situacao) {
+        this.situacao = situacao;
     }
 
     @Override
     public String toString() {
-        return "Locacao{" + "dtLocacao=" + dtLocacao + ", dtDevolucao=" + dtDevolucao + ", hrLocacao=" + hrLocacao + ", hrDevolucao=" + hrDevolucao + ", km=" + km + ", vlCaucao=" + vlCaucao + ", vlLocacao=" + vlLocacao + ", devolvido=" + devolvido + ", cliente=" + cliente + ", automovel=" + automovel + ", status=" + status + '}';
+        return "Locacao{" + "dtLocacao=" + dtLocacao + ", dtDevolucao=" + dtDevolucao + ", hrLocacao=" + hrLocacao + ", hrDevolucao=" + hrDevolucao + ", km=" + km + ", vlCaucao=" + vlCaucao + ", vlLocacao=" + vlLocacao + ", devolvido=" + devolvido + ", cliente=" + cliente + ", automovel=" + automovel + ", situacao=" + situacao + '}';
     }
     
     

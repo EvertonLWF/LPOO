@@ -15,22 +15,22 @@ import java.sql.SQLException;
 public class Modelo {
     private String descricao;
     private Marca marca = new Marca();
-    private boolean status;
+    private boolean situacao;
 
     public Modelo(ResultSet resultSet) throws SQLException {
         this.descricao = resultSet.getString("descmodelo");
         this.marca.descricao = resultSet.getString("descmarca");
-        this.status = resultSet.getBoolean("status");
+        this.situacao = resultSet.getBoolean("situacao");
     }
     
     public Modelo(Marca marca) {
         this.marca = marca;
     }
 
-    public Modelo(String descricao, Marca marca, boolean status) {
+    public Modelo(String descricao, Marca marca, boolean situacao) {
         this.descricao = descricao;
         this.marca = marca;
-        this.status = status;
+        this.situacao = situacao;
     }
 
     public String getDescricao() {
@@ -49,17 +49,17 @@ public class Modelo {
         this.marca = marca;
     }
 
-    public boolean getStatus() {
-        return status;
+    public boolean getSituacao() {
+        return situacao;
     }
 
-    public void setStatus(boolean status) {
-        this.status = status;
+    public void setSituacao(boolean situacao) {
+        this.situacao = situacao;
     }
 
     @Override
     public String toString() {
-        return "\n Modelo {"+ " descricao = " + this.descricao + " ," + this.marca + " , status = " + this.status + "}";
+        return "\n Modelo {"+ " descricao = " + this.descricao + " ," + this.marca + " , situacao = " + this.situacao + "}";
     }
    
 }

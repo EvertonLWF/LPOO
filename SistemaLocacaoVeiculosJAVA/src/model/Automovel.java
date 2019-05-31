@@ -19,13 +19,13 @@ public class Automovel {
     private Long renavan;
     private double valorLocacao;
     private Modelo modelo;
-    private boolean status;
+    private boolean situacao;
     
     public Automovel(Modelo modelo) {
         this.modelo = modelo;
     }
 
-    public Automovel(String placa, String cor, String chassi, int nroPortas, int tipoCombustivel, Long km, Long renavan, double valorLocacao, Modelo modelo, boolean status) {
+    public Automovel(String placa, String cor, String chassi, int nroPortas, int tipoCombustivel, Long km, Long renavan, double valorLocacao, Modelo modelo, boolean situacao) {
         this.placa = placa;
         this.cor = cor;
         this.chassi = chassi;
@@ -35,7 +35,7 @@ public class Automovel {
         this.renavan = renavan;
         this.valorLocacao = valorLocacao;
         this.modelo = modelo;
-        this.status = status;
+        this.situacao = situacao;
     }
 
     public Modelo getModelo() {
@@ -110,17 +110,17 @@ public class Automovel {
         this.valorLocacao = valorLocacao;
     }
 
-    public boolean getStatus() {
-        return status;
+    public boolean getSituacao() {
+        return situacao;
     }
 
-    public void setStatus(boolean status) {
-        this.status = status;
+    public void setSituacao(boolean situacao) {
+        this.situacao = situacao;
     }
 
     @Override
     public String toString() {
-        return "Automovel{" + "placa=" + placa + ", cor=" + cor + ", chassi=" + chassi + ", nroPortas=" + nroPortas + ", tipoCombustivel=" + tipoCombustivel + ", km=" + km + ", renavan=" + renavan + ", valorLocacao=" + valorLocacao + ", modelo=" + modelo + ", status=" + status + '}';
+        return "Automovel{" + "placa=" + placa + ", cor=" + cor + ", chassi=" + chassi + ", nroPortas=" + nroPortas + ", tipoCombustivel=" + tipoCombustivel + ", km=" + km + ", renavan=" + renavan + ", valorLocacao=" + valorLocacao + ", modelo=" + modelo + ", situacao=" + situacao + '}';
     }
     
     

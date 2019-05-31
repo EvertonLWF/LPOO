@@ -21,7 +21,7 @@ public class App {
         Boolean res;
         Marca marca = new Marca();
         marca.setDescricao("Ford");
-        marca.setStatus(true);
+        marca.setSituacao(true);
         ModeloDAO modeloDAO = new ModeloDAO();
         Modelo modelo = new Modelo("Ka",marca,true);
         List<Modelo> resultado = new ArrayList<>();

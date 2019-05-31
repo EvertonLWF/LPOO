@@ -18,7 +18,7 @@ public class Cliente {
     private String end;
     private String tel;
     private String email;
-    private boolean status;
+    private boolean situacao;
 
     public Cliente() {
     }
@@ -28,16 +28,16 @@ public class Cliente {
         this.end = resultSet.getString("end_cli");
         this.tel = resultSet.getString("tel_cliente");
         this.email = resultSet.getString("email_cli");
-        this.status = resultSet.getBoolean("status");
+        this.situacao = resultSet.getBoolean("situacao");
     }
 
-    public Cliente(Long cpf, String nome, String end, String tel, String email, boolean status) {
+    public Cliente(Long cpf, String nome, String end, String tel, String email, boolean situacao) {
         this.cpf = cpf;
         this.nome = nome;
         this.end = end;
         this.tel = tel;
         this.email = email;
-        this.status = status;
+        this.situacao = situacao;
     }
 
     public Long getCpf() {
@@ -80,16 +80,16 @@ public class Cliente {
         this.email = email;
     }
 
-    public boolean getStatus() {
-        return status;
+    public boolean getSituacao() {
+        return situacao;
     }
 
-    public void setStatus(boolean status) {
-        this.status = status;
+    public void setSituacao(boolean situacao) {
+        this.situacao = situacao;
     }
 
     @Override
     public String toString() {
-        return "Cliente{" + "cpf=" + cpf + ", nome=" + nome + ", end=" + end + ", tel=" + tel + ", email=" + email + ", status=" + status + '}';
+        return "Cliente{" + "cpf=" + cpf + ", nome=" + nome + ", end=" + end + ", tel=" + tel + ", email=" + email + ", situacao=" + situacao + '}';
     }
 }

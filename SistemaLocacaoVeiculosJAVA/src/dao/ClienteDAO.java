@@ -51,7 +51,7 @@ public class ClienteDAO extends ConnectDAO {
         ResultSet resultSet = null;
         try {
              conn = super.getConnect();
-             statement = conn.prepareStatement("SELECT * FROM clientes WHERE descricao = ?");
+             statement = conn.prepareStatement("SELECT * FROM clientes WHERE descricao = initcap(?)");
              statement.setString(1, descricao);
              resultSet = statement.executeQuery();
              
@@ -75,7 +75,7 @@ public class ClienteDAO extends ConnectDAO {
         int count = 0;
         try {
              conn = super.getConnect();
-             statement = conn.prepareStatement("INSERT INTO clientes(cpf_cli,nome_cli,end_cli,tel_cliente,email_cli,situacao) VALUES(?,?,?,?,?,?)");
+             statement = conn.prepareStatement("INSERT INTO clientes(cpf_cli,nome_cli,end_cli,tel_cliente,email_cli,situacao) VALUES(?,initcap(?),initcap(?),?,?,?)");
              statement.setLong(1, cliente.getCpf());
              statement.setString(2, cliente.getNome());
              statement.setString(3, cliente.getEnd());
@@ -106,7 +106,7 @@ public class ClienteDAO extends ConnectDAO {
         int count = 0;
         try {
              conn = super.getConnect();
-             statement = conn.prepareStatement("UPDATE clientes SET cpf_cli = ?,nome_cli = ?,end_cli = ?,tel_cliente = ?,email_cli = ?,situacao = ? WHERE cpf_cli = ?");
+             statement = conn.prepareStatement("UPDATE clientes SET cpf_cli = ?,nome_cli = initcap(?),end_cli = initcap(?),tel_cliente = ?,email_cli = ?,situacao = ? WHERE cpf_cli = ?");
              statement.setLong(1, cliente.getCpf());
              statement.setString(2, cliente.getNome());
              statement.setString(3, cliente.getEnd());

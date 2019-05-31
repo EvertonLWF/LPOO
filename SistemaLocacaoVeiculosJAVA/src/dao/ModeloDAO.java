@@ -52,7 +52,7 @@ public class ModeloDAO extends ConnectDAO {
         ResultSet resultSet = null;
         try {
              conn = super.getConnect();
-             statement = conn.prepareStatement("SELECT * FROM Modelo WHERE descmodelo = ?");
+             statement = conn.prepareStatement("SELECT * FROM Modelo WHERE descmodelo = initcap(?)");
              statement.setString(1, descricao);
              resultSet = statement.executeQuery();
              
@@ -79,7 +79,7 @@ public class ModeloDAO extends ConnectDAO {
         int count = 0;
         try {
              conn = super.getConnect();
-             statement = conn.prepareStatement("INSERT INTO modelo(descmodelo,descmarca,situacao) VALUES(?,?,?)");
+             statement = conn.prepareStatement("INSERT INTO modelo(descmodelo,descmarca,situacao) VALUES(initcap(?),initcap(?),?)");
              statement.setString(1, modelo.getDescricao());
              
              statement.setObject(2,modelo.getMarca());
@@ -109,7 +109,7 @@ public class ModeloDAO extends ConnectDAO {
         int count = 0;
         try {
              conn = super.getConnect();
-             statement = conn.prepareStatement("UPDATE modelo SET descmodelo = ?,descmarca = ?,situacao = ?");
+             statement = conn.prepareStatement("UPDATE modelo SET descmodelo = initcap(?),descmarca = initcap(?),situacao = ?");
              statement.setString(1, modelo.getDescricao());
              statement.setString(2, modelo.getMarca().getDescricao());
              statement.setBoolean(3, true);
@@ -137,7 +137,7 @@ public class ModeloDAO extends ConnectDAO {
         int count = 0;
         try {
              conn = super.getConnect();
-             statement = conn.prepareStatement("UPDATE Modelo SET situacao = ? WHERE descricao = ?");
+             statement = conn.prepareStatement("UPDATE Modelo SET situacao = ? WHERE descricao = initcap(?)");
              statement.setBoolean(1, false);
              statement.setString(2, modelo.getDescricao());
              count = statement.executeUpdate();            
@@ -160,7 +160,7 @@ public class ModeloDAO extends ConnectDAO {
         int count = 0;
         try {
              conn = super.getConnect();
-             statement = conn.prepareStatement("UPDATE Modelo SET situacao = ? WHERE descricao = ?");
+             statement = conn.prepareStatement("UPDATE Modelo SET situacao = ? WHERE descricao = initcap(?)");
              statement.setBoolean(1, true);
              statement.setString(2, modelo.getDescricao());
              count = statement.executeUpdate();            

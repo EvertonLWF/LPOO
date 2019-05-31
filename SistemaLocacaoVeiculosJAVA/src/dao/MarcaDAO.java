@@ -51,7 +51,7 @@ public class MarcaDAO extends ConnectDAO{
         ResultSet resultSet = null;
         try {
              conn = super.getConnect();
-             statement = conn.prepareStatement("SELECT * FROM marca WHERE descricao = ?");
+             statement = conn.prepareStatement("SELECT * FROM marca WHERE descricao = initcap(?)");
              statement.setString(1, descricao);
              resultSet = statement.executeQuery();
              
@@ -75,7 +75,7 @@ public class MarcaDAO extends ConnectDAO{
         int count = 0;
         try {
              conn = super.getConnect();
-             statement = conn.prepareStatement("INSERT INTO marca(descricao,situacao) VALUES(?,?)");
+             statement = conn.prepareStatement("INSERT INTO marca(descricao,situacao) VALUES(initcap(?),?)");
              statement.setString(1, marca.getDescricao());
              statement.setBoolean(2, true);
              count = statement.executeUpdate(); 
@@ -97,15 +97,16 @@ public class MarcaDAO extends ConnectDAO{
         }
     }
 
-    public boolean update(Marca marca) throws SQLException{
+    public boolean update(Marca marca,String key) throws SQLException{
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         int count = 0;
         try {
              conn = super.getConnect();
-             statement = conn.prepareStatement("UPDATE marca SET descricao = ?,situacao = ?");
+             statement = conn.prepareStatement("UPDATE marca SET descricao = initcap(?),situacao = ? WHERE descricao = initcap(?)");
              statement.setString(1, marca.getDescricao());
              statement.setBoolean(2, true);
+             statement.setString(3, key);
              count = statement.executeUpdate();            
              
         }
@@ -127,7 +128,7 @@ public class MarcaDAO extends ConnectDAO{
         int count = 0;
         try {
              conn = super.getConnect();
-             statement = conn.prepareStatement("UPDATE marca SET situacao = ? WHERE descricao = ?");
+             statement = conn.prepareStatement("UPDATE marca SET situacao = ? WHERE descricao = initcap(?)");
              statement.setBoolean(1, false);
              statement.setString(2, marca.getDescricao());
              count = statement.executeUpdate();            
@@ -151,7 +152,7 @@ public class MarcaDAO extends ConnectDAO{
         int count = 0;
         try {
              conn = super.getConnect();
-             statement = conn.prepareStatement("UPDATE marca SET situacao = ? WHERE descricao = ?");
+             statement = conn.prepareStatement("UPDATE marca SET situacao = ? WHERE descricao = initcap(?)");
              statement.setBoolean(1, true);
              statement.setString(2, marca.getDescricao());
              count = statement.executeUpdate();            

@@ -21,7 +21,6 @@ public class Marca {
     
     public Marca(ResultSet resultSet) throws SQLException {
         this.descricao = resultSet.getString("descricao");
-        //this.situacao = resultSet.getBoolean("situacao");
     }
 
     public Marca(String descricao, boolean situacao) {
@@ -47,6 +46,6 @@ public class Marca {
 
     @Override
     public String toString() {
-        return "Marca {" + "descricao = " + descricao + ", situacao = " + situacao +"}";
+        return "Marca {" + "DESCRICAO = " + descricao + ", SITUACAO = " + situacao +"}";
     }
 }

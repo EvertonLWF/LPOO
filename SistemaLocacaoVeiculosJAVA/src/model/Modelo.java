@@ -59,7 +59,7 @@ public class Modelo {
 
     @Override
     public String toString() {
-        return "\n Modelo {"+ " descricao = " + this.descricao + " ," + this.marca + " , situacao = " + this.situacao + "}";
+        return "\n Modelo {"+ " DESCRICAO = " + this.descricao + " ," + this.marca + " , SITUACAO = " + this.situacao + "}";
     }
    
 }

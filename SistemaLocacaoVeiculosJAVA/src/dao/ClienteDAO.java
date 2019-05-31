@@ -63,7 +63,7 @@ public class ClienteDAO extends ConnectDAO {
              statement.close();
              conn.close();
         }
-        catch(Exception ex){
+        catch(SQLException ex){
             System.out.println("Erro findByCliente "+ex);
         }
         return resultado;
@@ -116,7 +116,7 @@ public class ClienteDAO extends ConnectDAO {
              count = statement.executeUpdate();            
              
         }
-        catch(Exception ex){
+        catch(SQLException ex){
             System.out.println("Erro INSERT Cliente "+ex);
         }
         statement.close();
@@ -139,7 +139,7 @@ public class ClienteDAO extends ConnectDAO {
              count = statement.executeUpdate();            
              
         }
-        catch(Exception ex){
+        catch(SQLException ex){
             System.out.println("Erro deletSoft cliente "+ex);
         }
         statement.close();
@@ -162,7 +162,7 @@ public class ClienteDAO extends ConnectDAO {
              count = statement.executeUpdate();            
              
         }
-        catch(Exception ex){
+        catch(SQLException ex){
             System.out.println("Erro ReactivityCliente "+ex);
         }
         statement.close();

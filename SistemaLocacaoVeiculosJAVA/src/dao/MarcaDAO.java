@@ -63,7 +63,7 @@ public class MarcaDAO extends ConnectDAO{
              statement.close();
              conn.close();
         }
-        catch(Exception ex){
+        catch(SQLException ex){
             System.out.println("Erro findByMarca "+ex);
         }
         return resultado;
@@ -109,7 +109,7 @@ public class MarcaDAO extends ConnectDAO{
              count = statement.executeUpdate();            
              
         }
-        catch(Exception ex){
+        catch(SQLException ex){
             System.out.println("Erro INSERT Marca "+ex);
         }
         statement.close();
@@ -133,7 +133,7 @@ public class MarcaDAO extends ConnectDAO{
              count = statement.executeUpdate();            
              
         }
-        catch(Exception ex){
+        catch(SQLException ex){
             System.out.println("Erro deletSoft "+ex);
         }
         statement.close();
@@ -157,7 +157,7 @@ public class MarcaDAO extends ConnectDAO{
              count = statement.executeUpdate();            
              
         }
-        catch(Exception ex){
+        catch(SQLException ex){
             System.out.println("Erro reactivateMarca "+ex);
         }
         statement.close();

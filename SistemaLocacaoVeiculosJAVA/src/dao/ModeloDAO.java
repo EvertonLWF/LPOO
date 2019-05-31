@@ -144,7 +144,7 @@ public class ModeloDAO extends ConnectDAO {
              count = statement.executeUpdate();            
              
         }
-        catch(Exception ex){
+        catch(SQLException ex){
             System.out.println("Erro DeletSoft Marca "+ex);
         }
         statement.close();
@@ -167,7 +167,7 @@ public class ModeloDAO extends ConnectDAO {
              count = statement.executeUpdate();            
              
         }
-        catch(Exception ex){
+        catch(SQLException ex){
             System.out.println("Erro reactivateModelo "+ex);
         }
         statement.close();

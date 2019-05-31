@@ -14,8 +14,8 @@ import model.Modelo;
 
 /**
  *
- * @author feijo
- */
+ * @author Everton Feijo
+ **/
 public class App {
     public static void main(String[] args) throws SQLException {
         Boolean res;

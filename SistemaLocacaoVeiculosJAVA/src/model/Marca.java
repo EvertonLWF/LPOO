@@ -17,7 +17,7 @@ import java.util.List;
 public class Marca {
     private String descricao;
     private boolean situacao;
-    private List<Modelo> ArrayList;
+    private List<Modelo> modelos = new ArrayList<>();
     
     public Marca() {
     }
@@ -30,10 +30,6 @@ public class Marca {
         this.descricao = descricao;
         this.situacao = situacao;
     }
-
-    
-
-
     public String getDescricao() {
         return descricao;
     }
@@ -42,7 +38,7 @@ public class Marca {
         this.descricao = descricao;
     }
 
-    public boolean isSituacao() {
+    public boolean getSituacao() {
         return situacao;
     }
 
@@ -50,15 +46,15 @@ public class Marca {
         this.situacao = situacao;
     }
 
-    public List<Modelo> getArrayList() {
-        return ArrayList;
+    public List<Modelo> getModelosList() {
+        return modelos;
     }
 
-    public void setArrayList(List<Modelo> ArrayList) {
-        this.ArrayList = ArrayList;
+    public void setModelosList(List<Modelo> ArrayList) {
+        this.modelos = ArrayList;
     }
     @Override
     public String toString() {
-        return "Marca {" + "DESCRICAO = " + descricao + ", SITUACAO = " + situacao +"}";
+        return "Marca {" + "DESCRICAO = " + descricao + ", SITUACAO = " + situacao +" MODELOS = "+ modelos +"}";
     }
 }

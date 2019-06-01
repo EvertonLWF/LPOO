@@ -17,15 +17,16 @@ public class Modelo {
     private Marca marca = new Marca();
     private boolean situacao;
 
+    public Modelo(Marca marca) {
+        this.marca = marca;
+    }
+    
     public Modelo(ResultSet resultSet) throws SQLException {
         this.descricao = resultSet.getString("descmodelo");
         this.marca.setDescricao(resultSet.getString("descmarca"));
         this.situacao = resultSet.getBoolean("situacao");
     }
     
-    public Modelo(Marca marca) {
-        this.marca = marca;
-    }
 
     public Modelo(String descricao, Marca marca, boolean situacao) {
         this.descricao = descricao;

@@ -81,8 +81,7 @@ public class ModeloDAO extends ConnectDAO {
              conn = super.getConnect();
              statement = conn.prepareStatement("INSERT INTO modelo(descmodelo,descmarca,situacao) VALUES(initcap(?),initcap(?),?)");
              statement.setString(1, modelo.getDescricao());
-             
-             statement.setObject(2,modelo.getMarca());
+             statement.setString(2,modelo.getMarca().getDescricao());
              statement.setBoolean(3, true);
              count = statement.executeUpdate(); 
         }

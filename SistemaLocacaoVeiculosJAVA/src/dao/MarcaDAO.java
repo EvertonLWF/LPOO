@@ -69,13 +69,13 @@ public class MarcaDAO extends ConnectDAO{
         }
         return resultado;
     }
-    public List<Modelo> findByModelo(String descricao){
+    public List<Modelo> findAllModelos(String descricao){
         List<Modelo> resultado = new ArrayList<>();
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         try {
              conn = super.getConnect();
-             statement = conn.prepareStatement("SELECT * FROM modelo WHERE descmarca = initcap(?)");
+             statement = conn.prepareStatement("SELECT * FROM modelo,marca WHERE modelo.descmarca = initcap(?)");
              statement.setString(1, descricao);
              resultSet = statement.executeQuery();
              
@@ -103,8 +103,6 @@ public class MarcaDAO extends ConnectDAO{
              statement.setString(1, marca.getDescricao());
              statement.setBoolean(2, true);
              count = statement.executeUpdate(); 
-             
-             
                                 
         }
         catch(SQLException ex){

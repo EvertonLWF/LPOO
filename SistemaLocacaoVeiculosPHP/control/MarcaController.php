@@ -7,7 +7,10 @@ include_once "../model/Marca.php";
 
 $marcaPDO = new MarcaPDO();
 
-$resp = $marcaPDO->findAll();
+$marca = new Marca();
+$res = $marcaPDO->findAll();
+//$marca->getMarca() = 
+
 //$resp = $marcaPDO->findByMarca("F");
 
-print_r($resp);
+echo $res[0]->getMarca();

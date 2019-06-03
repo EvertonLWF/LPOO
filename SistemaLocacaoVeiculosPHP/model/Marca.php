@@ -17,10 +17,9 @@ class Marca {
    
     private $marca;
     private $situacao;
-    private $modelos;
+    private $modelos = []; //Associa modelos
     
     function __construct() {
-        
     }
     
     public function getMarca() {

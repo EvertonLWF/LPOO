@@ -50,8 +50,24 @@ class MarcaPDO extends ConnectPDO{
             echo $exc->getTraceAsString()+'Erro findByMarca !!!';
             return null;
         }
-
-        
+    }
+    function findByModelo($descmodelo){
+        try {
+            $stmt = $this->conn->prepare("SELECT * FROM modelo WHERE descmarca = ? AND situacao = true");
+            $stmt->bindValue(1, $descmodelo);
+            if($stmt->execute()){
+                $marcas= Array();
+                while($rs = $stmt->fetch(PDO::FETCH_OBJ)){
+                    array_push($modelos, $this->resultSetToMarcas($rs));
+                }
+                return $modelos;
+            }else{
+                return null;
+            }
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString()+'Erro findByModelos em Marca !!!';
+            return null;
+        }
     }
     function update($marca){
         $stmt = $this->conn->prepare('UPDATE marca SET descricao = ?,situacao = ?');

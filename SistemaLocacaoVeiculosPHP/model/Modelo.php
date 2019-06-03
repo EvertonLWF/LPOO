@@ -38,7 +38,7 @@ class Modelo{
         $this->descricao = $descricao;
     }
 
-    function setMarca($marca) {//controlador
+    function setMarca($marca) {
         $this->marca = $marca;
     }
 

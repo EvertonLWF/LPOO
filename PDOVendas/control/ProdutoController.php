@@ -132,18 +132,17 @@ class ProdutoController{
 
     //findAll ou SELECT sem filtros (case 4)
     private function listarTodosProdutos(){
-        //findAll (SELECT)
         print_r($this->produtoPDO->findAll());
     }
     
-    //update (case 5)
+    //find for name ou SELECT com filtros (case 5)
     private function listarProdutosPeloNome(){
         echo "\nDigite o nome para pesquisa: ";
         $nome = rtrim(fgets(STDIN));   
         print_r($this->produtoPDO->findByNome($nome));
     }
     
-    //update (case 6)
+    //find for id ou SELECT com filtros (case 6)
     private function listarProdutosPeloCodigo(){
         echo "\nDigite o código para pesquisa: ";
         $codigo = rtrim(fgets(STDIN));

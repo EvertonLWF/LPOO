@@ -11,7 +11,7 @@ class Cliente {
     private $nome;
     private $sobrenome;
     private $situacao;
-    private $pedido;
+    private $pedidos = Array();
     
 
     public function __construct() {
@@ -50,17 +50,17 @@ class Cliente {
         $this->situacao = $situacao;
     }
     
-    public function getPedido() {
-        return $this->pedido;
+    public function getPedidos() {
+        return $this->pedidos;
     }
 
-    public function setPedido($pedido) {
-        $this->pedido = $pedido;
+    public function setPedidos($pedidos) {
+        $this->pedido = $pedidos;
     }
 
         
     public function __toString() {
-        return "\nCliente[id=$this->id, nome=$this->nome, sobrenome=$this->sobrenome, situação=$this->situacao, $this->__toString()]";
+        return "\nCliente[id=$this->id, nome=$this->nome, sobrenome=$this->sobrenome, situação=$this->situacao, " . print_r($pedidos) . "]";
     }
 
 }

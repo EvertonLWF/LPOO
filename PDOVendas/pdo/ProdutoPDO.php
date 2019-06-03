@@ -80,7 +80,7 @@ class ProdutoPDO extends Conexao {
             return false;
         }
     }
-
+    
     public function findAll(){
         try{
             $stmt = $this->conn->prepare("SELECT * FROM vendas.produtos ORDER BY nome");
@@ -95,10 +95,27 @@ class ProdutoPDO extends Conexao {
         } catch (PDOException $ex) {
             echo "\nExceção no findAll da classe ProdutoPDO: " . $ex->getMessage();
             return null;    
-        }
-        
+        }     
     }
     
+    public function findAllWithoutDeleted(){
+        try{
+            $stmt = $this->conn->prepare("SELECT * FROM vendas.produtos WHERE situacao = ? ORDER BY nome");
+            $stmt->bindValue(1, true);
+            if($stmt->execute()){
+                $produtos = Array();
+                while($rs = $stmt->fetch(PDO::FETCH_OBJ)){
+                    array_push($produtos, $this->resultSetToProduto($rs));
+            }
+            
+            return $produtos;
+        }
+        } catch (PDOException $ex) {
+            echo "\nExceção no findAll da classe ProdutoPDO: " . $ex->getMessage();
+            return null;    
+        }
+    }
+
     public function findByNome($nome){
         try{
             $stmt = $this->conn->prepare("SELECT * FROM produtos WHERE nome LIKE ? ORDER BY nome");

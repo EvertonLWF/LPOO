@@ -8,6 +8,7 @@ include_once "../pdo/ClientePDO.php";
  * @author vagner
  */
 class ClienteController {
+    
     private $clientePDO;
     
     public function __construct() {
@@ -18,7 +19,7 @@ class ClienteController {
         //Um front em modo texto controlado por Menu
         $exit = 1;
         while ($exit != 0){
-            echo "\n\n--------- Submenu Produto ---------";
+            echo "\n\n--------- Submenu Cliente ---------";
             echo "\n1. Inserir Cliente";
             echo "\n2. Alterar Cliente";
             echo "\n3. Excluir Cliente (soft delete)";
@@ -60,36 +61,101 @@ class ClienteController {
     
     //insert (case 1)
     private function inserirCliente(){
-        echo "\nEm desenvolvimento.";
+        $cliente = new Cliente();
+        echo"\nNome do Cliente: ";
+        $cliente->setNome(rtrim(fgets(STDIN)));
+        echo"\nSobrenome do Cliente: ";
+        $cliente->setSobrenome(rtrim(fgets(STDIN)));
+        $cliente->setSituacao(true); //nasce como registro válido no bd
+        if($this->clientePDO->insert($cliente)){
+            echo "\nCliente salvo.";
+        }else{
+            echo "\nErro ao salvar. Contate o administrador do sistema.";
+        }
     }
     
     //update (case 2)
     private function alterarCliente(){
-        echo "\nEm desenvolvimento.";
+        echo "\nDigite o código do cliente que você deseja alterar: ";
+        $cliente = $this->clientePDO->findById(rtrim(fgets(STDIN)));
+        if($cliente != null){
+            print_r($cliente);
+            echo "\nDigite o nome do cliente: ";
+            $nome = fgets(STDIN);
+            if($nome != "\n"){
+                $cliente->setNome(rtrim($nome));
+            }
+            echo"\nSobrenome do Cliente: ";
+            $descricao = fgets(STDIN);
+            if($descricao != "\n"){
+                $cliente->setSobrenome(rtrim($descricao));
+            }
+            if($this->clientePDO->update($cliente)){
+                echo "\nCliente alterado.";
+            }else{
+                echo "\nErro ao alterar o cliente. Contate o administrador do sistema.";
+            }
+        }else{
+            echo "\nNão há clientes cadastrados com esse código.";
+        }
     }
     
     //update (case 3)
     private function excluirCliente(){
-        echo "\nEm desenvolvimento.";
+        echo "\nDigite o código do cliente que você deseja tornar inativo: ";
+        $cliente = $this->clientePDO->findById(rtrim(fgets(STDIN)));
+        print_r($cliente);
+        echo "\nConfirmar a operação (s/n)? ";
+        $operacao = rtrim(fgets(STDIN));
+        
+        if(!strcasecmp($operacao, "s")){
+            if($this->clientePDO->deleteSoft($cliente->getId())){
+                echo "\nCliente excluído.";
+            }else{
+                echo "\nFalha ao reativar o cliente. Contate o administrador do sistema.";
+            }       
+        }
+        if(!strcasecmp($operacao, "n")){
+            echo "\nOperação cancelada.";
+        }
     }
 
     //findAll ou SELECT sem filtros (case 4)
     private function listarTodosClientes(){
-        echo "\nEm desenvolvimento.";
+        print_r($this->clientePDO->findAll());
     }
     
     //find for name ou SELECT com filtros (case 5)
     private function listarClientesPeloNome(){
-        echo "\nEm desenvolvimento.";
+        echo "\nDigite o nome para pesquisa: ";
+        $nome = rtrim(fgets(STDIN));   
+        print_r($this->clientePDO->findByNome($nome));
     }
     
     //find for id ou SELECT com filtros (case 6)
     private function listarClientePeloCodigo(){
-        echo "\nEm desenvolvimento.";
+        echo "\nDigite o código para pesquisa: ";
+        $codigo = rtrim(fgets(STDIN));
+        print_r($this->clientePDO->findById($codigo));
     }
     
     //update (case 7)
     private function reativarClientePeloCodigo(){
-        echo "\nEm desenvolvimento.";
+        echo "\nDigite o código do cliente que você deseja reativar: ";
+        $cliente = $this->clientePDO->findById(rtrim(fgets(STDIN)));
+        print_r($cliente);
+        echo "\nConfirmar a operação (s/n)? ";
+        $operacao = rtrim(fgets(STDIN));
+        
+        if(!strcasecmp($operacao, "s")){
+            if($this->clientePDO->reativarClientePeloId($cliente->getId())){
+                echo "\nCliente reativado.";
+            }else{
+                echo "\nFalha ao reativar o cliente. Contate o administrador do sistema.";
+            }       
+        }
+        if(!strcasecmp($operacao, "n")){
+            echo "\nOperação cancelada.";
+        }  
     }
 }

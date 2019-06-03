@@ -75,7 +75,7 @@ public class MarcaDAO extends ConnectDAO{
         ResultSet resultSet = null;
         try {
              conn = super.getConnect();
-             statement = conn.prepareStatement("SELECT * FROM modelo,marca WHERE modelo.descmarca = initcap(?)");
+             statement = conn.prepareStatement("SELECT * FROM modelo WHERE descmarca = initcap(?)");
              statement.setString(1, descricao);
              resultSet = statement.executeQuery();
              
@@ -88,7 +88,7 @@ public class MarcaDAO extends ConnectDAO{
              conn.close();
         }
         catch(SQLException ex){
-            System.out.println("Erro findByModelo em Marca "+ex);
+            System.out.println("Erro findAllModelo em Marca "+ex);
         }
         return resultado;
     }

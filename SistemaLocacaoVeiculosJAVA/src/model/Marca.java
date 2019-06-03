@@ -24,6 +24,7 @@ public class Marca {
     
     public Marca(ResultSet resultSet) throws SQLException {
         this.descricao = resultSet.getString("descricao");
+        this.situacao = resultSet.getBoolean("situacao");
     }
 
     public Marca(String descricao, boolean situacao) {

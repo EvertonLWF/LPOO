@@ -19,11 +19,11 @@ public class AppModelo {
         Marca marca = new Marca();
         marca.setDescricao("ford");
         Modelo modelo = new Modelo(marca);
-        modelo.setDescricao("fiesta");
+        modelo.setDescricao("fusion");
         modelo.setSituacao(true);
         ModeloDAO modeloDAO = new ModeloDAO();
         
-        modeloDAO.insert(modelo);
+        //modeloDAO.insert(modelo);
         System.out.println(modeloDAO.findAll());
     }
 }

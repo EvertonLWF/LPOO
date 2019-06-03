@@ -7,6 +7,8 @@ package model;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -19,6 +21,7 @@ public class Cliente {
     private String tel;
     private String email;
     private boolean situacao;
+    private List<Locacao> locacaoList = new ArrayList<>();
 
     public Cliente() {
     }
@@ -87,9 +90,16 @@ public class Cliente {
     public void setSituacao(boolean situacao) {
         this.situacao = situacao;
     }
+    public List<Locacao> getLocacaoList() {
+        return locacaoList;
+    }
+
+    public void setLocacaoList(List<Locacao> locacao) {
+        this.locacaoList = locacao;
+    }
 
     @Override
     public String toString() {
-        return "Cliente{" + "cpf=" + cpf + ", nome=" + nome + ", end=" + end + ", tel=" + tel + ", email=" + email + ", situacao=" + situacao + '}';
+        return "Cliente{" + "CPF = " + cpf + ", NOME = " + nome + ", ENDERECO = " + end + ", TELEFONE = " + tel + ", EMAIL = " + email + ", SITUACAO = " + situacao + " LOCACOES = " +locacaoList + '}';
     }
 }

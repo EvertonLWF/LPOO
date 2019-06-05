@@ -19,9 +19,12 @@ class Modelo{
     private $descricao;
     private $marca;
     private $situacao;
-    function __construct() {
-        
+    private $automoveis = [];
+    
+    function __construct($marca) {
+        $this->marca = $marca;
     }
+    
     function getDescricao() {
         return $this->descricao;
     }
@@ -45,10 +48,16 @@ class Modelo{
     function setSituacao($situacao) {
         $this->situacao = $situacao;
     }
+    function setAutomoveis($automoveis) {
+        $this->automoveis = $automoveis;
+    }
+    function getAutomoveis($automoveis) {
+        return $this->automoveis;
+    }
 
         
     function __toString() {
-        return "DESCRICAO = $this->descricao MARCA = ". var_dump($this->marca) ." SITUACAO = $this->situacao \n";
+        return "DESCRICAO = $this->descricao MARCA = ". var_dump($this->marca) ."AUTOMOVEIS = ".  var_dump($this->automoveis)." SITUACAO = $this->situacao \n";
     }
     
 }

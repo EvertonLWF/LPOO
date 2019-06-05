@@ -108,10 +108,10 @@ class MarcaPDO extends ConnectPDO{
         return $marca;
     }
     private function resultSetToModelos($rs){
-        $modelo = new Modelo();
+        $modelo = new Modelo($rs->descmarca);
         $modelo->setDescricao($rs->descmodelo);
         $modelo->setSituacao($rs->situacao);
-        $modelo->setMarca($rs->descmarca);
+      
         return $modelo;
     }
 }

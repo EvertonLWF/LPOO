@@ -14,8 +14,8 @@ include_once "../model/Modelo.php";
  */
 
 $modeloPDO = new ModeloPDO();
-$modelo = new Modelo();
 $marca = new Marca();
+$modelo = new Modelo($marca);
 
 $marca->setMarca("Ford");
 $marca->setSituacao(true);

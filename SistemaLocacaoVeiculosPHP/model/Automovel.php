@@ -21,22 +21,13 @@ class Automovel {
     private $chassi;
     private $valorLocacao;
     private $situacao;
-    private $modelo;
-            
-    private $locacao;    
+    private $modelo; 
+    private $locacao = [];    
     
-    function __construct($placa, $cor, $nroPortas, $tipoCombustivel, $Km, $renavan, $chassi, $valorLocacao, $situacao,$modelo) {
-        $this->placa = $placa;
-        $this->cor = $cor;
-        $this->nroPortas = $nroPortas;
-        $this->tipoCombustivel = $tipoCombustivel;
-        $this->Km = $Km;
-        $this->renavan = $renavan;
-        $this->chassi = $chassi;
-        $this->valorLocacao = $valorLocacao;
-        $this->situacao = $situacao;
+    public function __construct($modelo) {
         $this->modelo = $modelo;
     }
+
     function setLocacao($locacao){
         $this->locacao = $locacao;
     }
@@ -83,10 +74,10 @@ class Automovel {
         return $this->valorLocacao;
     }
     function getSituacao() {
-        return $this->Situacao;
+        return $this->situacao;
     }
     function setSituacao($situacao) {
-        $this->Situacao = $situacao;
+        $this->situacao = $situacao;
     }
 
     function setPlaca($placa) {

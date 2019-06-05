@@ -9,6 +9,8 @@ include_once "../model/Cliente.php";
  *
  * @author feijo
  */
+
+
 $cliente = new Cliente();
 $cliente->setCpf_cli(1703055039);
 $cliente->setEmail_cli("cliente@cliente.com");

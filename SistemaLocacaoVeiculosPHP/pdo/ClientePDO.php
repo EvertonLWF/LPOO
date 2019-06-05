@@ -36,8 +36,8 @@ class ClientePDO extends ConnectPDO{
     }
     function findByClient(Cliente $clientes){
         try {
-            $stmt = $this->conn->prepare("SELECT * FROM clientes WHERE descricao like ?");
-            $stmt->bindValue(1, $clientes->getNome_cli()+'%');
+            $stmt = $this->conn->prepare("SELECT * FROM clientes WHERE descricao  = initcap(?)");
+            $stmt->bindValue(1, $clientes->getNome_cli());
             if($stmt->execute()){
                 $clientes= Array();
                 while($rs = $stmt->fetch(PDO::FETCH_OBJ)){
@@ -56,7 +56,7 @@ class ClientePDO extends ConnectPDO{
     }
     function update( $clientes){
         
-        $stmt = $this->conn->prepare('UPDATE clientes SET cpf_cli = ?, nome_cli = ?, end_cli = ?, tel_cliente = ?, email_cli = ?, situacao = ?');
+        $stmt = $this->conn->prepare('UPDATE clientes SET cpf_cli = ?, nome_cli = initcap(?), end_cli = initcap(?), tel_cliente = ?, email_cli = ?, situacao = ?');
         $stmt->bindValue(1, $clientes->getCpf_cli());
         $stmt->bindValue(2, $clientes->getNome_cli());
         $stmt->bindValue(3, $clientes->getEnd_cli());
@@ -68,7 +68,7 @@ class ClientePDO extends ConnectPDO{
         return $stmt->execute();
     }
     function insert( $cliente){
-        $stmt = $this->conn->prepare('INSERT INTO clientes (cpf_cli,nome_cli,end_cli,tel_cliente,email_cli,situacao) VALUES(?,?,?,?,?,?)');
+        $stmt = $this->conn->prepare('INSERT INTO clientes (cpf_cli,nome_cli,end_cli,tel_cliente,email_cli,situacao) VALUES(?,initcap(?),initcap(?),?,?,?)');
         $stmt->bindValue(1, $cliente->getCpf_cli());
         $stmt->bindValue(2, $cliente->getNome_cli());
         $stmt->bindValue(3, $cliente->getEnd_cli());

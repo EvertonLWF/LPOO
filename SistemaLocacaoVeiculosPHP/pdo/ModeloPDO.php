@@ -43,8 +43,8 @@ class ModeloPDO extends ConnectPDO{
     function findByModelo($modelo){
             
         try {
-            $stmt = $this->conn->prepare("SELECT * FROM modelo WHERE descricao like ? AND situacao = true");
-            $stmt->bindValue(1, $auto+'%');
+            $stmt = $this->conn->prepare("SELECT * FROM modelo WHERE descmodelo = initcap(?) AND situacao = true");
+            $stmt->bindValue(1, $modelo);
             if($stmt->execute()){
                 $modelos= Array();
                 while($rs = $stmt->fetch(PDO::FETCH_OBJ)){
@@ -61,7 +61,7 @@ class ModeloPDO extends ConnectPDO{
         
     }
     function update($modelo,$chave){
-        $stmt = $this->conn->prepare('UPDATE modelo SET descmodelo= ?, descmarca = ?, situacao = ? WHERE descmodelo = ?');
+        $stmt = $this->conn->prepare('UPDATE modelo SET descmodelo = initcap(?), descmarca = initcap(?), situacao = ? WHERE descmodelo = initcap(?)');
         $stmt->bindValue(1, $modelo->getDescricao());
         $stmt->bindValue(2, $modelo->getMarca());
         $stmt->bindValue(3, $modelo->getSituacao());
@@ -70,7 +70,7 @@ class ModeloPDO extends ConnectPDO{
         return $stmt->execute();
     }
     function insert($modelo){
-        $stmt = $this->conn->prepare('INSERT INTO modelo (descmodelo,descmarca,situacao) VALUES(?,?,?)');
+        $stmt = $this->conn->prepare('INSERT INTO modelo (descmodelo,descmarca,situacao) VALUES(initcap(?),initcap(?),?)');
         $stmt->bindValue(1, $modelo->getDescricao());
         $stmt->bindValue(2, $modelo->getMarca());
         $stmt->bindValue(3, $modelo->getSituacao());
@@ -78,21 +78,20 @@ class ModeloPDO extends ConnectPDO{
         
     }
     function deleteSoft($modelo){
-        $stmt = $this->conn->prepare('UPDATE modelo SET situacao = ? WHERE descricao = ?');
+        $stmt = $this->conn->prepare('UPDATE modelo SET situacao = ? WHERE descricao = initcap(?)');
         $stmt->bindValue(1, false);
         $stmt->bindValue(2, $modelo->getDescricao());
         return $stmt->execute();
     }
     function reactivateModelo($modelo){
-        $stmt = $this->conn->prepare('UPDATE modelo SET situacao = ? WHERE descricao = ?');
+        $stmt = $this->conn->prepare('UPDATE modelo SET situacao = ? WHERE descricao = initcap(?)');
         $stmt->bindValue(1, true);
         $stmt->bindValue(2, $modelo->getDescricao());
         return $stmt->execute();
     }
     private function resultSetToModelo($rs){
-        $modelo = new Modelo();
+        $modelo = new Modelo($rs->descmarca);
         $modelo->setDescricao($rs->descmodelo);
-        $modelo->setMarca($rs->descmarca);
         $modelo->setSituacao($rs->situacao);
         return $modelo;
     }

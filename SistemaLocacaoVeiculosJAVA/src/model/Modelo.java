@@ -7,6 +7,8 @@ package model;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -16,6 +18,7 @@ public class Modelo {
     private String descricao;
     private Marca marca = new Marca();
     private boolean situacao;
+    private List<Automovel> automoveis = new ArrayList<>();
 
     public Modelo(Marca marca) {
         this.marca = marca;
@@ -60,7 +63,7 @@ public class Modelo {
 
     @Override
     public String toString() {
-        return "\n Modelo {"+ " DESCRICAO = " + this.descricao + " ,MARCA = " + this.marca.getDescricao() + " , SITUACAO = " + this.situacao + "}";
+        return "\n Modelo {"+ " DESCRICAO = " + this.descricao + " ,MARCA = " + this.marca.getDescricao() +" AUTOMOVEIS = "+this.automoveis +" , SITUACAO = " + this.situacao + "}";
     }
    
 }

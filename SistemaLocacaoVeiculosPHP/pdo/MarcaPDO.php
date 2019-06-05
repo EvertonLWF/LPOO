@@ -35,8 +35,8 @@ class MarcaPDO extends ConnectPDO{
     }
     function findByMarca($marca){
         try {
-            $stmt = $this->conn->prepare("SELECT * FROM marca WHERE descricao LIKE ? AND situacao = true");
-            $stmt->bindValue(1, $marca."%");
+            $stmt = $this->conn->prepare("SELECT * FROM marca WHERE descricao = initcap(?) AND situacao = true");
+            $stmt->bindValue(1, $marca);
             if($stmt->execute()){
                 $marcas= Array();
                 while($rs = $stmt->fetch(PDO::FETCH_OBJ)){
@@ -51,14 +51,14 @@ class MarcaPDO extends ConnectPDO{
             return null;
         }
     }
-    function findByModelo($descmodelo){
+    function findByModelos($descmodelo){
         try {
-            $stmt = $this->conn->prepare("SELECT * FROM modelo WHERE descmarca = ? AND situacao = true");
+            $stmt = $this->conn->prepare("SELECT * FROM modelo WHERE descmarca = initcap(?) AND situacao = true");
             $stmt->bindValue(1, $descmodelo);
             if($stmt->execute()){
-                $marcas= Array();
+                $modelos= Array();
                 while($rs = $stmt->fetch(PDO::FETCH_OBJ)){
-                    array_push($modelos, $this->resultSetToMarcas($rs));
+                    array_push($modelos, $this->resultSetToModelos($rs));
                 }
                 return $modelos;
             }else{
@@ -70,7 +70,7 @@ class MarcaPDO extends ConnectPDO{
         }
     }
     function update($marca){
-        $stmt = $this->conn->prepare('UPDATE marca SET descricao = ?,situacao = ?');
+        $stmt = $this->conn->prepare('UPDATE marca SET descricao = initcap(?),situacao = ?');
         $stmt->bindValue(1, $marca->getMarca());
         $stmt->bindValue(2, $marca->getSituacao());
       
@@ -78,7 +78,7 @@ class MarcaPDO extends ConnectPDO{
     }
     
     function insert($marca){
-        $stmt = $this->conn->prepare('INSERT INTO marca (descricao,situacao) VALUES(?,?)');
+        $stmt = $this->conn->prepare('INSERT INTO marca (descricao,situacao) VALUES(initcap(?),?)');
         $stmt->bindValue(1, $marca->getMarca());
         $stmt->bindValue(2, $marca->getSituacao());
         
@@ -87,14 +87,14 @@ class MarcaPDO extends ConnectPDO{
     }
     
     function deleteSoft($descricao){
-        $stmt = $this->conn->prepare('UPDATE marca SET situacao = ? WHERE descricao = ?');
+        $stmt = $this->conn->prepare('UPDATE marca SET situacao = ? WHERE descricao = initcap(?)');
         $stmt->bindValue(1, false);
         $stmt->bindValue(2, $descricao);
         
         return $stmt->execute();
     }
     function reactivateModelo($descricao){
-        $stmt = $this->conn->prepare('UPDATE marca SET situacao = ? WHERE descricao = ?');
+        $stmt = $this->conn->prepare('UPDATE marca SET situacao = ? WHERE descricao = initcap(?)');
         $stmt->bindValue(1, true);
         $stmt->bindValue(2, $descricao);
         
@@ -106,5 +106,12 @@ class MarcaPDO extends ConnectPDO{
         $marca->setMarca($rs->descricao);
         $marca->setSituacao($rs->situacao);
         return $marca;
+    }
+    private function resultSetToModelos($rs){
+        $modelo = new Modelo();
+        $modelo->setDescricao($rs->descmodelo);
+        $modelo->setSituacao($rs->situacao);
+        $modelo->setMarca($rs->descmarca);
+        return $modelo;
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+include_once "../pdo/ModeloPDO.php";
+
 include_once "../pdo/MarcaPDO.php";
 
 include_once "../model/Marca.php";
@@ -7,10 +9,9 @@ include_once "../model/Marca.php";
 
 $marcaPDO = new MarcaPDO();
 
-$marca = new Marca();
-$res = $marcaPDO->findAll();
+$res = $marcaPDO->findByModelos("ford");
 //$marca->getMarca() = 
 
 //$resp = $marcaPDO->findByMarca("F");
 
-echo $res[0]->getMarca();
+print_r($res);

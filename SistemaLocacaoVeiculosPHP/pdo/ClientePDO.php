@@ -74,7 +74,7 @@ class ClientePDO extends ConnectPDO{
         $stmt->bindValue(3, $cliente->getEnd_cli());
         $stmt->bindValue(4, $cliente->getTel_cli());
         $stmt->bindValue(5, $cliente->getEmail_cli());
-        $stmt->bindValue(6, $cliente->getSituacao_cli());
+        $stmt->bindValue(6, $cliente->getSituacao());
         
         return $stmt->execute();
         
@@ -97,7 +97,7 @@ class ClientePDO extends ConnectPDO{
         $cliente->setEmail_cli($rs->email_cli);
         $cliente->setEnd_cli($rs->end_cli);
         $cliente->setNome_cli($rs->nome_cli);
-        $cliente->setSituacao_cli($rs->situacao);
+        $cliente->setSituacao($rs->situacao);
         $cliente->setTel_cli($rs->tel_cliente);
       
         return $cliente;

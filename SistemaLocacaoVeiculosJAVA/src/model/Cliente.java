@@ -25,6 +25,7 @@ public class Cliente {
 
     public Cliente() {
     }
+    
     public Cliente(ResultSet resultSet) throws SQLException {
         this.cpf = resultSet.getLong("cpf_cli");
         this.nome = resultSet.getString("nome_cli");

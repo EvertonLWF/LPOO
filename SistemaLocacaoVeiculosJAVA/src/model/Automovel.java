@@ -21,7 +21,8 @@ public class Automovel {
     private Long km;
     private Long renavan;
     private double valorLocacao;
-    private Modelo modelo;
+    private Marca marca;
+    private Modelo modelo = new Modelo(marca);
     private boolean situacao;
     
     public Automovel(Modelo modelo) {
@@ -43,6 +44,7 @@ public class Automovel {
     
 
     public Automovel(String placa, String cor, String chassi, int nroPortas, int tipoCombustivel, Long km, Long renavan, double valorLocacao, Modelo modelo, boolean situacao) {
+        
         this.placa = placa;
         this.cor = cor;
         this.chassi = chassi;
@@ -137,7 +139,7 @@ public class Automovel {
 
     @Override
     public String toString() {
-        return "Automovel{" + "placa=" + placa + ", cor=" + cor + ", chassi=" + chassi + ", nroPortas=" + nroPortas + ", tipoCombustivel=" + tipoCombustivel + ", km=" + km + ", renavan=" + renavan + ", valorLocacao=" + valorLocacao + ", modelo=" + modelo + ", situacao=" + situacao + '}';
+        return "Automovel{" + "placa = " + placa + ", cor = " + cor + ", chassi = " + chassi + ", nroPortas = " + nroPortas + ", tipoCombustivel = " + tipoCombustivel + ", km = " + km + ", renavan = " + renavan + ", valorLocacao = " + valorLocacao + ", modelo = " + modelo.getDescricao() + ", situacao = " + situacao + '}';
     }
     
     

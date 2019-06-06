@@ -38,25 +38,23 @@ public class AutomovelDAO extends ConnectDAO {
              resultSet.close();
              statement.close();
              conn.close();
+             
         }
         catch(SQLException ex){
             System.out.println("Erro findAll Automovel "+ex);
         }
-        catch(Exception ex){
-            System.out.println("Erro findAll Automovel "+ex);
-        }
-        
+                
         return resultado;
         
     }
-    public List<Automovel> findByAutomovel(Long renavan){
+    public List<Automovel> findByAutomovel(String descmodelo){
         List<Automovel> resultado = new ArrayList<>();
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         try {
              conn = super.getConnect();
              statement = conn.prepareStatement("SELECT * FROM Modelo WHERE descmodelo = initcap(?)");
-             statement.setLong(1, renavan);
+             statement.setString(1, descmodelo);
              resultSet = statement.executeQuery();
              
              while(resultSet.next()){
@@ -70,9 +68,7 @@ public class AutomovelDAO extends ConnectDAO {
         catch(SQLException ex){
             System.out.println("Erro findByAutomovel "+ex);
         }
-        catch(Exception ex){
-            System.out.println("Erro findByAutomovel "+ex);
-        }
+        
         return resultado;
     }
     

@@ -5,6 +5,9 @@
  */
 package model;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 /**
  *
  * @author feijo
@@ -24,6 +27,20 @@ public class Automovel {
     public Automovel(Modelo modelo) {
         this.modelo = modelo;
     }
+
+    public Automovel(ResultSet rs) throws SQLException {
+        this.placa = rs.getString("placa");
+        this.cor = rs.getString("cor");
+        this.chassi = rs.getString("chassi");
+        this.nroPortas = rs.getInt("numportas");
+        this.tipoCombustivel = rs.getInt("tipo_combust");
+        this.km = rs.getLong("km");
+        this.renavan = rs.getLong("renavan");
+        this.valorLocacao = rs.getDouble("valor_locacao");
+        this.modelo.setDescricao(rs.getString("descmodelo"));
+        this.situacao = rs.getBoolean("situacao");
+    }
+    
 
     public Automovel(String placa, String cor, String chassi, int nroPortas, int tipoCombustivel, Long km, Long renavan, double valorLocacao, Modelo modelo, boolean situacao) {
         this.placa = placa;

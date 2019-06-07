@@ -25,19 +25,8 @@ class Locacao {
     private $automovel;
     private $situacao;
     
-    function __construct($id_locacao, $dt_locacao, $hora_locacao, $dt_devolucao, $hora_devolucao, $km, $vl_calcao, $vl_locacao, $devolvido, $cliente, $automovel, $situacao) {
-        $this->dt_locacao = $dt_locacao;
-        $this->id_locacao = $id_locacao;
-        $this->hora_locacao = $hora_locacao;
-        $this->dt_devolucao = $dt_devolucao;
-        $this->hora_devolucao = $hora_devolucao;
-        $this->km = $km;
-        $this->vl_calcao = $vl_calcao;
-        $this->vl_locacao = $vl_locacao;
-        $this->devolvido = $devolvido;
-        $this->cliente = $cliente;
-        $this->automovel = $automovel;
-        $this->situacao = $situacao;
+    function __construct() {
+        
     }
 
     function getDt_locacao() {

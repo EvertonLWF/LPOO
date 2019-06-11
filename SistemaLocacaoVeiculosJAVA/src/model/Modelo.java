@@ -60,6 +60,13 @@ public class Modelo {
     public void setSituacao(boolean situacao) {
         this.situacao = situacao;
     }
+    public List<Automovel> getAutomoveis() {
+        return automoveis;
+    }
+
+    public void setAutomoveis(List<Automovel> auto) {
+        this.automoveis = auto;
+    }
 
     @Override
     public String toString() {

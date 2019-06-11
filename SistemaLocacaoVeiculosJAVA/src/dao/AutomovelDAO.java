@@ -47,13 +47,13 @@ public class AutomovelDAO extends ConnectDAO {
         return resultado;
         
     }
-    public List<Automovel> findByAutomovel(String descmodelo){
+    public List<Automovel> findAutomovelByModelo(String descmodelo){
         List<Automovel> resultado = new ArrayList<>();
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         try {
              conn = super.getConnect();
-             statement = conn.prepareStatement("SELECT * FROM Modelo WHERE descmodelo = initcap(?)");
+             statement = conn.prepareStatement("SELECT * FROM automovel WHERE descmodelo = initcap(?)");
              statement.setString(1, descmodelo);
              resultSet = statement.executeQuery();
              
@@ -71,7 +71,78 @@ public class AutomovelDAO extends ConnectDAO {
         
         return resultado;
     }
-    
+    public List<Automovel> findAutomovelByCor(String cor){
+        List<Automovel> resultado = new ArrayList<>();
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        try {
+             conn = super.getConnect();
+             statement = conn.prepareStatement("SELECT * FROM automovel WHERE cor LIKE initcap(?)");
+             statement.setString(1, cor);
+             resultSet = statement.executeQuery();
+             
+             while(resultSet.next()){
+                 Automovel automovel = new Automovel(resultSet);
+                 resultado.add(automovel);
+             }
+             resultSet.close();
+             statement.close();
+             conn.close();
+        }
+        catch(SQLException ex){
+            System.out.println("Erro findAutomovelByCor "+ex);
+        }
+        
+        return resultado;
+    }
+    public List<Automovel> findAutomovelByPlaca(String placa){
+        List<Automovel> resultado = new ArrayList<>();
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        try {
+             conn = super.getConnect();
+             statement = conn.prepareStatement("SELECT * FROM automovel WHERE placa LIKE initcap(?)");
+             statement.setString(1, placa);
+             resultSet = statement.executeQuery();
+             
+             while(resultSet.next()){
+                 Automovel automovel = new Automovel(resultSet);
+                 resultado.add(automovel);
+             }
+             resultSet.close();
+             statement.close();
+             conn.close();
+        }
+        catch(SQLException ex){
+            System.out.println("Erro findAutomovelByPlaca "+ex);
+        }
+        
+        return resultado;
+    }
+    public List<Automovel> findAutomovelByRenavan(Long renavan){
+        List<Automovel> resultado = new ArrayList<>();
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        try {
+             conn = super.getConnect();
+             statement = conn.prepareStatement("SELECT * FROM automovel WHERE renavan = ?");
+             statement.setLong(1, renavan);
+             resultSet = statement.executeQuery();
+             
+             while(resultSet.next()){
+                 Automovel automovel = new Automovel(resultSet);
+                 resultado.add(automovel);
+             }
+             resultSet.close();
+             statement.close();
+             conn.close();
+        }
+        catch(SQLException ex){
+            System.out.println("Erro findAutomovelByRenavan "+ex);
+        }
+        
+        return resultado;
+    }
     public boolean insert(Automovel automovel) throws SQLException{
         PreparedStatement statement = null;
         ResultSet resultSet = null;
@@ -108,7 +179,6 @@ public class AutomovelDAO extends ConnectDAO {
             return true;
         }
     }
-
     public boolean update(Automovel automovel) throws SQLException{
         PreparedStatement statement = null;
         ResultSet resultSet = null;
@@ -144,7 +214,7 @@ public class AutomovelDAO extends ConnectDAO {
                  return true;
              }
     }
-     public boolean deletSoft(Automovel automovel) throws SQLException{
+    public boolean deletSoft(Automovel automovel) throws SQLException{
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         int count = 0;
@@ -171,7 +241,7 @@ public class AutomovelDAO extends ConnectDAO {
             return true;
         }
     }
-     public boolean reactivateAutomovel(Automovel automovel) throws SQLException{
+    public boolean reactivateAutomovel(Automovel automovel) throws SQLException{
         PreparedStatement statement = null;
         int count = 0;
         try {

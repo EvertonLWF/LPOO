@@ -25,7 +25,7 @@ public class AppAutomovel {
         Marca marca = marcas.get(0);
         
         ModeloDAO modeloDAO = new ModeloDAO();
-        List<Modelo> modelos = modeloDAO.findByModelo("ka");
+        List<Modelo> modelos = modeloDAO.findByModelo("fiesta");
         Modelo modelo = modelos.get(0);
         modelo.setMarca(marca);
         

@@ -139,7 +139,7 @@ public class Automovel {
 
     @Override
     public String toString() {
-        return "Automovel{" + "placa = " + placa + ", cor = " + cor + ", chassi = " + chassi + ", nroPortas = " + nroPortas + ", tipoCombustivel = " + tipoCombustivel + ", km = " + km + ", renavan = " + renavan + ", valorLocacao = " + valorLocacao + ", modelo = " + modelo.getDescricao() + ", situacao = " + situacao + '}';
+        return "\n Automovel{" + "PLACA = " + placa + ", COR = " + cor + ", CHASSI = " + chassi + ", NUMERO DE PORTAS = " + nroPortas + ", TIPO DE COMBUSTIVEL = " + tipoCombustivel + ", KM = " + km + ", RENAVAN = " + renavan + ", VALOR DA LOCACAO = " + valorLocacao + ", MODELO = " + modelo.getDescricao() + ", SITUACAO = " + situacao + '}';
     }
     
     

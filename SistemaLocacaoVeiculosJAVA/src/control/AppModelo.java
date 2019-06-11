@@ -5,10 +5,14 @@
  */
 package control;
 
+
+import dao.AutomovelDAO;
 import dao.ModeloDAO;
 import java.sql.SQLException;
-import model.Marca;
+import java.util.ArrayList;
+import java.util.List;
 import model.Modelo;
+
 
 /**
  *
@@ -16,14 +20,12 @@ import model.Modelo;
  */
 public class AppModelo {
     public static void main(String[] args) throws SQLException {
-        Marca marca = new Marca();
-        marca.setDescricao("ford");
-        Modelo modelo = new Modelo(marca);
-        modelo.setDescricao("fusion");
-        modelo.setSituacao(true);
         ModeloDAO modeloDAO = new ModeloDAO();
-        
-        //modeloDAO.insert(modelo);
-        System.out.println(modeloDAO.findAll());
+        AutomovelDAO automovelDAO = new AutomovelDAO();
+        List<Modelo> modelos = new ArrayList<>();
+        modelos = modeloDAO.findAll();
+        Modelo modelo = modelos.get(1);
+        modelo.setAutomoveis(automovelDAO.findAutomovelByModelo(modelos.get(0).getDescricao()));
+        System.out.println(modelo);
     }
 }

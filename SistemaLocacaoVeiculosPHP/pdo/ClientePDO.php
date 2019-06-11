@@ -34,10 +34,10 @@ class ClientePDO extends ConnectPDO{
 
         
     }
-    function findByClient(Cliente $clientes){
+    function findByClient($cliente){
         try {
-            $stmt = $this->conn->prepare("SELECT * FROM clientes WHERE descricao  = initcap(?)");
-            $stmt->bindValue(1, $clientes->getNome_cli());
+            $stmt = $this->conn->prepare("SELECT * FROM clientes WHERE nome_cli  = initcap(?)");
+            $stmt->bindValue(1, $cliente);
             if($stmt->execute()){
                 $clientes= Array();
                 while($rs = $stmt->fetch(PDO::FETCH_OBJ)){
@@ -54,7 +54,7 @@ class ClientePDO extends ConnectPDO{
 
         
     }
-    function update( $clientes){
+    function update($clientes){
         
         $stmt = $this->conn->prepare('UPDATE clientes SET cpf_cli = ?, nome_cli = initcap(?), end_cli = initcap(?), tel_cliente = ?, email_cli = ?, situacao = ?');
         $stmt->bindValue(1, $clientes->getCpf_cli());
@@ -67,7 +67,7 @@ class ClientePDO extends ConnectPDO{
       
         return $stmt->execute();
     }
-    function insert( $cliente){
+    function insert($cliente){
         $stmt = $this->conn->prepare('INSERT INTO clientes (cpf_cli,nome_cli,end_cli,tel_cliente,email_cli,situacao) VALUES(?,initcap(?),initcap(?),?,?,?)');
         $stmt->bindValue(1, $cliente->getCpf_cli());
         $stmt->bindValue(2, $cliente->getNome_cli());
@@ -85,12 +85,14 @@ class ClientePDO extends ConnectPDO{
         $stmt->bindValue(2, $cliente->getCpf_cli());
         return $stmt->execute();
     }
-    function reactivateCliente(Cliente $cliente){
-        $stmt = $this->conn->prepare('UPDATE modelo SET situacao = ? WHERE cpf_cli = ?');
+    
+    function reactivateCliente($cliente){
+        $stmt = $this->conn->prepare('UPDATE cliente SET situacao = ? WHERE cpf_cli = ?');
         $stmt->bindValue(1, true);
         $stmt->bindValue(2, $cliente->getCpf_cli());
         return $stmt->execute();
     }
+    
     private function resultSetToClientes($rs){
         $cliente = new Cliente();
         $cliente->setCpf_cli($rs->cpf_cli);

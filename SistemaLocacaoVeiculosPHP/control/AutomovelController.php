@@ -24,22 +24,24 @@ $marcaPD0 = new MarcaPDO();
 $modeloPDO = new ModeloPDO();
 $automovelPDO = new AutomovelPDO();
 
-$marca = $marcaPD0->findByMarca("ford");
-$modelo = $modeloPDO->findByModelo("ka");
-$modelo[0]->setMarca($marca[0]->getMarca());
 
-$automovel = new Automovel($modelo[0]->getDescricao());
-$automovel->setChassi(123123123123);
-$automovel->setCor("azul");
-$automovel->setKm(100);
+$modelo = $modeloPDO->findByModelo("fiesta");
+$modelo = $modelo[0];
+
+$automovel = new Automovel($modelo);
+$automovel->setChassi("123321123321");
+$automovel->setCor("preto");
+$automovel->setKm(123);
+$automovel->setModelo($modelo);
 $automovel->setNroPortas(4);
-$automovel->setPlaca("ABC1234");
-$automovel->setRenavan(987654321);
+$automovel->setPlaca("III1234");
+$automovel->setRenavan(9876543210);
 $automovel->setSituacao(true);
 $automovel->setTipoCombustivel(1);
-$automovel->setValorLocacao(100);
+$automovel->setValorLocacao(150);
+$automovelPDO = new AutomovelPDO();
 
 //$automovelPDO->insert($automovel);
-$res = $automovelPDO->findAll();
+print_r($automovelPDO->findCarByCor("p"));
 
-print_r($res);
+//print_r($automovel);

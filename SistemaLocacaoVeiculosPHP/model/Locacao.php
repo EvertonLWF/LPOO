@@ -25,8 +25,9 @@ class Locacao {
     private $automovel;
     private $situacao;
     
-    function __construct() {
-        
+    function __construct($cliente,$automovel) {
+        $this->automovel = $automovel;
+        $this->cliente = $cliente;
     }
 
     function getDt_locacao() {

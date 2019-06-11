@@ -35,18 +35,18 @@ class ModeloPDO extends ConnectPDO{
         } catch (SQLException $exc) {
             echo $exc->getTraceAsString()+'Erro findAll Modelo !!!!';
         }
-                return $auto;
+        return $auto;
     }
     
     
     
     function findByModelo($modelo){
-            
+            $modelos = null;
         try {
             $stmt = $this->conn->prepare("SELECT * FROM modelo WHERE descmodelo = initcap(?) AND situacao = true");
             $stmt->bindValue(1, $modelo);
             if($stmt->execute()){
-                $modelos= Array();
+                $modelos = Array();
                 while($rs = $stmt->fetch(PDO::FETCH_OBJ)){
                     array_push($modelos, $this->resultSetToModelo($rs));
                 }
@@ -56,7 +56,7 @@ class ModeloPDO extends ConnectPDO{
             echo $exc->getTraceAsString()+' Erro findByAuto !!!!!';
             $modelos = null;
         }
-                return $modelos;
+        return $modelos;
 
         
     }

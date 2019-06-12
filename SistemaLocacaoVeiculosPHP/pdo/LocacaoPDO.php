@@ -73,7 +73,7 @@ class LocacaoPDO extends ConnectPDO{
                 while($rs = $stmt->fetch(PDO::FETCH_OBJ)){
                     array_push($locacoes, $this->resultSetToLocacao($rs));
                 }
-                return $locacoes[0];
+                return $locacoes;
             }else{
                 return null;
             }
@@ -92,12 +92,31 @@ class LocacaoPDO extends ConnectPDO{
                 while($rs = $stmt->fetch(PDO::FETCH_OBJ)){
                     array_push($locacoes, $this->resultSetToLocacao($rs));
                 }
-                return $locacoes[0];
+                return $locacoes;
             }else{
                 return null;
             }
         } catch (SQLException $exc) {
             echo $exc->getTraceAsString()+'Erro findLocacaoByrenavan !!!';
+            return null;
+        }
+       
+    }
+    function findLocacaoByDate($date){
+        try {
+            $stmt = $this->conn->prepare("SELECT * FROM locacao WHERE dt_locacao = ? AND situacao = true");
+            $stmt->bindValue(1, $date);
+            if($stmt->execute()){
+                $locacoes= Array();
+                while($rs = $stmt->fetch(PDO::FETCH_OBJ)){
+                    array_push($locacoes, $this->resultSetToLocacao($rs));
+                }
+                return $locacoes;
+            }else{
+                return null;
+            }
+        } catch (SQLException $exc) {
+            echo $exc->getTraceAsString()+'Erro findLocacaoByDate !!!';
             return null;
         }
        

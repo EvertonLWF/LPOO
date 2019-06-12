@@ -38,6 +38,6 @@ $locacao->setVl_locacao($valorLocacao);
 $locacao->setSituacao(TRUE);
 
 //$locacaoPDO->insert($locacao);
-$loc = $locacaoPDO->findLocacaoByRenavan(9876543210);
+$loc = $locacaoPDO->findLocacaoByDate('12-06-2019');
 
 print_r($loc);

@@ -1,5 +1,13 @@
 <?php
 
+include_once "../model/Locacao.php";
+
+include_once "../model/Automovel.php";
+
+include_once "../model/Cliente.php";
+
+include_once "ConnectPDO.php";
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -15,7 +23,8 @@ class LocacaoPDO extends ConnectPDO{
     private $conn;
     
     function __construct() {
-        $this->conn = parent::getConnect() ;
+        $this->conn = parent::getConnect();
+         
     }
     function findAll(){
         try {
@@ -45,7 +54,7 @@ class LocacaoPDO extends ConnectPDO{
                 while($rs = $stmt->fetch(PDO::FETCH_OBJ)){
                     array_push($locacoes, $this->resultSetToLocacao($rs));
                 }
-                return $locacoes;
+                return $locacoes[0];
             }else{
                 return null;
             }
@@ -64,7 +73,7 @@ class LocacaoPDO extends ConnectPDO{
                 while($rs = $stmt->fetch(PDO::FETCH_OBJ)){
                     array_push($locacoes, $this->resultSetToLocacao($rs));
                 }
-                return $locacoes;
+                return $locacoes[0];
             }else{
                 return null;
             }
@@ -74,16 +83,16 @@ class LocacaoPDO extends ConnectPDO{
         }
        
     }
-    function findLocacaoByRenavan($cpf){
+    function findLocacaoByRenavan($renavan){
         try {
             $stmt = $this->conn->prepare("SELECT * FROM locacao WHERE renavan = ? AND situacao = true");
-            $stmt->bindValue(1, $cpf);
+            $stmt->bindValue(1, $renavan);
             if($stmt->execute()){
                 $locacoes= Array();
                 while($rs = $stmt->fetch(PDO::FETCH_OBJ)){
                     array_push($locacoes, $this->resultSetToLocacao($rs));
                 }
-                return $locacoes;
+                return $locacoes[0];
             }else{
                 return null;
             }
@@ -108,18 +117,20 @@ class LocacaoPDO extends ConnectPDO{
     }
     
     function insert($loc){
-        $stmt = $this->conn->prepare('INSERT INTO locacao (id_locacao,dt_locacao,hr_locacao,dt_devolocao,hr_devolucao,km,valor_caucao,valor_locacao,cpf_cli,renavan) VALUES(?,?,?,?,?,?,?,?,?,?)');
+        $stmt = $this->conn->prepare('INSERT INTO locacao (id_locacao,dt_locacao,hr_locacao,dt_devolucao,hr_devolucao,km,valor_caucao,valor_locacao,cpf_cli,renavan,situacao,devolvido) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)');
         $date = DateTime::createFromFormat('U.u', microtime(TRUE));
-        $stmt->bindValue(1, md5($date->format('Y-m-d H:i:s.u')));
-        $stmt->bindValue(2, $date->format('Y-m-d'));
-        $stmt->bindValue(3, $date->format('H:i:s.u'));
-        $stmt->bindValue(4, $loc->getDt_devolucao());
-        $stmt->bindValue(5, $loc->getHora_devolucao());
-        $stmt->bindValue(6, $loc->getKm());
-        $stmt->bindValue(7, $loc->getVl_calcao());
-        $stmt->bindValue(8, $loc->getVl_locacao());
-        $stmt->bindValue(9, $loc->getCliente());
-        $stmt->bindValue(10, $loc->getAutomovel());
+        $stmt->bindValue(1, md5($date->format('Y-m-d H:i:s.u')));//ok
+        $stmt->bindValue(2, $date->format('Y-m-d'));//ok
+        $stmt->bindValue(3, $date->format('H:i:s.u'));//ok
+        $stmt->bindValue(4, $loc->getDt_devolucao());//ok
+        $stmt->bindValue(5, $loc->getHora_devolucao());//ok
+        $stmt->bindValue(6, $loc->getKm());//km
+        $stmt->bindValue(7, $loc->getVl_calcao());//ok
+        $stmt->bindValue(8, $loc->getVl_locacao());//ok
+        $stmt->bindValue(9, $loc->getCliente()->getCpf_Cli());//ok
+        $stmt->bindValue(10, $loc->getAutomovel()->getRenavan());//ok
+        $stmt->bindValue(11, $loc->getSituacao());
+        $stmt->bindValue(12, $loc->getDevolvido());
        
         return $stmt->execute();
     }
@@ -138,17 +149,17 @@ class LocacaoPDO extends ConnectPDO{
         return $stmt->execute();
     }
     private function resultSetToLocacao($rs){
-        $locacao  = new Locacao($rs->cli_cpf,$rs->renavan);
-        $locacao->getDevolvido($rs->devolvido);
-        $locacao->getDt_devolucao($rs->dt_devolucao);
-        $locacao->getDt_locacao($rs->dt_locacao);
-        $locacao->getHora_devolucao($rs->hr_devolucao);
-        $locacao->getHora_locacao($rs->hr_locacao);
-        $locacao->getKm($rs->km);
-        $locacao->getId($rs->id_locacao);
-        $locacao->getSituacao($rs->situacao);
-        $locacao->getVl_calcao($rs->vl_caucao);
-        $locacao->getVl_locacao($rs->vl_locacao);
+        $locacao  = new Locacao($rs->cpf_cli,$rs->renavan);
+        $locacao->setId_locacao($rs->id_locacao);
+        $locacao->setDt_locacao($rs->dt_locacao);
+        $locacao->setHora_locacao($rs->hr_locacao);
+        $locacao->setDt_devolucao($rs->dt_devolucao);
+        $locacao->setHora_devolucao($rs->hr_devolucao);
+        $locacao->setKm($rs->km);
+        $locacao->setVl_calcao($rs->valor_caucao);
+        $locacao->setVl_locacao($rs->valor_locacao);
+        $locacao->setSituacao($rs->situacao);
+        $locacao->setDevolvido($rs->devolvido);
       
         return $locacao;
     }

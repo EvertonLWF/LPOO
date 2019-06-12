@@ -1,5 +1,7 @@
 <?php
 
+include_once "../model/Automovel.php";
+
 include_once "ConnectPDO.php";
 
 /**
@@ -34,7 +36,7 @@ class AutomovelPDO extends ConnectPDO{
 
         
     }
-    function findCarByMarca($car){
+    function findCarByModelo($car){
         try {
             $stmt = $this->conn->prepare("SELECT * FROM automovel WHERE descmodelo LIKE initcap(?) AND situacao = true");
             $stmt->bindValue(1, $car.'%');
@@ -48,7 +50,7 @@ class AutomovelPDO extends ConnectPDO{
                 return null;
             }
         } catch (SQLException $exc) {
-            echo $exc->getTraceAsString()+'Erro findCarByCar !!!';
+            echo $exc->getTraceAsString()+'Erro findCarByModelo !!!';
             return null;
         }
 

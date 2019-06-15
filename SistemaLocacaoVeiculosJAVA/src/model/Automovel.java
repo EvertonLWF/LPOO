@@ -25,6 +25,9 @@ public class Automovel {
     private Modelo modelo = new Modelo(marca);
     private boolean situacao;
     
+    public Automovel() {
+     
+    }
     public Automovel(Modelo modelo) {
         this.modelo = modelo;
     }
@@ -139,7 +142,7 @@ public class Automovel {
 
     @Override
     public String toString() {
-        return "\n Automovel{" + "PLACA = " + placa + ", COR = " + cor + ", CHASSI = " + chassi + ", NUMERO DE PORTAS = " + nroPortas + ", TIPO DE COMBUSTIVEL = " + tipoCombustivel + ", KM = " + km + ", RENAVAN = " + renavan + ", VALOR DA LOCACAO = " + valorLocacao + ", MODELO = " + modelo.getDescricao() + ", SITUACAO = " + situacao + '}';
+        return " Automovel{" + "PLACA = " + placa + ", COR = " + cor + ", CHASSI = " + chassi + ", NUMERO DE PORTAS = " + nroPortas + ", TIPO DE COMBUSTIVEL = " + tipoCombustivel + ", KM = " + km + ", RENAVAN = " + renavan + ", VALOR DA LOCACAO = " + valorLocacao + ", MODELO = " + modelo.getDescricao() + ", SITUACAO = " + situacao + '}';
     }
     
     

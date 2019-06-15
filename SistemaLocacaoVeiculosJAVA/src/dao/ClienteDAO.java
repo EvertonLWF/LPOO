@@ -45,13 +45,13 @@ public class ClienteDAO extends ConnectDAO {
         return resultado;
         
     }
-    public List<Cliente> findByMarca(String descricao){
+    public List<Cliente> findByNome(String descricao){
         List<Cliente> resultado = new ArrayList<>();
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         try {
              conn = super.getConnect();
-             statement = conn.prepareStatement("SELECT * FROM clientes WHERE descricao = initcap(?)");
+             statement = conn.prepareStatement("SELECT * FROM clientes WHERE nome_cli = initcap(?)");
              statement.setString(1, descricao);
              resultSet = statement.executeQuery();
              
@@ -64,7 +64,30 @@ public class ClienteDAO extends ConnectDAO {
              conn.close();
         }
         catch(SQLException ex){
-            System.out.println("Erro findByCliente "+ex);
+            System.out.println("Erro findByNome Cliente "+ex);
+        }
+        return resultado;
+    }
+    public List<Cliente> findByCpf(Long cpf){
+        List<Cliente> resultado = new ArrayList<>();
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        try {
+             conn = super.getConnect();
+             statement = conn.prepareStatement("SELECT * FROM clientes WHERE cpf_cli = ?");
+             statement.setLong(1, cpf);
+             resultSet = statement.executeQuery();
+             
+             while(resultSet.next()){
+                 Cliente cliente = new Cliente(resultSet);
+                 resultado.add(cliente);
+             }
+             resultSet.close();
+             statement.close();
+             conn.close();
+        }
+        catch(SQLException ex){
+            System.out.println("Erro findByCpf Cliente "+ex);
         }
         return resultado;
     }

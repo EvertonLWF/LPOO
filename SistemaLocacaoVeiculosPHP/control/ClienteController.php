@@ -21,7 +21,7 @@ $cliente->setTel_cli(5399887766);
 
 
 $clientePDO = new ClientePDO();
-$resp = $clientePDO->findAll();
+$resp = $clientePDO->findByClient("zé");
 //$res = $clientePDO->insert($cliente);
 //print_r($resp);
-echo  $resp[0]->getNome_cli();
+echo  $resp[0];

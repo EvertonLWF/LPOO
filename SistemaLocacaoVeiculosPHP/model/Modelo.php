@@ -57,7 +57,7 @@ class Modelo{
 
         
     function __toString() {
-        return "DESCRICAO = $this->descricao MARCA = ". var_dump($this->marca) ."AUTOMOVEIS = ".  var_dump($this->automoveis)." SITUACAO = $this->situacao \n";
+        return "DESCRICAO = $this->descricao MARCA = ". print_r($this->marca)." AUTOMOVEIS = ". print_r($this->automoveis)." SITUACAO = $this->situacao \n";
     }
     
 }

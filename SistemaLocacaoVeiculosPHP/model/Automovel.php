@@ -1,5 +1,6 @@
 <?php
 
+include_once "Modelo.php";
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -24,8 +25,10 @@ class Automovel {
     private $modelo; 
     private $locacao = [];    
     
-    public function __construct($modelo) {
-        $this->modelo = $modelo;
+    public function __construct($descricao) {
+        $marca = null;
+        $this->modelo = new Modelo($marca);
+        $this->modelo->setDescricao($descricao);
     }
 
     function setLocacao($locacao){
@@ -112,7 +115,7 @@ class Automovel {
         $this->valorLocacao = $valorLocacao;
     }
     function __toString() {
-        return "MODELO = $this->modelo; SITUACAO = $this->situacao; KM = $this->Km; CHASSI = $this->chassi; COR = $this->cor; NUMERO PORTAS = $this->nroPortas; RENAVAN = $this->placa $this->renavan; TIPO COMBUSTIVEL $this->tipoCombustivel; VALOR LOCACAO $this->valorLocacao";
+        return "MODELO = ".$this->modelo->getDescricao()." SITUACAO = $this->situacao KM = $this->Km CHASSI = $this->chassi COR = $this->cor NUMERO PORTAS = $this->nroPortas RENAVAN = $this->placa $this->renavan TIPO COMBUSTIVEL $this->tipoCombustivel VALOR LOCACAO $this->valorLocacao";
     }
 
 }

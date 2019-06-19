@@ -1,5 +1,9 @@
 <?php
 
+include_once "Automovel.php";
+
+include_once "Cliente.php";
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -25,9 +29,13 @@ class Locacao {
     private $automovel;
     private $situacao;
     
-    function __construct($cliente,$automovel) {
-        $this->automovel = $automovel;
-        $this->cliente = $cliente;
+    function __construct($cpf,$renavan) {
+        $this->automovel = new Automovel();
+        $this->automovel->setRenavan($renavan);
+        $this->cliente = new Cliente();
+        $this->cliente->setCpf_cli($cpf);
+        
+       
     }
 
     public function getId_locacao() {
@@ -128,7 +136,7 @@ class Locacao {
 
         
     function __toString() {
-        return "ID = $this->id_locacao SITUACAO = $this->situacao CLIENTE = $this->cliente DEVOLVIDO  = $this->devolvido DATA DEVOLUCAO  = $this->dt_devolucao DATA LOCACAO  = $this->dt_locacao HORA DEVOLUCAO = $this->hora_devolucao HORA LOCACAO = $this->hora_locacao KILOMETRAGEM $this->km.KM VALOR CALCAO = $this->vl_calcao VALOR LOCACAO = $this->vl_locacao AUTOMOVEL =  $this->automovel";
+        return "ID = $this->id_locacao SITUACAO = $this->situacao CLIENTE =".var_dump($this->cliente)." DEVOLVIDO  = $this->devolvido DATA DEVOLUCAO  = $this->dt_devolucao DATA LOCACAO  = $this->dt_locacao HORA DEVOLUCAO = $this->hora_devolucao HORA LOCACAO = $this->hora_locacao KILOMETRAGEM $this->km.KM VALOR CALCAO = $this->vl_calcao VALOR LOCACAO = $this->vl_locacao AUTOMOVEL =  $this->automovel";
     }
 
 

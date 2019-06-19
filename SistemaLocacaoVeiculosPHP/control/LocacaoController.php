@@ -19,25 +19,25 @@ include_once "../pdo/ClientePDO.php";
  *
  * @author feijo
  */
-$clientePDO = new ClientePDO();
-$automovelPDO = new AutomovelPDO();
+//$clientePDO = new ClientePDO();
+//$automovelPDO = new AutomovelPDO();
 $locacaoPDO = new LocacaoPDO();
-$cliente = $clientePDO->findByClient("zé");
-$automovel = $automovelPDO->findCarByModelo("f");
-$dias = 10;
-$valorLocacao = $dias*$automovel[0]->getValorlocacao();
-$valorCalcao = $valorLocacao*0.3;
-
-$locacao = new Locacao($cliente[0], $automovel[0]);
-$locacao->setDevolvido(0);
-$locacao->setHora_devolucao(date('H:i:s'));
-$locacao->setDt_devolucao(date('d-m-Y',  strtotime("+$dias days")));
-$locacao->setKm($automovel[0]->getKm());
-$locacao->setVl_calcao($valorCalcao);
-$locacao->setVl_locacao($valorLocacao);
-$locacao->setSituacao(TRUE);
+//$cliente = $clientePDO->findByClient("zé");
+//$automovel = $automovelPDO->findCarByModelo("f");
+//$dias = 10;
+//$valorLocacao = $dias*$automovel[0]->getValorlocacao();
+//$valorCalcao = $valorLocacao*0.3;
+//
+//$locacao = new Locacao($cliente[0], $automovel[0]);
+//$locacao->setDevolvido(0);
+//$locacao->setHora_devolucao(date('H:i:s'));
+//$locacao->setDt_devolucao(date('d-m-Y', strtotime("+$dias days")));
+//$locacao->setKm($automovel[0]->getKm());
+//$locacao->setVl_calcao($valorCalcao);
+//$locacao->setVl_locacao($valorLocacao);
+//$locacao->setSituacao(TRUE);
 
 //$locacaoPDO->insert($locacao);
-$loc = $locacaoPDO->findLocacaoByDate('12-06-2019');
+$loc = $locacaoPDO->findAll();
 
 print_r($loc);

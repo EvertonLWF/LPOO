@@ -203,7 +203,7 @@ class AutomovelController{
         $operacao = rtrim(fgets(STDIN));
         
         if(!strcasecmp($operacao, "s")){
-            if($this->automovelPDO->deleteSoft($auto[0]->getPlaca())){
+            if($this->automovelPDO->deleteSoft($auto[0])){
                 echo "\nAutomovel excluído.";
             }else{
                 echo "\nFalha ao desativar veiculo.";
@@ -245,13 +245,13 @@ class AutomovelController{
     //update (case 7)
     private function reativarAutoByPlaca(){
         echo "\nDigite a placa do automovel que você deseja reativar: ";
-        $auto = $this->automovelPDO->findCarByPlaca(rtrim(fgets(STDIN)));
+        $auto = $this->automovelPDO->findCarInactivityByPlaca(rtrim(fgets(STDIN)));
         print_r($auto);
         echo "\nConfirmar a operação (s/n)? ";
         $operacao = rtrim(fgets(STDIN));
         
         if(!strcasecmp($operacao, "s")){
-            if($this->automovelPDO->reactivateAutomovel($auto)){
+            if($this->automovelPDO->reactivateAutomovel($auto[0])){
                 echo "\nAutomovel reativado.";
             }else{
                 echo "\nFalha ao reativar o Automovel.";

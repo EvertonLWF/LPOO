@@ -36,6 +36,25 @@ class AutomovelPDO extends ConnectPDO{
 
         
     }
+    function findAllInactivity(){
+        try {
+            $stmt = $this->conn->prepare("SELECT * FROM automovel WHERE situacao = false");
+            if($stmt->execute()){
+                $cars= Array();
+                while($rs = $stmt->fetch(PDO::FETCH_OBJ)){
+                    array_push($cars, $this->resultSetAutomoveis($rs));
+                }
+                return $cars;
+            }else{
+                return null;
+            }
+        } catch (SQLException $exc) {
+            echo $exc->getTraceAsString()+' Erro findAllInactivity Automoveis!!!';
+            return null;
+        }
+
+        
+    }
     function findCarByModelo($car){
         try {
             $stmt = $this->conn->prepare("SELECT * FROM automovel WHERE descmodelo LIKE initcap(?) AND situacao = true");
@@ -59,6 +78,26 @@ class AutomovelPDO extends ConnectPDO{
     function findCarByPlaca($placa){
         try {
             $stmt = $this->conn->prepare("SELECT * FROM automovel WHERE placa LIKE upper(?) AND situacao = true");
+            $stmt->bindValue(1, $placa.'%');
+            if($stmt->execute()){
+                $cars= Array();
+                while($rs = $stmt->fetch(PDO::FETCH_OBJ)){
+                    array_push($cars, $this->resultSetAutomoveis($rs));
+                }
+                return $cars;
+            }else{
+                return null;
+            }
+        } catch (SQLException $exc) {
+            echo $exc->getTraceAsString()+'Erro findCarByPlaca !!!';
+            return null;
+        }
+
+        
+    }
+    function findCarInactivityByPlaca($placa){
+        try {
+            $stmt = $this->conn->prepare("SELECT * FROM automovel WHERE placa LIKE upper(?) AND situacao = false");
             $stmt->bindValue(1, $placa.'%');
             if($stmt->execute()){
                 $cars= Array();
@@ -149,17 +188,17 @@ class AutomovelPDO extends ConnectPDO{
     }
     
     function deleteSoft($car){
-        $stmt = $this->conn->prepare('UPDATE automovel SET situacao = ? WHERE renavan = ?');
-        $stmt->bindValue(1, $car->getRenavan());
-        $stmt->bindValue(2, null);
+        $stmt = $this->conn->prepare('UPDATE automovel SET situacao = ? WHERE placa = ?');
+        $stmt->bindValue(1, 0);
+        $stmt->bindValue(2, $car->getPlaca());
         
         return $stmt->execute();
     }
     
     function reactivateAutomovel($car){
-        $stmt = $this->conn->prepare('UPDATE automovel SET situacao = ? WHERE renavan = ?');
-        $stmt->bindValue(1, $car->getRenavan());
-        $stmt->bindValue(2, true);
+        $stmt = $this->conn->prepare('UPDATE automovel SET situacao = ? WHERE placa = ?');
+        $stmt->bindValue(1, true);
+        $stmt->bindValue(2, $car->getPlaca());
         
         return $stmt->execute();
     }

@@ -74,15 +74,35 @@ class ClientePDO extends ConnectPDO{
 
         
     }
-    function update($clientes){
+    function findClientByCpfR($cpf){
+        try {
+            $stmt = $this->conn->prepare("SELECT * FROM clientes WHERE cpf_cli  = ? AND situacao = false");
+            $stmt->bindValue(1, $cpf);
+            if($stmt->execute()){
+                $clientes= Array();
+                while($rs = $stmt->fetch(PDO::FETCH_OBJ)){
+                    array_push($clientes, $this->resultSetToClientes($rs));
+                }
+                return $clientes;
+            }else{
+                return null;
+            }
+        } catch (SQLException $exc) {
+            echo $exc->getTraceAsString()+' Erro findClientByCpfReactivate!!!!!';
+            return null;
+        }
+
         
-        $stmt = $this->conn->prepare('UPDATE clientes SET cpf_cli = ?, nome_cli = initcap(?), end_cli = initcap(?), tel_cliente = ?, email_cli = ?, situacao = ?');
-        $stmt->bindValue(1, $clientes->getCpf_cli());
-        $stmt->bindValue(2, $clientes->getNome_cli());
-        $stmt->bindValue(3, $clientes->getEnd_cli());
-        $stmt->bindValue(4, $clientes->getTel_cli());
-        $stmt->bindValue(5, $clientes->getEmail_cli());
-        $stmt->bindValue(6, $clientes->getSituacao());
+    }
+    function update(Cliente $clientes){
+        
+        $stmt = $this->conn->prepare('UPDATE clientes SET nome_cli = initcap(?), end_cli = initcap(?), tel_cliente = ?, email_cli = ?, situacao = ? WHERE cpf_cli = ?');
+        $stmt->bindValue(1, $clientes->getNome_cli());
+        $stmt->bindValue(2, $clientes->getEnd_cli());
+        $stmt->bindValue(3, $clientes->getTel_cli());
+        $stmt->bindValue(4, $clientes->getEmail_cli());
+        $stmt->bindValue(5, $clientes->getSituacao());
+        $stmt->bindValue(6, $clientes->getCpf_cli());
         
       
         return $stmt->execute();
@@ -100,14 +120,14 @@ class ClientePDO extends ConnectPDO{
         
     }
     function deleteSoft($cliente){
-        $stmt = $this->conn->prepare('UPDATE modelo SET situacao = ? WHERE cpf_cli = ?');
-        $stmt->bindValue(1, null);
+        $stmt = $this->conn->prepare('UPDATE clientes SET situacao = ? WHERE cpf_cli = ?');
+        $stmt->bindValue(1, 0);
         $stmt->bindValue(2, $cliente->getCpf_cli());
         return $stmt->execute();
     }
     
     function reactivateCliente($cliente){
-        $stmt = $this->conn->prepare('UPDATE cliente SET situacao = ? WHERE cpf_cli = ?');
+        $stmt = $this->conn->prepare('UPDATE clientes SET situacao = ? WHERE cpf_cli = ?');
         $stmt->bindValue(1, true);
         $stmt->bindValue(2, $cliente->getCpf_cli());
         return $stmt->execute();

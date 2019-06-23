@@ -173,6 +173,7 @@ class LocacaoControler {
 
             // situacao da locacao inicia em true
             $locacao->setSituacao(true);
+            $locacao->setDevolvido(0);
 
             print_r($locacao);
             echo "\nConfirmar a operação (s/n)? ";
@@ -188,8 +189,8 @@ class LocacaoControler {
             if (!strcasecmp($operacao, "n")) {
                 echo "\nOperação cancelada.";
             }
-        } catch (Exception $exc) {
-            echo "Cliente inexistente!!!";
+        } catch (SQLException $exc) {
+            echo "Cliente inexistente!!! ".$exc;
         }
     }
 

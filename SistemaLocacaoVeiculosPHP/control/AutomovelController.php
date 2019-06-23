@@ -20,20 +20,22 @@ include_once "../model/Automovel.php";
  *
  * @author feijo
  */
-class AutomovelController{
+class AutomovelController {
+
     private $automovelPDO;
     private $modeloPDO;
     private $marcaPDO;
-    
+
     public function __construct() {
         $this->marcaPDO = new MarcaPDO();
         $this->modeloPDO = new ModeloPDO;
         $this->automovelPDO = new AutomovelPDO;
     }
-    public function menuAutomovel(){
+
+    public function menuAutomovel() {
         $exit = 1;
-        
-        while ($exit != 0){
+
+        while ($exit != 0) {
             echo "\r\n\n--------- Submenu Automovel ---------";
             echo "\n1. Inserir Automovel";
             echo "\n2. Alterar Automovel";
@@ -44,9 +46,9 @@ class AutomovelController{
             echo "\n7. Listar Automovel pela Cor";
             echo "\n8. Listar Automovel pelo Modelo";
             echo "\n9. Reativar Automovel pelo Renavan";
-            echo "\nOpção (ZERO para sair): "; 
+            echo "\nOpção (ZERO para sair): ";
             $exit = fgets(STDIN);
-            switch ($exit){
+            switch ($exit) {
                 case 0:
                     break;
                 case 1:
@@ -81,187 +83,529 @@ class AutomovelController{
             }
         }
     }
+
     //insert (case 1)
-    private function inserirAuto(){
+    private function inserirAuto() {
         $automovel = new Automovel(" ");
         $automovelPDO = new AutomovelPDO();
+        $automovel->setSituacao(true);
+        A:
         echo"\nDigite o renavan do veiculo: ";
         $renavan = fgets(STDIN);
-        $respRen = $automovelPDO->findCarByRenavan(rtrim($renavan));
-        while(isset($respRen)&& !empty($respRen)){
-                echo"\n este renavan ja existe!!!";
-                $renavan = fgets(STDIN);
-                $respRen = $automovelPDO->findCarByRenavan(rtrim($renavan));
+        if (strlen(rtrim($renavan)) == 11) {
+            try {
+                if (preg_match("/^([a-z-0-9]+)$/i", $renavan)) {
+                    if (preg_match("/^([a-z]+)$/i", $renavan)) {
+                        echo "\nFavor Verifique o renavan voce digitou somente letras!!!";
+                        goto A;
+                    } else {
+                        if (preg_match("/^([0-9]+)$/i", $renavan)) {
+                            $respRen = $automovelPDO->findCarByRenavan($renavan);
+                            while (isset($respRen) && !empty($respRen)) {
+                                echo"\n este renavan ja existe!!!";
+                                goto A;
+                            }
+                            $automovel->setRenavan($renavan);
+                        } else {
+                            echo "\nFavor Verifique o renavan voce digitou numeros misturados com letras!!!";
+                            goto A;
+                        }
+                    }
+                } else {
+                    echo "\nFavor Verifique o renavan !!!";
+                    goto A;
+                }
+            } catch (Exception $ex) {
+                echo "\nFavor Verifique o renavan !!!";
+                goto A;
             }
-        $automovel->setRenavan($renavan);
-        
+        } else {
+            echo "\nFavor Verifique o renavan seram aceitos apenas 11 digitos!!!";
+            goto A;
+        }
+
+        B:
         echo"\nDigite a placa do veiculo: ";
-        $placa = fgets(STDIN);
-        $respPl = $automovelPDO->findCarByPlaca(rtrim($placa));
-        while(isset($respPl)&& !empty($respPl)){
-                echo"\n Esta placa ja esta associada a outro carro!!!";
-                $placa = fgets(STDIN);
-                $respPl = $automovelPDO->findCarByPlaca(rtrim($placa));
+        $placa = rtrim(fgets(STDIN));
+        $letr = substr($placa, 0, 3);
+        $num = substr($placa, 3, 7);
+        if (strlen($placa) == 7) {
+            if (preg_match("/^([a-z]+)$/i", $letr)) {
+                if (preg_match("/^([0-9]+)$/i", $num)) {
+                    $respPl = $automovelPDO->findCarByPlaca(rtrim($placa));
+                    while (isset($respPl) && !empty($respPl)) {
+                        echo"\n Esta placa ja esta associada a outro carro!!!";
+                        $placa = fgets(STDIN);
+                        $respPl = $automovelPDO->findCarByPlaca(rtrim($placa));
+                    }
+                    $automovel->setPlaca($placa);
+                } else {
+                    echo "\nVoce digitou letras no lugar de numeros!!!";
+                    goto B;
+                }
+            } else {
+                echo "\nVoce digitou numeros no lugar letras!!!";
+                goto B;
             }
-        $automovel->setPlaca($placa);
-        
+        } else {
+            echo "\nNomes em branco nao sao aceitos!!!";
+            goto B;
+        }
+
+
+        C:
         echo"\nDigite a cor do veiculo: ";
-        $automovel->setCor(rtrim(fgets(STDIN)));
-        
+        $cor = rtrim(fgets(STDIN));
+        if (strlen($cor) >= 1) {
+            $automovel->setCor($cor);
+        } else {
+            echo "\nCores sem nome nao sao aceitos!!!";
+            goto C;
+        }
+
+
+        D:
         echo"\nDigite o numero de portas do veiculo: ";
-        $automovel->setNroPortas(rtrim(fgets(STDIN)));
-        
+        $porta = rtrim(fgets(STDIN));
+        if (strlen($porta) >= 1) {
+            $automovel->setNroPortas($porta);
+        } else {
+            echo "\nCarro Sem Portas ?";
+            goto D;
+        }
+
+        E:
         echo"\nDigite o tipo de combustivel do veiculo 1-Gasolina 2-Alcool 3-Flex: ";
-        $automovel->setTipoCombustivel(rtrim(fgets(STDIN)));
-        
+        $tipo = rtrim(fgets(STDIN));
+        switch ($tipo) {
+            case 1:
+                $automovel->setTipoCombustivel($tipo);
+                break;
+            case 2:
+                $automovel->setTipoCombustivel($tipo);
+                break;
+            case 3:
+                $automovel->setTipoCombustivel($tipo);
+                break;
+            default :
+                echo "\nEsta opcao nao existe!";
+                goto E;
+                break;
+        }
+
+
+        F:
         echo"\nDigite o numero do chassi do veiculo: ";
-        $automovel->setChassi(rtrim(fgets(STDIN)));
-        
+        $chassi = rtrim(fgets(STDIN));
+        if (strlen($chassi) == 17) {
+            $automovel->setChassi($chassi);
+        } else {
+            echo "\nChassi deve ser composto por 17 digitos !!!";
+            goto F;
+        }
+
+        G:
         echo"\nDigite o Valor da locação do veiculo: ";
-        $automovel->setValorLocacao(rtrim(fgets(STDIN)));
-        
-        echo"\nDigite a kilometragem do veiculo: ";
-        $automovel->setKm(rtrim(fgets(STDIN)));
-        
+        $valor = rtrim(fgets(STDIN));
+        if (isset($valor) && $valor > 0) {
+            $automovel->setValorLocacao($valor);
+        } else {
+            echo "\nValor deve ser positivo!!!";
+            goto G;
+        }
+
+        H:
+        echo"\nDigite a Kilometragem do veiculo: ";
+        $km = rtrim(fgets(STDIN));
+        if (isset($km) && $km >= 0) {
+            $automovel->setKm($km);
+        } else {
+            echo "\nKilometragem deve ser positivo!!!";
+            goto H;
+        }
+
+
         echo"\nDigite a descricao do modelo do veiculo: ";
-        $modelo = $this->modeloPDO->findByModelo(rtrim(fgets(STDIN)));
-        if (isset($modelo)&& !empty($modelo)){
+
+        I:
+        $desc = rtrim(fgets(STDIN));
+        if (strlen($desc) <= 0) {
+            goto I;
+        }
+        $modelo = $this->modeloPDO->findByModelo($desc);
+        if (isset($modelo) && !empty($modelo)) {
             $automovel->setModelo($modelo[0]);
-        }else{
+        } else {
             echo "/n Este modelo não existe!!!!";
-            die();
+            goto I;
         }
-        if($this->automovelPDO->insert($automovel)){
-            echo "\nAutomovel salvo.";
-        }else{
-            echo "\nErro ao salvar.";
-        }
-    }
-    
-    //update (case 2)
-    private function alterarAuto(){
-        echo "\nDigite o renavan do veiculo que você deseja alterar: ";
-        $auto = $this->automovelPDO->findCarByRenavan(rtrim(fgets(STDIN)));
-        $auto = $auto[0];
-        if($auto != null){
-            print_r($auto);
-            
-            echo "\nDigite a placa do veiculo: ";
-            $placa = fgets(STDIN);
-            if($placa != "\n"){
-                $auto->setPlaca(rtrim($placa));
-            }
-            echo "\nDigite a cor do veiculo: ";
-            $cor = fgets(STDIN);
-            if($cor != "\n"){
-                $auto->setCor(rtrim($cor));
-            }
-            echo "\nDigite numero de portas do veiculo: ";
-            $portas = fgets(STDIN);
-            if($portas != "\n"){
-                $auto->setNroPortas(rtrim($portas));
-            }
-            echo "\nDigite o chassi do veiculo: ";
-            $chassi = fgets(STDIN);
-            if($chassi != "\n"){
-                $auto->setChassi(rtrim($chassi));
-            }
-            echo "\nDigite o valor da locação do veiculo: ";
-            $vl = fgets(STDIN);
-            if($vl != "\n"){
-                $auto->setValorLocacao(rtrim($vl));
-            }
-            echo "\nDigite descrição do modelo do veiculo: ";
-            $desc = fgets(STDIN);
-            if($desc != "\n"){
-                $modelo = $this->modeloPDO->findByModelo(rtrim($desc));
-                $auto->setModelo($modelo[0]->getDescricao());
-            }
-            
-            echo "\nDigite a kilometragem do veiculo: ";
-            $km = fgets(STDIN);
-            if($km != "\n"){
-                $auto->setKm(rtrim($km));
-            }
-            
-            if($this->automovelPDO->update($auto)){
-                echo "\nAutomovel alterado.";
-            }else{
-                echo "\nErro ao alterar o Automovel.";
-            }
-        }else{
-            echo "\nNão há Automovel cadastrados com esse Renavan.";
-        }
-    }
-    
-    //update (case 3)
-    private function excluirAuto(){
-        echo "\nDigite a placa do veiculo que você deseja tornar inativo: ";
-        $auto = $this->automovelPDO->findCarByPlaca(rtrim(fgets(STDIN)));
-        print_r($auto);
+        print_r($automovel);
         echo "\nConfirmar a operação (s/n)? ";
         $operacao = rtrim(fgets(STDIN));
-        
-        if(!strcasecmp($operacao, "s")){
-            if($this->automovelPDO->deleteSoft($auto[0])){
-                echo "\nAutomovel excluído.";
-            }else{
-                echo "\nFalha ao desativar veiculo.";
-            }       
+
+        if (!strcasecmp($operacao, "s")) {
+            if ($this->automovelPDO->insert($automovel)) {
+                echo "\nAutomovel salvo.";
+            } else {
+                echo "\nFalha ao salvar o Automovel.";
+            }
         }
-        if(!strcasecmp($operacao, "n")){
+        if (!strcasecmp($operacao, "n")) {
             echo "\nOperação cancelada.";
         }
     }
 
+    //update (case 2)
+    private function alterarAuto() {
+        A:
+        echo "\nDigite placa do veiculo que você deseja alterar: ";
+        $placa = rtrim(fgets(STDIN));
+        if (strlen($placa) == 0 || strlen($placa) < 7) {
+            echo"\nPlaca nao esta no formato correto!!!: ";
+            goto A;
+        }
+        $auto = $this->automovelPDO->findCarByPlaca($placa);
+        $automovel = $auto[0];
+        if ($auto != null) {
+            print_r($auto);
+
+            B:
+            echo"\nDigite a placa do veiculo: ";
+            $placa = rtrim(fgets(STDIN));
+            if (strlen($placa) == 0) {
+                echo"\nPlacas em branco nao seram aceitas!!!: ";
+                goto B;
+            }
+            $letr = substr($placa, 0, 3);
+            $num = substr($placa, 3, 7);
+            if (strlen($placa) == 7) {
+                if (preg_match("/^([a-z]+)$/i", $letr)) {
+                    if (preg_match("/^([0-9]+)$/i", $num)) {
+                        $respPl = $this->automovelPDO->findCarByPlaca(rtrim($placa));
+                        while (isset($respPl) && !empty($respPl)) {
+                            echo"\n Esta placa ja esta associada a outro carro!!!";
+                            goto B;
+                        }
+                        $automovel->setPlaca($placa);
+                    } else {
+                        echo "\nVoce digitou letras no lugar de numeros!!!";
+                        goto B;
+                    }
+                } else {
+                    echo "\nVoce digitou numeros no lugar letras!!!";
+                    goto B;
+                }
+            } else {
+                echo "\nA placa esta incompleta!!!";
+                goto B;
+            }
+
+
+            C:
+            echo"\nDigite a cor do veiculo: ";
+            $cor = rtrim(fgets(STDIN));
+            if (strlen($cor) >= 1) {
+                $automovel->setCor($cor);
+            } else {
+                echo "\nCores sem nome nao sao aceitos!!!";
+                goto C;
+            }
+
+
+            D:
+            echo"\nDigite o numero de portas do veiculo: ";
+            $porta = rtrim(fgets(STDIN));
+            if (strlen($porta) >= 1) {
+                $automovel->setNroPortas($porta);
+            } else {
+                echo "\nCarro Sem Portas ?";
+                goto D;
+            }
+
+            E:
+            echo"\nDigite o tipo de combustivel do veiculo 1-Gasolina 2-Alcool 3-Flex: ";
+            $tipo = rtrim(fgets(STDIN));
+            switch ($tipo) {
+                case 1:
+                    $automovel->setTipoCombustivel($tipo);
+                    break;
+                case 2:
+                    $automovel->setTipoCombustivel($tipo);
+                    break;
+                case 3:
+                    $automovel->setTipoCombustivel($tipo);
+                    break;
+                default :
+                    echo "\nEsta opcao nao existe!";
+                    goto E;
+                    break;
+            }
+
+
+            F:
+            echo"\nDigite o numero do chassi do veiculo: ";
+            $chassi = rtrim(fgets(STDIN));
+            if (strlen($chassi) == 17) {
+                $automovel->setChassi($chassi);
+            } else {
+                echo "\nChassi deve ser composto por 17 digitos !!!";
+                goto F;
+            }
+
+            G:
+            echo"\nDigite o Valor da locação do veiculo: ";
+            $valor = rtrim(fgets(STDIN));
+            if (isset($valor) && $valor > 0) {
+                $automovel->setValorLocacao($valor);
+            } else {
+                echo "\nValor deve ser positivo!!!";
+                goto G;
+            }
+
+            H:
+            echo"\nDigite a Kilometragem do veiculo: ";
+            $km = rtrim(fgets(STDIN));
+            if (isset($km) && $km >= 0) {
+                $automovel->setKm($km);
+            } else {
+                echo "\nKilometragem deve ser positivo!!!";
+                goto H;
+            }
+
+
+            echo"\nDigite a descricao do modelo do veiculo: ";
+
+            I:
+            $desc = rtrim(fgets(STDIN));
+            if (strlen($desc) <= 0) {
+                goto I;
+            }
+            $modelo = $this->modeloPDO->findByModelo($desc);
+            if (isset($modelo) && !empty($modelo)) {
+                $automovel->setModelo($modelo[0]);
+            } else {
+                echo "/n Este modelo não existe!!!!";
+                goto I;
+            }
+            print_r($automovel);
+            echo "\nConfirmar a operação (s/n)? ";
+            $operacao = rtrim(fgets(STDIN));
+
+            if (!strcasecmp($operacao, "s")) {
+                if ($this->automovelPDO->update($automovel)) {
+                    echo "\nAutomovel salvo.";
+                } else {
+                    echo "\nFalha ao alterar o Automovel.";
+                }
+            }
+            if (!strcasecmp($operacao, "n")) {
+                echo "\nOperação cancelada.";
+            }
+        } else {
+            echo "\nNão há Automovel cadastrados com esse Renavan.";
+        }
+    }
+
+    //update (case 3)
+    private function excluirAuto() {
+        B:
+        echo"\nDigite a placa do veiculo: ";
+        $placa = rtrim(fgets(STDIN));
+        $letr = substr($placa, 0, 3);
+        $num = substr($placa, 3, 7);
+        if (strlen($placa) == 7) {
+            if (preg_match("/^([a-z]+)$/i", $letr)) {
+                if (preg_match("/^([0-9]+)$/i", $num)) {
+                    $auto = $this->automovelPDO->findCarByPlaca(rtrim($placa));
+                    while (isset($auto) && empty($auto)) {
+                        echo"\n Esta placa nao esta associada a um carro!!!";
+                        goto B;
+                    }
+                    print_r($auto);
+                    echo "\nConfirmar a operação (s/n)? ";
+                    $operacao = rtrim(fgets(STDIN));
+
+                    if (!strcasecmp($operacao, "s")) {
+                        if ($this->automovelPDO->deleteSoft($auto[0])) {
+                            echo "\nAutomovel excluído.";
+                        } else {
+                            echo "\nFalha ao desativar veiculo.";
+                        }
+                    }
+                    if (!strcasecmp($operacao, "n")) {
+                        echo "\nOperação cancelada.";
+                    }
+                } else {
+                    echo "\nVoce digitou letras no lugar de numeros!!!";
+                    goto B;
+                }
+            } else {
+                echo "\nVoce digitou numeros no lugar letras!!!";
+                goto B;
+            }
+        } else {
+            echo "\nA placa deve ser composta de 3 letras e 4 numeros!!!";
+            goto B;
+        }
+    }
+
     //findAll ou SELECT sem filtros (case 4)
-    private function listarTodosAutos(){
+    private function listarTodosAutos() {
         print_r($this->automovelPDO->findAll());
     }
-    
+
     //find for name ou SELECT com filtros (case 5)
-    private function listarAutoPeloRenavan(){
-        echo "\nInforme o renavan do veiculo a ser consultado: ";
-        $renavan = rtrim(fgets(STDIN));   
-        print_r($this->automovelPDO->findCarByRenavan($renavan));
-    }
-    private function listarAutoPelaPlaca(){
-        echo "\nInforme a placa do veiculo a ser consultado: ";
-        $placa = rtrim(fgets(STDIN));   
-        print_r($this->automovelPDO->findCarByPlaca($placa));
-    }
-    private function listarAutoPelaCor(){
-        echo "\nInforme a Cor do veiculo a ser consultado: ";
-        $cor = rtrim(fgets(STDIN));   
-        print_r($this->automovelPDO->findCarByCor($cor));
-    }
-    private function listarAutoPeloModelo(){
-        echo "\nInforme o modelo do veiculo a ser consultado: ";
-        $modelo = rtrim(fgets(STDIN));   
-        print_r($this->automovelPDO->findCarByModelo($modelo));
-    }
-    
-    
-    //update (case 7)
-    private function reativarAutoByPlaca(){
-        echo "\nDigite a placa do automovel que você deseja reativar: ";
-        $auto = $this->automovelPDO->findCarInactivityByPlaca(rtrim(fgets(STDIN)));
-        print_r($auto);
-        echo "\nConfirmar a operação (s/n)? ";
-        $operacao = rtrim(fgets(STDIN));
-        
-        if(!strcasecmp($operacao, "s")){
-            if($this->automovelPDO->reactivateAutomovel($auto[0])){
-                echo "\nAutomovel reativado.";
-            }else{
-                echo "\nFalha ao reativar o Automovel.";
-            }       
+    private function listarAutoPeloRenavan() {
+        A:
+        echo"\nDigite o renavan do veiculo: ";
+        $renavan = rtrim(fgets(STDIN));
+        if (strlen($renavan) == 11) {
+            try {
+                if (preg_match("/^([a-z-0-9]+)$/i", $renavan)) {
+                    if (preg_match("/^([a-z]+)$/i", $renavan)) {
+                        echo "\nFavor Verifique o renavan voce digitou somente letras!!!";
+                        goto A;
+                    } else {
+                        if (preg_match("/^([0-9]+)$/i", $renavan)) {
+                            $respRen = $this->automovelPDO->findCarByRenavan($renavan);
+                            while (isset($respRen) && empty($respRen)) {
+                                echo"\n este renavan nao existe existe!!!";
+                                goto A;
+                            }
+                            print_r($respRen);
+                        } else {
+                            echo "\nFavor Verifique o renavan voce digitou numeros misturados com letras!!!";
+                            goto A;
+                        }
+                    }
+                } else {
+                    echo "\nFavor Verifique o renavan !!!";
+                    goto A;
+                }
+            } catch (Exception $ex) {
+                echo "\nFavor Verifique o renavan !!!";
+                goto A;
+            }
+        } else {
+            echo "\nFavor Verifique o renavan seram aceitos apenas 11 digitos!!!";
+            goto A;
         }
-        if(!strcasecmp($operacao, "n")){
-            echo "\nOperação cancelada.";
-        }  
     }
+
+    private function listarAutoPelaPlaca() {
+
+        B:
+        echo"\nDigite a placa do veiculo: ";
+        $placa = rtrim(fgets(STDIN));
+        $letr = substr($placa, 0, 3);
+        $num = substr($placa, 3, 7);
+        if (strlen($placa) == 7) {
+            if (preg_match("/^([a-z]+)$/i", $letr)) {
+                if (preg_match("/^([0-9]+)$/i", $num)) {
+                    $respPl = $this->automovelPDO->findCarByPlaca(rtrim($placa));
+                    while (isset($respPl) && empty($respPl)) {
+                        echo"\n Esta placa nao existe!!!";
+                        goto B;
+                    }
+                    print_r($respPl[0]);
+                } else {
+                    echo "\nVoce digitou letras no lugar de numeros!!!";
+                    goto B;
+                }
+            } else {
+                echo "\nVoce digitou numeros no lugar letras!!!";
+                goto B;
+            }
+        } else {
+            echo "\nNomes em branco nao sao aceitos!!!";
+            goto B;
+        }
+        echo "\nInforme a placa do veiculo a ser consultado: ";
+        $placa = rtrim(fgets(STDIN));
+    }
+
+    private function listarAutoPelaCor() {
+        C:
+        echo"\nDigite a cor do veiculo: ";
+        $cor = rtrim(fgets(STDIN));
+        if (strlen($cor) >= 1) {
+
+            $resp = $this->automovelPDO->findCarByCor($cor);
+            if (isset($resp) && !empty($resp)) {
+                print_r($resp);
+            } else {
+                echo "\n Nao existe veiculo com esta cor!!!";
+                goto C;
+            }
+        } else {
+            echo "\nCores sem nome nao sao aceitos!!!";
+            goto C;
+        }
+    }
+
+    private function listarAutoPeloModelo() {
+
+        I:
+        echo"\nDigite a descricao do modelo do veiculo: ";
+        $desc = rtrim(fgets(STDIN));
+        if (strlen($desc) <= 0) {
+            echo "\n Nao existe veiculo com esta descricao!!!";
+            goto I;
+        }
+        $resp = $this->automovelPDO->findCarByModelo($desc);
+        if (isset($resp) && !empty($resp)) {
+            print_r($resp);
+        } else {
+            echo "\n Nao existe veiculo com este modelo!!!";
+            goto I;
+        }
+    }
+
+    //update (case 7)
+    private function reativarAutoByPlaca() {
+        B:
+        echo"\nDigite a placa do veiculo: ";
+        $placa = rtrim(fgets(STDIN));
+        $letr = substr($placa, 0, 3);
+        $num = substr($placa, 3, 7);
+        if (strlen($placa) == 7) {
+            if (preg_match("/^([a-z]+)$/i", $letr)) {
+                if (preg_match("/^([0-9]+)$/i", $num)) {
+                    $auto = $this->automovelPDO->findCarByPlacaR(rtrim($placa));
+                    while (isset($auto) && empty($auto)) {
+                        echo"\n Esta placa nao esta associada a um carro!!!";
+                        goto B;
+                    }
+                    print_r($auto);
+                    echo "\nConfirmar a operação (s/n)? ";
+                    $operacao = rtrim(fgets(STDIN));
+
+                    if (!strcasecmp($operacao, "s")) {
+                        if ($this->automovelPDO->reactivateAutomovel($auto[0])) {
+                            echo "\nAutomovel Ativado.";
+                        } else {
+                            echo "\nFalha ao ativar veiculo.";
+                        }
+                    }
+                    if (!strcasecmp($operacao, "n")) {
+                        echo "\nOperação cancelada.";
+                    }
+                } else {
+                    echo "\nVoce digitou letras no lugar de numeros!!!";
+                    goto B;
+                }
+            } else {
+                echo "\nVoce digitou numeros no lugar letras!!!";
+                goto B;
+            }
+        } else {
+            echo "\nA placa deve ser composta de 3 letras e 4 numeros!!!";
+            goto B;
+        }
+    }
+
 }
-//$autoController = new AutomovelController();
-//$autoController->menuAutomovel();
+
+$autoController = new AutomovelController();
+$autoController->menuAutomovel();
 

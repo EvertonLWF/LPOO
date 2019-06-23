@@ -8,7 +8,6 @@
 
 /**
  * Description of Cliente
- *
  * @author feijo
  */
 class Cliente {

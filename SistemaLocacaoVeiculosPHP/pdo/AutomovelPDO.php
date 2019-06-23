@@ -95,6 +95,26 @@ class AutomovelPDO extends ConnectPDO{
 
         
     }
+     function findCarByPlacaR($placa){
+        try {
+            $stmt = $this->conn->prepare("SELECT * FROM automovel WHERE placa = upper(?) AND situacao = false");
+            $stmt->bindValue(1, $placa);
+            if($stmt->execute()){
+                $cars= Array();
+                while($rs = $stmt->fetch(PDO::FETCH_OBJ)){
+                    array_push($cars, $this->resultSetAutomoveis($rs));
+                }
+                return $cars;
+            }else{
+                return null;
+            }
+        } catch (SQLException $exc) {
+            echo $exc->getTraceAsString()+'Erro findCarByPlacaR !!!';
+            return null;
+        }
+
+        
+    }
     function findCarInactivityByPlaca($placa){
         try {
             $stmt = $this->conn->prepare("SELECT * FROM automovel WHERE placa LIKE upper(?) AND situacao = false");
@@ -163,7 +183,7 @@ class AutomovelPDO extends ConnectPDO{
         $stmt->bindValue(4, $car->getTipoCombustivel());
         $stmt->bindValue(5, $car->getChassi());
         $stmt->bindValue(6, $car->getValorLocacao());
-        $stmt->bindValue(7, $car->getModelo());
+        $stmt->bindValue(7, $car->getModelo()->getDescricao());
         $stmt->bindValue(8, $car->getKm());
         $stmt->bindValue(9, $car->getSituacao());
         $stmt->bindValue(10, $car->getRenavan());

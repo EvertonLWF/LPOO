@@ -77,8 +77,8 @@ class AutomovelPDO extends ConnectPDO{
     }
     function findCarByPlaca($placa){
         try {
-            $stmt = $this->conn->prepare("SELECT * FROM automovel WHERE placa LIKE upper(?) AND situacao = true");
-            $stmt->bindValue(1, $placa.'%');
+            $stmt = $this->conn->prepare("SELECT * FROM automovel WHERE placa = upper(?) AND situacao = true");
+            $stmt->bindValue(1, $placa);
             if($stmt->execute()){
                 $cars= Array();
                 while($rs = $stmt->fetch(PDO::FETCH_OBJ)){

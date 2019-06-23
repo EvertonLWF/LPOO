@@ -34,10 +34,10 @@ class ClientePDO extends ConnectPDO{
 
         
     }
-    function findByClient($cliente){
+    function findByClient($nome){
         try {
             $stmt = $this->conn->prepare("SELECT * FROM clientes WHERE nome_cli  = initcap(?)");
-            $stmt->bindValue(1, $cliente);
+            $stmt->bindValue(1, $nome);
             if($stmt->execute()){
                 $clientes= Array();
                 while($rs = $stmt->fetch(PDO::FETCH_OBJ)){
@@ -49,6 +49,26 @@ class ClientePDO extends ConnectPDO{
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString()+' Erro findByClient!!!!!';
+            return null;
+        }
+
+        
+    }
+    function findClientByCpf($cpf){
+        try {
+            $stmt = $this->conn->prepare("SELECT * FROM clientes WHERE cpf_cli  = ?");
+            $stmt->bindValue(1, $cpf);
+            if($stmt->execute()){
+                $clientes= Array();
+                while($rs = $stmt->fetch(PDO::FETCH_OBJ)){
+                    array_push($clientes, $this->resultSetToClientes($rs));
+                }
+                return $clientes;
+            }else{
+                return null;
+            }
+        } catch (SQLException $exc) {
+            echo $exc->getTraceAsString()+' Erro findClientByCpf!!!!!';
             return null;
         }
 

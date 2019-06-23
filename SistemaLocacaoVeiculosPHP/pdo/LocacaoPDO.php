@@ -54,12 +54,31 @@ class LocacaoPDO extends ConnectPDO{
                 while($rs = $stmt->fetch(PDO::FETCH_OBJ)){
                     array_push($locacoes, $this->resultSetToLocacao($rs));
                 }
-                return $locacoes[0];
+                return $locacoes;
             }else{
                 return null;
             }
         } catch (SQLException $exc) {
             echo $exc->getTraceAsString()+'Erro findByLocacao !!!';
+            return null;
+        }
+       
+    }
+    function findByLocacaoR($id_Locacao){
+        try {
+            $stmt = $this->conn->prepare("SELECT * FROM locacao WHERE id_locacao = ? AND situacao = false");
+            $stmt->bindValue(1, $id_Locacao);
+            if($stmt->execute()){
+                $locacoes= Array();
+                while($rs = $stmt->fetch(PDO::FETCH_OBJ)){
+                    array_push($locacoes, $this->resultSetToLocacao($rs));
+                }
+                return $locacoes;
+            }else{
+                return null;
+            }
+        } catch (SQLException $exc) {
+            echo $exc->getTraceAsString()+'Erro findByLocacaoReactivate !!!';
             return null;
         }
        
@@ -109,7 +128,7 @@ class LocacaoPDO extends ConnectPDO{
             if($stmt->execute()){
                 $locacoes= Array();
                 while($rs = $stmt->fetch(PDO::FETCH_OBJ)){
-                    array_push($locacoes, $this->resultSetToLocacao($rs));
+                    array_push($locacoes[0], $this->resultSetToLocacao($rs));
                 }
                 return $locacoes;
             }else{
@@ -124,25 +143,26 @@ class LocacaoPDO extends ConnectPDO{
     function update($loc){
         $stmt = $this->conn->prepare('UPDATE locacao SET dt_devolucao = ?,hr_devolucao = ?, km = ?, valor_caucao = ?, valor_locacao = ?, cpf_cli = ?, renavan = ?, situacao = ? WHERE id_locacao = ?');
         $stmt->bindValue(1, $loc->getDt_devolucao());
-        $stmt->bindValue(2, $loc->getHora_devolucao());
+        $stmt->bindValue(2, $loc->getHr_devolucao());
         $stmt->bindValue(3, $loc->getKm());
         $stmt->bindValue(4, $loc->getVl_calcao());
-        $stmt->bindValue(5, $loc->getCliente());
-        $stmt->bindValue(6, $loc->getAutomovel());
-        $stmt->bindValue(7, $loc->getSituacao());
-        $stmt->bindValue(8, $loc->getId());
+        $stmt->bindValue(5, $loc->getVl_locacao());
+        $stmt->bindValue(6, $loc->getCliente()->getCpf_cli());
+        $stmt->bindValue(7, $loc->getAutomovel()->getRenavan());
+        $stmt->bindValue(8, $loc->getSituacao());
+        $stmt->bindValue(9, $loc->getId_locacao());
         
         return $stmt->execute();
     }
     
     function insert($loc){
         $stmt = $this->conn->prepare('INSERT INTO locacao (id_locacao,dt_locacao,hr_locacao,dt_devolucao,hr_devolucao,km,valor_caucao,valor_locacao,cpf_cli,renavan,situacao,devolvido) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)');
-        $date = DateTime::createFromFormat('U.u', microtime(TRUE));
-        $stmt->bindValue(1, md5($date->format('Y-m-d H:i:s.u')));//ok
-        $stmt->bindValue(2, $date->format('Y-m-d'));//ok
-        $stmt->bindValue(3, $date->format('H:i:s.u'));//ok
+        
+        $stmt->bindValue(1, $loc->getId_locacao());//ok
+        $stmt->bindValue(2, $loc->getDt_locacao());//ok
+        $stmt->bindValue(3, $loc->getHr_locacao());//ok
         $stmt->bindValue(4, $loc->getDt_devolucao());//ok
-        $stmt->bindValue(5, $loc->getHora_devolucao());//ok
+        $stmt->bindValue(5, $loc->getHr_devolucao());//ok
         $stmt->bindValue(6, $loc->getKm());//km
         $stmt->bindValue(7, $loc->getVl_calcao());//ok
         $stmt->bindValue(8, $loc->getVl_locacao());//ok
@@ -154,17 +174,17 @@ class LocacaoPDO extends ConnectPDO{
         return $stmt->execute();
     }
     
-    function deleteSoft($id){
+    function deleteSoft($locacao){
         $stmt = $this->conn->prepare('UPDATE locacao SET situacao = ? WHERE id_locacao = ?');
-        $stmt->bindValue(1, null);
-        $stmt->bindValue(2,$id);
+        $stmt->bindValue(1, 0);
+        $stmt->bindValue(2,$locacao->getId_locacao());
         
         return $stmt->execute();
     }
     function reactivateLocacao($locacao){
         $stmt = $this->conn->prepare('UPDATE locacao SET situacao = ? WHERE id_locacao = ?');
         $stmt->bindValue(1, true);
-        $stmt->bindValue(2, $locacao->getId());
+        $stmt->bindValue(2, $locacao->getId_locacao());
         return $stmt->execute();
     }
     private function resultSetToLocacao($rs){

@@ -25,12 +25,14 @@ class Locacao {
     private $vl_calcao;
     private $vl_locacao;
     private $devolvido;
-    private $cliente;
-    private $automovel;
     private $situacao;
+    private $automovel;
+    private $cliente;
     
     function __construct($cpf,$renavan) {
-        $this->automovel = new Automovel();
+        $marca = new Marca();
+        $modelo = new Modelo($marca);
+        $this->automovel = new Automovel($modelo->getDescricao());
         $this->automovel->setRenavan($renavan);
         $this->cliente = new Cliente();
         $this->cliente->setCpf_cli($cpf);
@@ -46,7 +48,7 @@ class Locacao {
         return $this->dt_locacao;
     }
 
-    public function getHora_locacao() {
+    public function getHr_locacao() {
         return $this->hora_locacao;
     }
 
@@ -54,7 +56,7 @@ class Locacao {
         return $this->dt_devolucao;
     }
 
-    public function getHora_devolucao() {
+    public function getHr_devolucao() {
         return $this->hora_devolucao;
     }
 

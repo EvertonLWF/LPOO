@@ -17,8 +17,8 @@ include_once "Marca.php";
  */
 class Modelo{
     private $descricao;
-    private $marca;
     private $situacao;
+    private $marca;
     private $automoveis = [];
     
     function __construct($marca) {
@@ -57,7 +57,7 @@ class Modelo{
 
         
     function __toString() {
-        return "DESCRICAO = $this->descricao MARCA = ". print_r($this->marca)." AUTOMOVEIS = ". print_r($this->automoveis)." SITUACAO = $this->situacao \n";
+        return "DESCRICAO = $this->descricao SITUACAO = $this->situacao MARCA = ". print_r($this->marca)." AUTOMOVEIS = ". print_r($this->automoveis)."\n";
     }
     
 }

@@ -31,10 +31,10 @@ class Automovel {
     //objeto locacao
     private $locacao = [];    
     
-    public function __construct($descricao) {
+    public function __construct($id) {
         $marca = new Marca();
         $this->modelo = new Modelo($marca);
-        $this->modelo->setDescricao($descricao);
+        $this->modelo->setId_modelo($id);
 
     }
 

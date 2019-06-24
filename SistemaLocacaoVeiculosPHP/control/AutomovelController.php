@@ -90,6 +90,8 @@ class AutomovelController {
         $automovelPDO = new AutomovelPDO();
         $automovel->setSituacao(true);
         A:
+
+
         echo"\nDigite o renavan do veiculo: ";
         $renavan = fgets(STDIN);
         if (strlen(rtrim($renavan)) == 11) {
@@ -135,8 +137,7 @@ class AutomovelController {
                     $respPl = $automovelPDO->findCarByPlaca(rtrim($placa));
                     while (isset($respPl) && !empty($respPl)) {
                         echo"\n Esta placa ja esta associada a outro carro!!!";
-                        $placa = fgets(STDIN);
-                        $respPl = $automovelPDO->findCarByPlaca(rtrim($placa));
+                        goto B;
                     }
                     $automovel->setPlaca($placa);
                 } else {
@@ -167,7 +168,7 @@ class AutomovelController {
         D:
         echo"\nDigite o numero de portas do veiculo: ";
         $porta = rtrim(fgets(STDIN));
-        if (strlen($porta) >= 1) {
+        if ($porta >= 1) {
             $automovel->setNroPortas($porta);
         } else {
             echo "\nCarro Sem Portas ?";
@@ -225,13 +226,31 @@ class AutomovelController {
         }
 
 
-        echo"\nDigite a descricao do modelo do veiculo: ";
 
         I:
-        $desc = rtrim(fgets(STDIN));
-        if (strlen($desc) <= 0) {
+        $modelos = $this->modeloPDO->findAll();
+        $index = 1;
+        echo"\nModelos disponiveis: ";
+        if (isset($modelos) && !empty($modelos)) {
+            foreach ($modelos as $key) {
+                echo "\n" . $index . "-" . $key->getDescricao();
+                $index++;
+            }
+        }
+        echo"\nSelecione o modelo : ";
+        $ind = rtrim(fgets(STDIN));
+        if ($desc < 1 && $desc > $index) {
+            echo "\n Opcao invalida";
             goto I;
         }
+        $index = 1;
+        foreach ($modelos as $key) {
+            if($index == $ind){
+                $desc = $key->getDescricao();
+            }
+            $index++;
+        }
+
         $modelo = $this->modeloPDO->findByModelo($desc);
         if (isset($modelo) && !empty($modelo)) {
             $automovel->setModelo($modelo[0]);
@@ -451,7 +470,22 @@ class AutomovelController {
 
     //findAll ou SELECT sem filtros (case 4)
     private function listarTodosAutos() {
-        print_r($this->automovelPDO->findAll());
+        $auto = $this->automovelPDO->findAll();
+        if (isset($auto) && empty($auto)) {
+            echo "\nNao ha veiculos";
+        } else {
+            foreach ($auto as $key) {
+                $mod = $this->modeloPDO->findModeloById($key->getModelo()->getdescricao());
+                $mar = $this->marcaPDO->findMarcaById($mod->getMarca());
+                $mod->setMarca($mar);
+                $key->setModelo($mod);
+                if (isset($key) && !empty($key)) {
+                    print_r($key);
+                } else {
+                    echo "\nNao ha Automoveis com este modelo!!!";
+                }
+            }
+        }
     }
 
     //find for name ou SELECT com filtros (case 5)
@@ -472,7 +506,17 @@ class AutomovelController {
                                 echo"\n este renavan nao existe existe!!!";
                                 goto A;
                             }
-                            print_r($respRen);
+                            foreach ($respRen as $key) {
+                                $mod = $this->modeloPDO->findModeloById($key->getModelo()->getdescricao());
+                                $mar = $this->marcaPDO->findMarcaById($mod->getMarca());
+                                $mod->setMarca($mar);
+                                $key->setModelo($mod);
+                                if (isset($key) && !empty($key)) {
+                                    print_r($key);
+                                } else {
+                                    echo "\nNao ha Automoveis com este modelo!!!";
+                                }
+                            }
                         } else {
                             echo "\nFavor Verifique o renavan voce digitou numeros misturados com letras!!!";
                             goto A;
@@ -507,7 +551,17 @@ class AutomovelController {
                         echo"\n Esta placa nao existe!!!";
                         goto B;
                     }
-                    print_r($respPl[0]);
+                    foreach ($respPl as $key) {
+                        $mod = $this->modeloPDO->findModeloById($key->getModelo()->getdescricao());
+                        $mar = $this->marcaPDO->findMarcaById($mod->getMarca());
+                        $mod->setMarca($mar);
+                        $key->setModelo($mod);
+                        if (isset($key) && !empty($key)) {
+                            print_r($key);
+                        } else {
+                            echo "\nNao ha Automoveis com este modelo!!!";
+                        }
+                    }
                 } else {
                     echo "\nVoce digitou letras no lugar de numeros!!!";
                     goto B;
@@ -520,8 +574,6 @@ class AutomovelController {
             echo "\nNomes em branco nao sao aceitos!!!";
             goto B;
         }
-        echo "\nInforme a placa do veiculo a ser consultado: ";
-        $placa = rtrim(fgets(STDIN));
     }
 
     private function listarAutoPelaCor() {
@@ -532,7 +584,17 @@ class AutomovelController {
 
             $resp = $this->automovelPDO->findCarByCor($cor);
             if (isset($resp) && !empty($resp)) {
-                print_r($resp);
+                foreach ($resp as $key) {
+                    $mod = $this->modeloPDO->findModeloById($key->getModelo()->getdescricao());
+                    $mar = $this->marcaPDO->findMarcaById($mod->getMarca());
+                    $mod->setMarca($mar);
+                    $key->setModelo($mod);
+                    if (isset($key) && !empty($key)) {
+                        print_r($key);
+                    } else {
+                        echo "\nNao ha Automoveis com este modelo!!!";
+                    }
+                }
             } else {
                 echo "\n Nao existe veiculo com esta cor!!!";
                 goto C;
@@ -554,7 +616,17 @@ class AutomovelController {
         }
         $resp = $this->automovelPDO->findCarByModelo($desc);
         if (isset($resp) && !empty($resp)) {
-            print_r($resp);
+            foreach ($resp as $key) {
+                $mod = $this->modeloPDO->findModeloById($key->getModelo()->getdescricao());
+                $mar = $this->marcaPDO->findMarcaById($mod->getMarca());
+                $mod->setMarca($mar);
+                $key->setModelo($mod);
+                if (isset($key) && !empty($key)) {
+                    print_r($key);
+                } else {
+                    echo "\nNao ha Automoveis com este modelo!!!";
+                }
+            }
         } else {
             echo "\n Nao existe veiculo com este modelo!!!";
             goto I;

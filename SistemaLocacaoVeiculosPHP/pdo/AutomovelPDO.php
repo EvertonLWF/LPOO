@@ -57,7 +57,7 @@ class AutomovelPDO extends ConnectPDO{
     }
     function findCarByModelo($car){
         try {
-            $stmt = $this->conn->prepare("SELECT * FROM automovel WHERE descmodelo LIKE initcap(?) AND situacao = true");
+            $stmt = $this->conn->prepare("SELECT * FROM automovel,modelo WHERE modelo.descmodelo LIKE initcap(?) AND automovel.situacao = true AND automovel.id_modelo = modelo.id_modelo");
             $stmt->bindValue(1, $car.'%');
             if($stmt->execute()){
                 $cars= Array();
@@ -192,7 +192,7 @@ class AutomovelPDO extends ConnectPDO{
     }
     
     function insert($car){
-        $stmt = $this->conn->prepare('INSERT INTO automovel (renavan,placa,cor,numportas,tipo_combust,chassi,valor_locacao,descmodelo,situacao,Km) VALUES(?,upper(?),initcap(?),?,?,?,?,initcap(?),?,?)');
+        $stmt = $this->conn->prepare('INSERT INTO automovel (renavan,placa,cor,numportas,tipo_combust,chassi,valor_locacao,id_modelo,situacao,Km) VALUES(?,upper(?),initcap(?),?,?,?,?,?,?,?)');
         $stmt->bindValue(1, $car->getRenavan());
         $stmt->bindValue(2, $car->getPlaca());
         $stmt->bindValue(3, $car->getCor());
@@ -200,7 +200,7 @@ class AutomovelPDO extends ConnectPDO{
         $stmt->bindValue(5, $car->getTipoCombustivel());
         $stmt->bindValue(6, $car->getChassi());
         $stmt->bindValue(7, $car->getValorLocacao());
-        $stmt->bindValue(8, $car->getModelo()->getDescricao());
+        $stmt->bindValue(8, $car->getModelo()->getId());
         $stmt->bindValue(9, true);
         $stmt->bindValue(10, $car->getKm());
       
@@ -223,7 +223,7 @@ class AutomovelPDO extends ConnectPDO{
         return $stmt->execute();
     }
     private function resultSetAutomoveis($rs){
-        $automoveis = new Automovel($rs->descmodelo);
+        $automoveis = new Automovel($rs->id_modelo);
         $automoveis->setChassi($rs->chassi);
         $automoveis->setCor($rs->cor);
         $automoveis->setNroPortas($rs->numportas);

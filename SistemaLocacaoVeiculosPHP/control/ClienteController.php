@@ -21,7 +21,7 @@ class ClienteController {
         $this->locacaoPDO = new locacaoPDO();
     }
 
-    public function exibeMenu() {
+    public function menuCliente() {
         $exit = 1;
 
         while ($exit != 0) {
@@ -473,6 +473,6 @@ class ClienteController {
 
 }
 
-//$clienteController = new ClienteController();
-//$clienteController->exibeMenu();
+$clienteController = new ClienteController();
+$clienteController->exibeMenu();
 

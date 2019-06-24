@@ -30,7 +30,7 @@ class ModeloPDO extends ConnectPDO{
                 while($rs = $stmt->fetch(PDO::FETCH_OBJ)){
                     array_push($auto, $this->resultSetToModelo($rs));
                 }
-                print_r($rs);
+                //print_r($rs);
             }
         } catch (SQLException $exc) {
             echo $exc->getTraceAsString()+'Erro findAll Modelo !!!!';
@@ -46,7 +46,7 @@ class ModeloPDO extends ConnectPDO{
                 while($rs = $stmt->fetch(PDO::FETCH_OBJ)){
                     array_push($auto, $this->resultSetToModelo($rs));
                 }
-                print_r($rs);
+                //print_r($rs);
             }
         } catch (SQLException $exc) {
             echo $exc->getTraceAsString()+'Erro findAllR Modelo !!!!';
@@ -70,6 +70,26 @@ class ModeloPDO extends ConnectPDO{
             }
         } catch (SQLException $exc) {
             echo $exc->getTraceAsString()+' Erro findByAuto !!!!!';
+            $modelos = null;
+        }
+        return $modelos;
+
+        
+    }
+    function findModeloById($id){
+            $modelos = null;
+        try {
+            $stmt = $this->conn->prepare("SELECT * FROM modelo WHERE id_modelo = ? AND situacao = true");
+            $stmt->bindValue(1, $id);
+            if($stmt->execute()){
+                $modelos = Array();
+                while($rs = $stmt->fetch(PDO::FETCH_OBJ)){
+                    array_push($modelos, $this->resultSetToModelo($rs));
+                }
+          
+            }
+        } catch (SQLException $exc) {
+            echo $exc->getTraceAsString()+' Erro findAuroById !!!!!';
             $modelos = null;
         }
         return $modelos;
@@ -149,7 +169,7 @@ class ModeloPDO extends ConnectPDO{
         $modelo = new Modelo($rs->id_marca);
         $modelo->setDescricao($rs->descmodelo);
         $modelo->setSituacao($rs->situacao);
-        $modelo->setId($rs->id_modelo);
+        $modelo->setId_modelo($rs->id_modelo);
         return $modelo;
     }
 }

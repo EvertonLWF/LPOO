@@ -94,56 +94,104 @@ class LocacaoControler {
     //insert (case 1)
     private function inserirLocacao() {
 
+        A:
+
         echo"\nDigite a placa do veiculo: ";
-        $placa = fgets(STDIN);
-        try {
-            $auto = $this->automovelPDO->findCarByPlaca(rtrim($placa));
-            $modelo = $this->modeloPDO->findByModelo($auto[0]->getModelo()->getDescricao());
-            $auto[0]->setModelo($modelo[0]);
-            while (isset($auto) && empty($auto)) {
-                echo"\nEste veiculo não existe: ";
-                echo"\nDigite a placa do veiculo: ";
-                $placa = fgets(STDIN);
-                $auto = $this->automovelPDO->findCarByPlaca(rtrim($placa));
+        $placa = rtrim(fgets(STDIN));
+        $letr = substr($placa, 0, 3);
+        $num = substr($placa, 3, 7);
+        if (strlen($placa) == 7) {
+            if (preg_match("/^([a-z]+)$/i", $letr)) {
+                if (preg_match("/^([0-9]+)$/i", $num)) {
+                    $respPl = $this->automovelPDO->findCarByPlaca(rtrim($placa));
+                    while (isset($respPl) && empty($respPl)) {
+                        echo"\n Placa nao existe!!!";
+                        goto A;
+                    }
+                    $auto = $this->automovelPDO->findCarByPlaca($placa);
+                } else {
+                    echo "\nVoce digitou letras no lugar de numeros!!!";
+                    goto A;
+                }
+            } else {
+                echo "\nVoce digitou numeros no lugar letras!!!";
+                goto A;
             }
+        } else {
+            echo "\nA placa nao esta no formato correto!!!";
+            goto A;
+        }
+
+        try {
+
+
+            $modelo = $this->modeloPDO->findModeloById($auto[0]->getModelo()->getId_modelo());
+            $marca = $this->marcaPDO->findMarcaById($modelo[0]->getMarca()->getId());
+            $modelo[0]->setMarca($marca);
+            $auto[0]->setModelo($modelo[0]);
+
             $consLoc = $this->locacaoPDO->findLocacaoByRenavan($auto[0]->getRenavan());
 
-            //while (isset($consLoc) && !empty($consLoc)) {
-            //    echo"\nEste veiculo ja se encontra em uma locação: ";
-            //    echo"\nDigite a placa de outro veiculo: ";
-            //    $placa = fgets(STDIN);
-            //   $auto = $automovelPDO->findCarByPlaca(rtrim($placa));
-            //}
+            while (isset($consLoc) && !empty($consLoc)) {
+                echo"\nEste veiculo ja se encontra em uma locação: ";
+                goto A;
+            }
+            print_r($auto[0]);
         } catch (Exception $exc) {
             echo "Placa inexistente!!!";
         }
-        print_r($auto[0]);
-        echo"\nDigite a cpf do cliente: ";
-        $cpf = fgets(STDIN);
 
-        try {
-            $cliente = $this->clientePDO->findClientByCpf(rtrim($cpf));
-            while (isset($cliente) && empty($cliente)) {
-                echo"\n Esta cliente não existe!!!";
-                echo"\nDigite a cpf do cliente: ";
-                $cpf = fgets(STDIN);
-                $cliente = $this->clientePDO->findClientByCpf(rtrim($cpf));
+
+        B:
+        echo"\nInforme o CPF do Cliente: ";
+        $cpf = rtrim(fgets(STDIN));
+        if (strlen($cpf) == 11) {
+            try {
+                if (preg_match("/^([a-z-0-9]+)$/i", $cpf)) {
+                    if (preg_match("/^([a-z]+)$/i", $cpf)) {
+                        echo "\nFavor Verifique o CPF voce digitou somente letras!!!";
+                        goto B;
+                    } else {
+                        if (preg_match("/^([0-9]+)$/i", $cpf)) {
+                            $cli = $this->clientePDO->findClientByCpf($cpf);
+                            if (isset($cli) && empty($cli)) {
+                                echo "\nCliente nao existe!!";
+                                goto B;
+                            }
+
+                            print_r($cli);
+                        } else {
+                            echo "\nFavor Verifique o CPF voce digitou numeros misturados com letras!!!";
+                            goto B;
+                        }
+                    }
+                } else {
+                    echo "\nFavor Verifique o CPF !!!";
+                    goto B;
+                }
+            } catch (SQLException $ex) {
+                echo "\nFavor Verifique o CPF !!!";
+                goto B;
             }
+        } else {
+            echo "\nFavor Verifique o CPF seram aceitos apenas 11 digitos!!!";
+            goto B;
+        }
+        try {
 
-            print_r($cliente[0]);
-
-            $locacao = new Locacao($cliente[0]->getCpf_cli(), $auto[0]->getRenavan());
+            $locacao = new Locacao($cli[0]->getCpf_cli(), $auto[0]->getRenavan());
             $locacao->setAutomovel($auto[0]);
-            $locacao->setCliente($cliente[0]);
+            $locacao->setCliente($cli[0]);
             $locacao->setDevolvido(false);
             $locacao->setKm($auto[0]->getKm());
 
+
+            C:
             echo"\nDigite quantos dias para locacao do veiculo: ";
             $dias = (rtrim(fgets(STDIN)));
-            while ($dias < 0) {
+            if ($dias < 0) {
                 echo "\nValores negativos não são aceitos !!!";
-                echo"\nDigite quantos dias para locacao do veiculo: ";
-                $dias = (rtrim(fgets(STDIN)));
+                goto C;
             }
 
             //valor locacao
@@ -190,7 +238,7 @@ class LocacaoControler {
                 echo "\nOperação cancelada.";
             }
         } catch (SQLException $exc) {
-            echo "Cliente inexistente!!! ".$exc;
+            echo "Cliente inexistente!!! " . $exc;
         }
     }
 
@@ -201,60 +249,73 @@ class LocacaoControler {
         $id = fgets(STDIN);
         try {
             $loc = $this->locacaoPDO->findByLocacao(rtrim($id));
-            $index = 0;
-            foreach ($loc as $key) {
-                $cliente = $this->clientePDO->findClientByCpf($key->getCliente()->getCpf_cli());
-                $loc[$index]->setcliente($cliente[0]);
-                $veiculo = $this->automovelPDO->findCarByRenavan($key->getAutomovel()->getRenavan());
-                $modelo = $this->modeloPDO->findByModelo($veiculo[0]->getModelo()->getDescricao());
-                $veiculo[0]->setModelo($modelo);
-                $loc[$index]->setAutomovel($veiculo[0]);
-                $index++;
+            if (isset($loc) && empty($loc)) {
+                echo "\n Esta locacao nao existe!!!";
+                goto A;
             }
-            if (isset($loc) && !empty($loc)) {
-                print_r($loc[0]);
-            } else {
-                while (isset($loc) && empty($loc)) {
-                    echo "\n ID da locacao inexistente";
-                    echo "\nDigite o codigo da locacao que você deseja alterar: ";
-                    $id = fgets(STDIN);
-                    $loc = $this->locacaoPDO->findByLocacao(rtrim($id));
-                }
-            }
+            $this->ConcAuto($loc);
         } catch (Exception $exc) {
             echo "\n Formato do ID incorreto verifique e tente novamente!!!";
             goto A;
         }
 
-        D:
-        echo"\nDigite a placa do veiculo: ";
-        $placa = fgets(STDIN);
-        try {
-            $auto = $this->automovelPDO->findCarByPlaca(rtrim($placa));
-            while (isset($auto) && empty($auto)) {
-                echo"\neste veiculo não existe: ";
-                echo"\nDigite a placa do veiculo: ";
-                $placa = fgets(STDIN);
-                $auto = $this->automovelPDO->findCarByPlaca(rtrim($placa));
+        B:
+            
+        echo"\nDigite 1 para : ".$loc[0]->getAutomovel()->getPlaca();
+        echo"\nOu digite uma placa para outro veiculo: ";
+        $placa = rtrim(fgets(STDIN));
+        if($placa == 1){
+            $auto = $this->automovelPDO->findCarByPlaca($loc[0]->getAutomovel()->getPlaca());
+            goto C;
+        }
+        $letr = substr($placa, 0, 3);
+        $num = substr($placa, 3, 7);
+        if (strlen($placa) == 7) {
+            if (preg_match("/^([a-z]+)$/i", $letr)) {
+                if (preg_match("/^([0-9]+)$/i", $num)) {
+                    $respPl = $this->automovelPDO->findCarByPlaca(rtrim($placa));
+                    while (isset($respPl) && empty($respPl)) {
+                        echo"\n Placa nao existe!!!";
+                        goto B;
+                    }
+                    $auto = $this->automovelPDO->findCarByPlaca($placa);                  
+                    $consLoc = $this->locacaoPDO->findLocacaoByRenavan($auto[0]->getRenavan());
+                    if (isset($consLoc) && !empty($consLoc)) {
+                        echo"\nEste veiculo ja se encontra em uma locação: ";
+                        goto B;
+                    }
+                    $auto[0]->setModelo($modelo[0]);
+                    $modelo = $this->modeloPDO->findByModelo($auto[0]->getModelo()->getDescricao());
+                    print_r($auto[0]);
+                    $loc[0]->setAutomovel($auto[0]);
+                    $loc[0]->setKm($auto[0]->getKm());
+                } else {
+                    echo "\nVoce digitou letras no lugar de numeros!!!";
+                    goto B;
+                }
+            } else {
+                echo "\nVoce digitou numeros no lugar letras!!!";
+                goto B;
             }
-            $modelo = $this->modeloPDO->findByModelo($auto[0]->getModelo()->getDescricao());
-            $auto[0]->setModelo($modelo[0]);
-            print_r($auto[0]);
-            $loc[0]->setAutomovel($auto[0]);
-            $loc[0]->setKm($auto[0]->getKm());
-        } catch (Exception $ex) {
-            echo "\n Formato da placa esta incorreto, verifique e tente novamente!!!";
+        } else {
+            echo "\nA placa nao esta no formato correto!!!";
+            goto B;
+        }
+        echo"\nDigite a placa do veiculo: ";
+
+
+
+
+
+        C:
+        echo"\nDigite 2 para : ".$loc[0]->getCliente()->getCpf_cli();
+        echo"\nDigite a cpf do cliente: ";
+        $cpf = rtrim(fgets(STDIN));
+        if($cpf == 2){
             goto D;
         }
-
-
-
-        B:
-        echo"\nDigite a cpf do cliente: ";
-        $cpf = fgets(STDIN);
-
         try {
-            $cliente = $this->clientePDO->findClientByCpf(rtrim($cpf));
+            $cliente = $this->clientePDO->findClientByCpf($cpf);
             while (isset($cliente) && empty($cliente)) {
                 echo"\n Este cliente não existe!!!";
                 echo"\nDigite a cpf do cliente: ";
@@ -267,24 +328,20 @@ class LocacaoControler {
             echo "\nVerifique o formato do cpf e tente novamente";
             goto B;
         }
-        C:
+        D:
         echo"\nDigite quantos dias para locacao do veiculo: ";
 
         $dias = (rtrim(fgets(STDIN)));
         while ($dias < 0) {
             echo "\nValores negativos não são aceitos !!!";
-            goto C;
+            goto D;
         }
-        //data e hora do sistema
-        //$date = DateTime::createFromFormat('U.u', microtime(TRUE));
         $dateIN = $loc[0]->getDt_locacao();
         $date = new DateTime($dateIN);
         $date->add(new DateInterval("P" . $dias . "D"));
 
-
         //data de devolucao
         $loc[0]->setDt_devolucao($date->format('Y-m-d'));
-
 
         //valor locacao
         $vl_locacao = ($auto[0]->getValorLocacao()) * $dias;
@@ -292,9 +349,6 @@ class LocacaoControler {
         //valor caucao
         $vl_calcao = $vl_locacao * 0.3;
         $loc[0]->setVl_calcao($vl_calcao);
-
-
-
 
         // situacao da locacao inicia em true
         $loc[0]->setSituacao(true);
@@ -328,12 +382,10 @@ class LocacaoControler {
                 echo "\nNão existe locacao Ativa com este codigo!!!";
                 goto E;
             }
-
-            print_r($loc[0]);
+            $this->ConcAuto($loc);
         } catch (Exception $exc) {
             echo "\nCodigo da locacao não esta no formato correto favor tentar em outro formato!!!";
         }
-
         echo "\nConfirmar a operação (s/n)?";
         $operacao = rtrim(fgets(STDIN));
 
@@ -348,40 +400,25 @@ class LocacaoControler {
             echo "\nOperação cancelada.";
         }
     }
-
     //findAll ou SELECT sem filtros (case 4)
     private function listarTodasLocacao() {
         $loc = $this->locacaoPDO->findAll();
-        $index = 0;
-        foreach ($loc as $key) {
-            $cliente = $this->clientePDO->findClientByCpf($key->getCliente()->getCpf_cli());
-            $loc[$index]->setcliente($cliente[0]);
-            $veiculo = $this->automovelPDO->findCarByRenavan($key->getAutomovel()->getRenavan());
-            $modelo = $this->modeloPDO->findByModelo($veiculo[0]->getModelo()->getDescricao());
-            $veiculo[0]->setModelo($modelo);
-            $loc[$index]->setAutomovel($veiculo[0]);
-            $index++;
-        }
+
         if (empty($loc)) {
             echo "\nNão existem locacoes !!!";
         } else {
-            print_r($loc);
+            $this->ConcAuto($loc);
         }
     }
 
     //find for name ou SELECT com filtros (case 5 6 7 8)
-    public function listarLocacaoPeloCodigo() {
+    private function listarLocacaoPeloCodigo() {
         echo "\nInforme o codigo da locacao a ser consultado: ";
         $id = fgets(STDIN);
         $loc = $this->locacaoPDO->findByLocacao(rtrim($id));
-        $cliente = $this->clientePDO->findClientByCpf($loc->getCliente()->getCpf_cli());
-        $loc->setcliente($cliente[0]);
-        $veiculo = $this->automovelPDO->findCarByRenavan($loc->getAutomovel()->getRenavan());
-        $modelo = $this->modeloPDO->findByModelo($veiculo[0]->getModelo()->getDescricao());
-        $veiculo[0]->setModelo($modelo);
-        $loc->setAutomovel($veiculo[0]);
+
         if (isset($loc) && !empty($loc)) {
-            print_r($loc);
+            $this->ConcAuto($loc);
         } else {
             echo "\nNão existe locação com este ID";
         }
@@ -389,21 +426,11 @@ class LocacaoControler {
 
     private function listarLocacaoPeloData() {
         echo "\nInforme a data da locacao a ser consultado: ";
-        $dt = fgets(STDIN);
+        $dt = rtrim(fgets(STDIN));
         try {
-            $loc = $this->locacaoPDO->findLocacaoByDate(rtrim($dt));
-            $index = 0;
-            foreach ($loc as $key) {
-                $cliente = $this->clientePDO->findClientByCpf($key->getCliente()->getCpf_cli());
-                $loc[$index]->setcliente($cliente[0]);
-                $veiculo = $this->automovelPDO->findCarByRenavan($key->getAutomovel()->getRenavan());
-                $modelo = $this->modeloPDO->findByModelo($veiculo[0]->getModelo()->getDescricao());
-                $veiculo[0]->setModelo($modelo);
-                $loc[$index]->setAutomovel($veiculo[0]);
-                $index++;
-            }
+            $loc = $this->locacaoPDO->findLocacaoByDate($dt);
             if (isset($loc) && !empty($loc)) {
-                print_r($loc);
+                $this->ConcAuto($loc);
             } else {
                 echo "\nNão existe locação com esta data";
             }
@@ -417,18 +444,9 @@ class LocacaoControler {
         $cpf = fgets(STDIN);
         try {
             $loc = $this->locacaoPDO->findLocacaoByCliente(rtrim($cpf));
-            $index = 0;
-            foreach ($loc as $key) {
-                $cliente = $this->clientePDO->findClientByCpf($key->getCliente()->getCpf_cli());
-                $loc[$index]->setcliente($cliente[0]);
-                $veiculo = $this->automovelPDO->findCarByRenavan($key->getAutomovel()->getRenavan());
-                $modelo = $this->modeloPDO->findByModelo($veiculo[0]->getModelo()->getDescricao());
-                $veiculo[0]->setModelo($modelo);
-                $loc[$index]->setAutomovel($veiculo[0]);
-                $index++;
-            }
+
             if (isset($loc) && !empty($loc)) {
-                print_r($loc);
+                $this->ConcAuto($loc);
             } else {
                 echo "\nNão existe locação com este cpf";
             }
@@ -445,18 +463,9 @@ class LocacaoControler {
             $renavan = $this->automovelPDO->findCarByPlaca(rtrim($placa));
             if (isset($renavan) && !empty($renavan)) {
                 $loc = $this->locacaoPDO->findLocacaoByRenavan($renavan[0]->getRenavan());
-                $index = 0;
-                foreach ($loc as $key) {
-                    $cliente = $this->clientePDO->findClientByCpf($key->getCliente()->getCpf_cli());
-                    $loc[$index]->setcliente($cliente[0]);
-                    $veiculo = $this->automovelPDO->findCarByRenavan($key->getAutomovel()->getRenavan());
-                    $modelo = $this->modeloPDO->findByModelo($veiculo[0]->getModelo()->getDescricao());
-                    $veiculo[0]->setModelo($modelo);
-                    $loc[$index]->setAutomovel($veiculo[0]);
-                    $index++;
-                }
+
                 if (isset($loc) && !empty($loc)) {
-                    print_r($loc);
+                    $this->ConcAuto($loc);
                 } else {
                     echo "\nNão existe locação com esta placa";
                 }
@@ -476,13 +485,12 @@ class LocacaoControler {
 
         try {
             $loc = $this->locacaoPDO->findByLocacaoR(rtrim($id));
-            
+
             while (isset($loc) && empty($loc)) {
                 echo "\nNão existe locacao Inativa com este codigo!!!";
                 goto F;
             }
-
-            print_r($loc[0]);
+            $this->ConcAuto($loc);
         } catch (Exception $exc) {
             echo "\nCodigo da locacao não esta no formato correto favor tentar em outro formato!!!";
         }
@@ -502,8 +510,23 @@ class LocacaoControler {
         }
     }
 
+    private function ConcAuto($loc) {
+
+        foreach ($loc as $key) {
+            $cliente = $this->clientePDO->findClientByCpf($key->getCliente()->getCpf_cli());
+            $veiculo = $this->automovelPDO->findCarByRenavan($key->getAutomovel()->getRenavan());
+            $modelo = $this->modeloPDO->findModeloById($veiculo[0]->getModelo()->getId_modelo());
+            $marca = $this->marcaPDO->findMarcaById($modelo[0]->getMarca()->getId());
+            $modelo[0]->setMarca($marca);
+            $veiculo[0]->setModelo($modelo[0]);
+            $key->setcliente($cliente[0]);
+            $key->setAutomovel($veiculo[0]);
+            print_r($key);
+        }
+    }
+
 }
 
-//$locacaoController = new LocacaoControler;
-//$locacaoController->menuLocacao();
+$locacaoController = new LocacaoControler;
+$locacaoController->menuLocacao();
 

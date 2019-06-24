@@ -16,56 +16,60 @@ include_once "Marca.php";
  * @author feijo
  */
 class Modelo{
-    private $id;
+    private $id_modelo;
     private $descricao;
     private $situacao;
     private $marca;
     private $automoveis = [];
     
     
-    function __construct($marca) {
-        $this->marca = $marca;
+    function __construct($id) {
+        $this->marca = new Marca();
+        $this->marca->setId($id);
     }
     
-    function getDescricao() {
+    public function getId_modelo() {
+        return $this->id_modelo;
+    }
+
+    public function getDescricao() {
         return $this->descricao;
     }
 
-    function getMarca() {
+    public function getSituacao() {
+        return $this->situacao;
+    }
+
+    public function getMarca() {
         return $this->marca;
     }
 
-    function getSituacao() {
-        return $this->situacao;
-    }
-    function getId() {
-        return $this->id;
-    }
-    function setId($id) {
-        $this->id = $id;
-    }
-
-    function setDescricao($descricao) {
-        $this->descricao = $descricao;
-    }
-
-    function setMarca($marca) {
-        $this->marca = $marca;
-    }
-
-    function setSituacao($situacao) {
-        $this->situacao = $situacao;
-    }
-    function setAutomoveis($automoveis) {
-        $this->automoveis = $automoveis;
-    }
-    function getAutomoveis($automoveis) {
+    public function getAutomoveis() {
         return $this->automoveis;
     }
 
+    public function setId_modelo($id_modelo) {
+        $this->id_modelo = $id_modelo;
+    }
+
+    public function setDescricao($descricao) {
+        $this->descricao = $descricao;
+    }
+
+    public function setSituacao($situacao) {
+        $this->situacao = $situacao;
+    }
+
+    public function setMarca($marca) {
+        $this->marca = $marca;
+    }
+
+    public function setAutomoveis($automoveis) {
+        $this->automoveis = $automoveis;
+    }
         
     function __toString() {
-        return "DESCRICAO = $this->descricao SITUACAO = $this->situacao MARCA = ". print_r($this->marca)." AUTOMOVEIS = ". print_r($this->automoveis)."\n";
+        return "ID = $this->id_modelo DESCRICAO = $this->descricao SITUACAO = $this->situacao MARCA = ".print_r($this->marca)." AUTOMOVEIS = ".print_r($this->automoveis)." \n";
     }
     
 }

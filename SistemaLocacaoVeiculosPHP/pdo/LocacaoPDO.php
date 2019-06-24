@@ -128,7 +128,7 @@ class LocacaoPDO extends ConnectPDO{
             if($stmt->execute()){
                 $locacoes= Array();
                 while($rs = $stmt->fetch(PDO::FETCH_OBJ)){
-                    array_push($locacoes[0], $this->resultSetToLocacao($rs));
+                    array_push($locacoes, $this->resultSetToLocacao($rs));
                 }
                 return $locacoes;
             }else{

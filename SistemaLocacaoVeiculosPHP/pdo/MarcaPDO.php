@@ -78,7 +78,7 @@ class MarcaPDO extends ConnectPDO {
                 while ($rs = $stmt->fetch(PDO::FETCH_OBJ)) {
                     array_push($marcas, $this->resultSetToMarcas($rs));
                 }
-                return $marcas;
+                return $marcas[0];
             } else {
                 return null;
             }

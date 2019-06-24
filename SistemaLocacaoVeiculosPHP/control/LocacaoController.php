@@ -504,10 +504,6 @@ class LocacaoControler {
 
 }
 
-$locacaoController = new LocacaoControler;
-$locacaoController->menuLocacao();
-//$locacaoController->listarLocacaoPeloCodigo();
-//$locacaoPDO = new LocacaoPDO();
-//$clientePDO = new ClientePDO();
-//$modeloPDO = new ModeloPDO();
-//$automovelPDO = new AutomovelPDO();
+//$locacaoController = new LocacaoControler;
+//$locacaoController->menuLocacao();
+

@@ -16,10 +16,12 @@ include_once "Marca.php";
  * @author feijo
  */
 class Modelo{
+    private $id;
     private $descricao;
     private $situacao;
     private $marca;
     private $automoveis = [];
+    
     
     function __construct($marca) {
         $this->marca = $marca;
@@ -35,6 +37,12 @@ class Modelo{
 
     function getSituacao() {
         return $this->situacao;
+    }
+    function getId() {
+        return $this->id;
+    }
+    function setId($id) {
+        $this->id = $id;
     }
 
     function setDescricao($descricao) {

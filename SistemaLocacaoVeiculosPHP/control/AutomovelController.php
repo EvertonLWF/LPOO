@@ -606,6 +606,6 @@ class AutomovelController {
 
 }
 
-$autoController = new AutomovelController();
-$autoController->menuAutomovel();
+//$autoController = new AutomovelController();
+//$autoController->menuAutomovel();
 

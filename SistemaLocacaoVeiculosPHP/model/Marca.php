@@ -15,6 +15,7 @@ include_once "Modelo.php";
  */
 class Marca {
    
+    private $id;
     private $marca;
     private $situacao;
     private $modelos = []; //Associa modelos
@@ -37,6 +38,13 @@ class Marca {
     public function setMarca($marca) {
         $this->marca = $marca;
     }
+    public function getId() {
+        return $this->id;
+    }
+
+    public function setId($id) {
+        $this->id = $id;
+    }
 
     public function setSituacao($situacao) {
         $this->situacao = $situacao;
@@ -49,7 +57,7 @@ class Marca {
     
     
     public function __toString() {
-        return "DESCRICAO = $this->marca STATUS = $this->situacao ". print_r($this->modelos);
+        return "ID = $this->id DESCRICAO = $this->marca STATUS = $this->situacao ". print_r($this->modelos);
     }
 
 }

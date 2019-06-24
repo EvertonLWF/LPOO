@@ -473,6 +473,6 @@ class ClienteController {
 
 }
 
-$clienteController = new ClienteController();
-$clienteController->exibeMenu();
+//$clienteController = new ClienteController();
+//$clienteController->exibeMenu();
 

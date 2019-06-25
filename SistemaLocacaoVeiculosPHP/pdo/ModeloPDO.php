@@ -139,9 +139,9 @@ class ModeloPDO extends ConnectPDO{
     function update($modelo){
         $stmt = $this->conn->prepare('UPDATE modelo SET descmodelo = initcap(?), id_marca = ?, situacao = ? WHERE id_modelo = ?');
         $stmt->bindValue(1, $modelo->getDescricao());
-        $stmt->bindValue(2, $modelo->getMarca());
+        $stmt->bindValue(2, $modelo->getMarca()->getId());
         $stmt->bindValue(3, $modelo->getSituacao());
-        $stmt->bindValue(4, $modelo->getId());
+        $stmt->bindValue(4, $modelo->getId_modelo());
       
         return $stmt->execute();
     }

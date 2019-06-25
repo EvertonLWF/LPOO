@@ -176,14 +176,14 @@ class AutomovelPDO extends ConnectPDO{
         
     }
     function update($car){
-        $stmt = $this->conn->prepare('UPDATE automovel SET placa = upper(?),cor = initcap(?),numportas = ?,tipo_combust = ?,chassi = ?,valor_locacao = ?,descmodelo = initcap(?),km = ?,situacao = ? WHERE renavan = ?');
+        $stmt = $this->conn->prepare('UPDATE automovel SET placa = upper(?),cor = initcap(?),numportas = ?,tipo_combust = ?,chassi = ?,valor_locacao = ?,id_modelo = ?,km = ?,situacao = ? WHERE renavan = ?');
         $stmt->bindValue(1, $car->getPlaca());
         $stmt->bindValue(2, $car->getCor());
         $stmt->bindValue(3, $car->getNroPortas());
         $stmt->bindValue(4, $car->getTipoCombustivel());
         $stmt->bindValue(5, $car->getChassi());
         $stmt->bindValue(6, $car->getValorLocacao());
-        $stmt->bindValue(7, $car->getModelo()->getDescricao());
+        $stmt->bindValue(7, $car->getModelo()->getId_modelo());
         $stmt->bindValue(8, $car->getKm());
         $stmt->bindValue(9, $car->getSituacao());
         $stmt->bindValue(10, $car->getRenavan());
@@ -200,7 +200,7 @@ class AutomovelPDO extends ConnectPDO{
         $stmt->bindValue(5, $car->getTipoCombustivel());
         $stmt->bindValue(6, $car->getChassi());
         $stmt->bindValue(7, $car->getValorLocacao());
-        $stmt->bindValue(8, $car->getModelo()->getId());
+        $stmt->bindValue(8, $car->getModelo()->getId_modelo());
         $stmt->bindValue(9, true);
         $stmt->bindValue(10, $car->getKm());
       

@@ -82,7 +82,7 @@ class MarcaPDO extends ConnectPDO {
             } else {
                 return null;
             }
-        } catch (Exception $exc) {
+        } catch (SQLException $exc) {
             echo $exc->getTraceAsString() + 'Erro findByMarca !!!';
             return null;
         }

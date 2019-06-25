@@ -45,7 +45,7 @@ class AutomovelController {
             echo "\n6. Listar Automovel pela Placa";
             echo "\n7. Listar Automovel pela Cor";
             echo "\n8. Listar Automovel pelo Modelo";
-            echo "\n9. Reativar Automovel pelo Renavan";
+            echo "\n9. Reativar Automovel pelo Cpf";
             echo "\nOpção (ZERO para sair): ";
             $exit = fgets(STDIN);
             switch ($exit) {
@@ -245,7 +245,7 @@ class AutomovelController {
         }
         $index = 1;
         foreach ($modelos as $key) {
-            if($index == $ind){
+            if ($index == $ind) {
                 $desc = $key->getDescricao();
             }
             $index++;
@@ -284,13 +284,21 @@ class AutomovelController {
             goto A;
         }
         $auto = $this->automovelPDO->findCarByPlaca($placa);
+        if(isset($auto) && empty($auto)){
+            echo"\nPlaca nao existe!!!: ";
+            goto A;
+        }
         $automovel = $auto[0];
         if ($auto != null) {
             print_r($auto);
 
             B:
-            echo"\nDigite a placa do veiculo: ";
+            echo"\nDigite 1 para manter: " . $automovel->getPlaca();
+            echo"\nOu Digite a nova placa do veiculo: ";
             $placa = rtrim(fgets(STDIN));
+            if ($placa == 1) {
+                goto C;
+            }
             if (strlen($placa) == 0) {
                 echo"\nPlacas em branco nao seram aceitas!!!: ";
                 goto B;
@@ -300,11 +308,7 @@ class AutomovelController {
             if (strlen($placa) == 7) {
                 if (preg_match("/^([a-z]+)$/i", $letr)) {
                     if (preg_match("/^([0-9]+)$/i", $num)) {
-                        $respPl = $this->automovelPDO->findCarByPlaca(rtrim($placa));
-                        while (isset($respPl) && !empty($respPl)) {
-                            echo"\n Esta placa ja esta associada a outro carro!!!";
-                            goto B;
-                        }
+
                         $automovel->setPlaca($placa);
                     } else {
                         echo "\nVoce digitou letras no lugar de numeros!!!";
@@ -321,8 +325,14 @@ class AutomovelController {
 
 
             C:
-            echo"\nDigite a cor do veiculo: ";
+            echo"\nDigite 2 para manter: " . $automovel->getCor();
+            echo"\nDigite nova a cor do veiculo: ";
             $cor = rtrim(fgets(STDIN));
+            if ($cor == 2) {
+                goto D;
+            }
+
+
             if (strlen($cor) >= 1) {
                 $automovel->setCor($cor);
             } else {
@@ -332,8 +342,12 @@ class AutomovelController {
 
 
             D:
-            echo"\nDigite o numero de portas do veiculo: ";
+            echo"\nDigite 3 para manter: " . $automovel->getNroPortas();
+            echo"\nDigite o novo numero de portas do veiculo: ";
             $porta = rtrim(fgets(STDIN));
+            if ($porta == 3) {
+                goto E;
+            }
             if (strlen($porta) >= 1) {
                 $automovel->setNroPortas($porta);
             } else {
@@ -342,8 +356,12 @@ class AutomovelController {
             }
 
             E:
-            echo"\nDigite o tipo de combustivel do veiculo 1-Gasolina 2-Alcool 3-Flex: ";
+            echo"\nDigite 4 para manter: " . $automovel->getTipoCombustivel();
+            echo"\nDigite o novo tipo de combustivel do veiculo 1-Gasolina 2-Alcool 3-Flex: ";
             $tipo = rtrim(fgets(STDIN));
+            if ($tipo == 4) {
+                goto F;
+            }
             switch ($tipo) {
                 case 1:
                     $automovel->setTipoCombustivel($tipo);
@@ -362,8 +380,13 @@ class AutomovelController {
 
 
             F:
-            echo"\nDigite o numero do chassi do veiculo: ";
+            echo"\nDigite 5 para manter: " . $automovel->getChassi();
+            echo"\nDigite o novo numero do chassi do veiculo: ";
             $chassi = rtrim(fgets(STDIN));
+            if ($chassi == 5) {
+                goto G;
+            }
+
             if (strlen($chassi) == 17) {
                 $automovel->setChassi($chassi);
             } else {
@@ -372,8 +395,12 @@ class AutomovelController {
             }
 
             G:
-            echo"\nDigite o Valor da locação do veiculo: ";
+            echo"\nDigite 6 para manter: " . $automovel->getValorLocacao();
+            echo"\nDigite o novo Valor da locação do veiculo: ";
             $valor = rtrim(fgets(STDIN));
+            if ($chassi == 6) {
+                goto H;
+            }
             if (isset($valor) && $valor > 0) {
                 $automovel->setValorLocacao($valor);
             } else {
@@ -382,8 +409,13 @@ class AutomovelController {
             }
 
             H:
-            echo"\nDigite a Kilometragem do veiculo: ";
+            echo"\nDigite 7 para manter: " . $automovel->getKm();
+            echo"\nDigite a nova Kilometragem do veiculo: ";
             $km = rtrim(fgets(STDIN));
+            if ($chassi == 7) {
+                goto I;
+            }
+
             if (isset($km) && $km >= 0) {
                 $automovel->setKm($km);
             } else {
@@ -391,11 +423,22 @@ class AutomovelController {
                 goto H;
             }
 
-
-            echo"\nDigite a descricao do modelo do veiculo: ";
-
             I:
+
+            $mod = $this->modeloPDO->findModeloById($automovel->getModelo()->getId_modelo());
+            $mar = $this->marcaPDO->findMarcaById($mod[0]->getMarca()->getId());
+            $mod[0]->setMarca($mar);
+            $automovel->setModelo($mod[0]);
+
+
+
+            echo"\nDigite 8 para manter: " . $automovel->getModelo()->getDescricao();
+            echo"\nDigite a descricao do modelo do veiculo: ";
             $desc = rtrim(fgets(STDIN));
+
+            if ($desc == 8) {
+                goto J;
+            }
             if (strlen($desc) <= 0) {
                 goto I;
             }
@@ -406,6 +449,7 @@ class AutomovelController {
                 echo "/n Este modelo não existe!!!!";
                 goto I;
             }
+            J:
             print_r($automovel);
             echo "\nConfirmar a operação (s/n)? ";
             $operacao = rtrim(fgets(STDIN));
@@ -475,9 +519,9 @@ class AutomovelController {
             echo "\nNao ha veiculos";
         } else {
             foreach ($auto as $key) {
-                $mod = $this->modeloPDO->findModeloById($key->getModelo()->getdescricao());
-                $mar = $this->marcaPDO->findMarcaById($mod->getMarca());
-                $mod->setMarca($mar);
+                $mod = $this->modeloPDO->findModeloById($key->getModelo()->getId_modelo());
+                $mar = $this->marcaPDO->findMarcaById($mod[0]->getMarca()->getId());
+                $mod[0]->setMarca($mar);
                 $key->setModelo($mod);
                 if (isset($key) && !empty($key)) {
                     print_r($key);
@@ -507,10 +551,10 @@ class AutomovelController {
                                 goto A;
                             }
                             foreach ($respRen as $key) {
-                                $mod = $this->modeloPDO->findModeloById($key->getModelo()->getdescricao());
-                                $mar = $this->marcaPDO->findMarcaById($mod->getMarca());
-                                $mod->setMarca($mar);
-                                $key->setModelo($mod);
+                                $mod = $this->modeloPDO->findModeloById($key->getModelo()->getId_modelo());
+                                $mar = $this->marcaPDO->findMarcaById($mod[0]->getMarca()->getId());
+                                $mod[0]->setMarca($mar);
+                                $key->setModelo($mod[0]);
                                 if (isset($key) && !empty($key)) {
                                     print_r($key);
                                 } else {
@@ -552,10 +596,10 @@ class AutomovelController {
                         goto B;
                     }
                     foreach ($respPl as $key) {
-                        $mod = $this->modeloPDO->findModeloById($key->getModelo()->getdescricao());
-                        $mar = $this->marcaPDO->findMarcaById($mod->getMarca());
-                        $mod->setMarca($mar);
-                        $key->setModelo($mod);
+                        $mod = $this->modeloPDO->findModeloById($key->getModelo()->getId_modelo());
+                        $mar = $this->marcaPDO->findMarcaById($mod[0]->getMarca()->getId());
+                        $mod[0]->setMarca($mar);
+                        $key->setModelo($mod[0]);
                         if (isset($key) && !empty($key)) {
                             print_r($key);
                         } else {
@@ -585,10 +629,10 @@ class AutomovelController {
             $resp = $this->automovelPDO->findCarByCor($cor);
             if (isset($resp) && !empty($resp)) {
                 foreach ($resp as $key) {
-                    $mod = $this->modeloPDO->findModeloById($key->getModelo()->getdescricao());
-                    $mar = $this->marcaPDO->findMarcaById($mod->getMarca());
-                    $mod->setMarca($mar);
-                    $key->setModelo($mod);
+                    $mod = $this->modeloPDO->findModeloById($key->getModelo()->getId_modelo());
+                    $mar = $this->marcaPDO->findMarcaById($mod[0]->getMarca()->getId());
+                    $mod[0]->setMarca($mar);
+                    $key->setModelo($mod[0]);
                     if (isset($key) && !empty($key)) {
                         print_r($key);
                     } else {
@@ -617,10 +661,10 @@ class AutomovelController {
         $resp = $this->automovelPDO->findCarByModelo($desc);
         if (isset($resp) && !empty($resp)) {
             foreach ($resp as $key) {
-                $mod = $this->modeloPDO->findModeloById($key->getModelo()->getdescricao());
-                $mar = $this->marcaPDO->findMarcaById($mod->getMarca());
-                $mod->setMarca($mar);
-                $key->setModelo($mod);
+                $mod = $this->modeloPDO->findModeloById($key->getModelo()->getId_modelo());
+                $mar = $this->marcaPDO->findMarcaById($mod[0]->getMarca()->getId());
+                $mod[0]->setMarca($mar);
+                $key->setModelo($mod[0]);
                 if (isset($key) && !empty($key)) {
                     print_r($key);
                 } else {
@@ -648,7 +692,17 @@ class AutomovelController {
                         echo"\n Esta placa nao esta associada a um carro!!!";
                         goto B;
                     }
-                    print_r($auto);
+                    foreach ($auto as $key) {
+                        $mod = $this->modeloPDO->findModeloById($key->getModelo()->getId_modelo());
+                        $mar = $this->marcaPDO->findMarcaById($mod[0]->getMarca()->getId());
+                        $mod[0]->setMarca($mar);
+                        $key->setModelo($mod[0]);
+                        if (isset($key) && !empty($key)) {
+                            print_r($key);
+                        } else {
+                            echo "\nNao ha Automoveis com este modelo!!!";
+                        }
+                    }
                     echo "\nConfirmar a operação (s/n)? ";
                     $operacao = rtrim(fgets(STDIN));
 

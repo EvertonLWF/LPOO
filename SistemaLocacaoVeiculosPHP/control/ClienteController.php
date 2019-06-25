@@ -76,6 +76,13 @@ class ClienteController {
         A:
         echo"\nInforme o Nome do Cliente: ";
         $nome = rtrim(fgets(STDIN));
+        $cons = $this->clientePDO->findByClient($nome);
+        if(isset($cons) && !empty($cons)){
+            echo "\nEste nome ja esta sendo usado!!!";
+            goto A;
+        }
+        
+        
         if (strlen($nome) >= 1) {
             $cliente->setNome_cli($nome);
         } else {
@@ -86,6 +93,13 @@ class ClienteController {
         B:
         echo"\nInforme o CPF do Cliente: ";
         $cpf = rtrim(fgets(STDIN));
+        $cons = $this->clientePDO->findClientByCpf($cpf);
+        if(isset($cons) && !empty($cons)){
+            echo "\nEste cpf ja esta sendo usado!!!";
+            goto B;
+        }
+        
+        
         if (strlen($cpf) == 11) {
             try {
                 if (preg_match("/^([a-z-0-9]+)$/i", $cpf)) {

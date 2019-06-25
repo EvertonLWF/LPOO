@@ -160,7 +160,7 @@ class ModeloController {
         echo "\nDigite descricao da Modelo que você deseja tornar inativo: ";
         $desc = rtrim(fgets(STDIN));
         $modelo = $this->modeloPDO->findByModelo($desc);
-        
+
         if (isset($modelo) && empty($modelo)) {
             echo "\n nao existe Modelo com este nome!!!";
             goto A;
@@ -187,10 +187,18 @@ class ModeloController {
 
         if (isset($modelo) && !empty($modelo)) {
             foreach ($modelo as $key) {
-                $marca = $this->marcaPDO->findMarcaById($key->getMarca());
-                $key->setMarca($marca[0]);
+                $marca = $this->marcaPDO->findMarcaById($key->getMarca()->getId());
+                $key->setMarca($marca);
                 if (isset($key) && !empty($key)) {
-                    print_r($key);
+                    foreach ($modelo as $key) {
+                        $marca = $this->marcaPDO->findMarcaById($key->getMarca()->getId());
+                        $key->setMarca($marca);
+                        if (isset($key) && !empty($key)) {
+                            print_r($key);
+                        } else {
+                            echo "\nNao ha Modelos!!!";
+                        }
+                    }
                 } else {
                     echo "\nNao ha Modelos!!!";
                 }
@@ -213,10 +221,21 @@ class ModeloController {
                 goto A;
             } else {
                 foreach ($modelo as $key) {
-                    $marca = $this->marcaPDO->findMarcaById($key->getMarca());
-                    $key->setMarca($marca[0]);
+                    $marca = $this->marcaPDO->findMarcaById($key->getMarca()->getId());
+
+                    if (isset($marca) && !empty($marca)) {
+                        $key->setMarca($marca);
+                    }
                     if (isset($key) && !empty($key)) {
-                        print_r($key);
+                        foreach ($modelo as $key) {
+                            $marca = $this->marcaPDO->findMarcaById($key->getMarca()->getId());
+                            $key->setMarca($marca);
+                            if (isset($key) && !empty($key)) {
+                                print_r($key);
+                            } else {
+                                echo "\nNao ha Modelos!!!";
+                            }
+                        }
                     } else {
                         echo "\nNao ha Modelos!!!";
                     }
@@ -236,12 +255,12 @@ class ModeloController {
         switch ($codigo) {
             case 1:
                 $modelo = $this->modeloPDO->findAll();
-                if(isset($modelo) && empty($modelo)){
+                if (isset($modelo) && empty($modelo)) {
                     echo "\nNao ha Modelos Ativos!!!";
                 }
                 foreach ($modelo as $key) {
-                    $marca = $this->marcaPDO->findMarcaById($key->getMarca());
-                    $key->setMarca($marca[0]);
+                    $marca = $this->marcaPDO->findMarcaById($key->getMarca()->getId());
+                    $key->setMarca($marca);
                     if (isset($key) && !empty($key)) {
                         print_r($key);
                     } else {
@@ -251,12 +270,11 @@ class ModeloController {
                 break;
             case 2:
                 $modelo = $this->modeloPDO->findAllR();
-                print_r($modelo);
-                if(isset($modelo) && empty($modelo)){
+                if (isset($modelo) && empty($modelo)) {
                     echo "\nNao ha Modelos Inativos!!!";
                 }
                 foreach ($modelo as $key) {
-                    $marca = $this->marcaPDO->findMarcaById($key->getMarca());
+                    $marca = $this->marcaPDO->findMarcaById($key->getMarca()->getId());
                     $key->setMarca($marca);
                     if (isset($key) && !empty($key)) {
                         print_r($key);
@@ -287,12 +305,20 @@ class ModeloController {
             echo "\nEsta Modelo não existe!!";
             goto A;
         }
-        print_r($modelo[0]);
+        foreach ($modelo as $key) {
+            $marca = $this->marcaPDO->findMarcaById($key->getMarca()->getId());
+            $key->setMarca($marca);
+            if (isset($key) && !empty($key)) {
+                print_r($key);
+            } else {
+                echo "\nNao ha Modelos!!!";
+            }
+        }
         echo "\nConfirmar a operação (s/n)? ";
         $operacao = rtrim(fgets(STDIN));
 
         if (!strcasecmp($operacao, "s")) {
-            if ($this->modeloPDO->reactivateModelo($modelo[0]->getId())) {
+            if ($this->modeloPDO->reactivateModelo($modelo[0]->getId_modelo())) {
                 echo "\nModelo reativado.";
             } else {
                 echo "\nFalha ao reativar o cliente. Contate o administrador do sistema.";

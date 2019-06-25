@@ -191,7 +191,10 @@ class MarcaController {
             } else {
                 foreach ($marca as $key) {
                     $modelo = $this->modeloPDO->findModeloByMarca($key->getId());
-                    $key->setModelos($modelo);
+                    if (isset($modelo) && !empty($modelo)){
+                        $key->setModelos($modelo);
+                    }
+                    
                     if (isset($key) && !empty($key)) {
                         print_r($key);
                     } else {

@@ -524,9 +524,8 @@ class LocacaoControler {
             print_r($key);
         }
     }
-
 }
 
-$locacaoController = new LocacaoControler;
-$locacaoController->menuLocacao();
+//$locacaoController = new LocacaoControler;
+//$locacaoController->menuLocacao();
 

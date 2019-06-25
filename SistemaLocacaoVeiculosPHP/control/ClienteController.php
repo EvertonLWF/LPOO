@@ -4,6 +4,8 @@ include_once "../pdo/ClientePDO.php";
 
 include_once "../pdo/LocacaoPDO.php";
 
+include_once "../pdo/AutomovelPDO.php";
+
 include_once "../model/Cliente.php";
 
 /**
@@ -15,10 +17,12 @@ class ClienteController {
 
     private $clientePDO;
     private $locacaoPDO;
+    private $automovelPDO;
 
     public function __construct() {
         $this->clientePDO = new ClientePDO();
         $this->locacaoPDO = new locacaoPDO();
+        $this->automovelPDO = new AutomovelPDO();
     }
 
     public function menuCliente() {
@@ -65,7 +69,7 @@ class ClienteController {
         }
     }
 
-    //insert (case 1)
+    //insert (case 1)>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     private function inserirCliente() {
         $cliente = new Cliente();
 
@@ -155,11 +159,11 @@ class ClienteController {
         E:
         echo"\nInforme o Email do Cliente: ";
 
-        $end = rtrim(fgets(STDIN));
+        $email = rtrim(fgets(STDIN));
 
-        if (strlen($end) >= 1) {
-            if (strpbrk($end, '@')) {
-                $cliente->setEnd_cli($end);
+        if (strlen($email) >= 1) {
+            if (strpbrk($email, '@')) {
+                $cliente->setEmail_cli($email);
             } else {
                 echo "\nEmail nao esta no formato correto!!!";
                 goto E;
@@ -187,82 +191,127 @@ class ClienteController {
         }
     }
 
-    //update (case 2)
+    //update (case 2)>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     private function alterarCliente() {
-        echo "\nDigite o cpf do cliente que você deseja alterar: ";
-        $cliente = $this->clientePDO->findClientByCpf(rtrim(fgets(STDIN)));
-        if ($cliente != null) {
+        A:
+        echo"\nInforme o CPF do Cliente: ";
+        $cpf = rtrim(fgets(STDIN));
+        if (strlen($cpf) == 11) {
+            try {
+                if (preg_match("/^([a-z-0-9]+)$/i", $cpf)) {
+                    if (preg_match("/^([a-z]+)$/i", $cpf)) {
+                        echo "\nFavor Verifique o CPF voce digitou somente letras!!!";
+                        goto A;
+                    } else {
+                        if (preg_match("/^([0-9]+)$/i", $cpf)) {
+                            $cliente = $this->clientePDO->findClientByCpf($cpf);
+                        } else {
+                            echo "\nFavor Verifique o CPF voce digitou numeros misturados com letras!!!";
+                            goto A;
+                        }
+                    }
+                } else {
+                    echo "\nFavor Verifique o CPF !!!";
+                    goto A;
+                }
+            } catch (Exception $ex) {
+                echo "\nFavor Verifique o CPF !!!";
+                goto A;
+            }
+        } else {
+            echo "\nFavor Verifique o CPF seram aceitos apenas 11 digitos!!!";
+            goto A;
+        }
+        
+        if (isset($cliente) && !empty($cliente)) {
             print_r($cliente);
 
-            A:
-            echo"\nInforme o Nome do Cliente: ";
+            B:
+            echo"\nDigite 1 para : ".$cliente[0]->getNome_cli();
+            echo"\nOu Informe o novo Nome do Cliente: ";
             $nome = rtrim(fgets(STDIN));
+            if($nome == 1){
+                goto C;
+            }
+            
             if (strlen($nome) >= 1) {
                 $cliente[0]->setNome_cli($nome);
             } else {
                 echo "\nNomes em branco nao sao aceitos!!!";
-                goto A;
+                goto B;
             }
 
-            B:
-            echo"\nInforme o Endereco do Cliente: ";
-
+            C:
+            echo"\nDigite 2 para : ".$cliente[0]->getEnd_cli();
+            echo"\nou Informe o novo endereco do Cliente: ";
             $end = rtrim(fgets(STDIN));
+           if($end == 2){
+                goto D;
+            }
+
 
             if (strlen($end) >= 1) {
                 $cliente[0]->setEnd_cli($end);
             } else {
                 echo "\nEndereços em branco nao sao aceitos!!!";
-                goto B;
+                goto C;
             }
 
-            C:
-            echo"\nInforme o DDD + telefone do Cliente: ";
+            D:
+            
+            echo"\nDigite 3 para : ".$cliente[0]->getTel_cli();
+            echo"\nOu Informe o novo  (DDD + telefone) do Cliente: ";
             $tel = rtrim(fgets(STDIN));
+            if($tel == 3){
+                goto E;
+            }
             if (strlen($tel) == 12) {
                 try {
                     if (preg_match("/^([a-z-0-9]+)$/i", $tel)) {
                         if (preg_match("/^([a-z]+)$/i", $tel)) {
                             echo "\nFavor Verifique o DDD + telefone voce digitou somente letras!!!";
-                            goto C;
+                            goto D;
                         } else {
                             if (preg_match("/^([0-9]+)$/i", $tel)) {
                                 $cliente[0]->setTel_cli($tel);
                             } else {
                                 echo "\nFavor Verifique o DDD + telefone voce digitou numeros misturados com letras!!!";
-                                goto C;
+                                goto D;
                             }
                         }
                     } else {
                         echo "\nFavor Verifique o DDD + telefone !!!";
-                        goto C;
+                        goto D;
                     }
                 } catch (Exception $ex) {
                     echo "\nFavor Verifique o DDD + telefone !!!";
-                    goto C;
+                    goto D;
                 }
             } else {
                 echo "\nFavor Verifique o DDD + telefone seram aceitos apenas 12 digitos!!!";
-                goto C;
+                goto D;
             }
 
-            D:
-            echo"\nInforme o Email do Cliente: ";
+            E:
+            echo"\nDigite 4 para : ".$cliente[0]->getEmail_cli();
+            echo"\nOu Informe o novo Email do Cliente: ";
 
             $end = rtrim(fgets(STDIN));
-
+            if($end == 4){
+                goto F;
+            }
             if (strlen($end) >= 1) {
                 if (strpbrk($end, '@')) {
                     $cliente[0]->setEmail_cli($end);
                 } else {
                     echo "\nEmail nao esta no formato correto!!!";
-                    goto D;
+                    goto E;
                 }
             } else {
                 echo "\nEmail em branco nao sao aceitos!!!";
-                goto D;
+                goto E;
             }
-
+            F:
             print_r($cliente[0]);
             echo "\nConfirmar a operação (s/n)? ";
             $operacao = rtrim(fgets(STDIN));
@@ -339,7 +388,11 @@ class ClienteController {
 
         foreach ($cli as $key) {
             $loc = $this->locacaoPDO->findLocacaoByCliente($key->getCpf_cli());
-            $key->setLocacoes($loc);
+            if (isset($loc) && !empty($loc)) {
+                $auto = $this->automovelPDO->findCarByRenavan($loc[0]->getautomovel()->getRenavan());
+                $loc[0]->setAutomovel($auto[0]);
+                $key->setLocacoes($loc[0]);
+            }
             if (isset($key) && !empty($key)) {
                 print_r($key);
             } else {
@@ -473,6 +526,6 @@ class ClienteController {
 
 }
 
-$clienteController = new ClienteController();
-$clienteController->exibeMenu();
+//$clienteController = new ClienteController();
+//$clienteController->menuCliente();
 

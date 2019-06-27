@@ -103,7 +103,7 @@ class AutomovelController {
                     } else {
                         if (preg_match("/^([0-9]+)$/i", $renavan)) {
                             $respRen = $automovelPDO->findCarByRenavan($renavan);
-                            while (isset($respRen) && !empty($respRen)) {
+                            while (isset($respRen) && empty($respRen)) {
                                 echo"\n este renavan ja existe!!!";
                                 goto A;
                             }
@@ -239,10 +239,10 @@ class AutomovelController {
         }
         echo"\nSelecione o modelo : ";
         $ind = rtrim(fgets(STDIN));
-        if ($desc < 1 && $desc > $index) {
-            echo "\n Opcao invalida";
-            goto I;
-        }
+//    if ($desc < 1 && $desc > $index) {
+//            echo "\n Opcao invalida";
+//            goto I;
+//        }
         $index = 1;
         foreach ($modelos as $key) {
             if ($index == $ind) {

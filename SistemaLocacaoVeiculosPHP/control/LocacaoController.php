@@ -104,13 +104,13 @@ class LocacaoControler {
             if (preg_match("/^([a-z]+)$/i", $letr)) {
                 if (preg_match("/^([0-9]+)$/i", $num)) {
                     $respPl = $this->automovelPDO->findCarByPlaca($placa);
-                    $respPl = $this->automovelPDO->findCarByPlacaR($placa);
-                    if (isset($respPl) && !empty($respPl)) {
-                        echo"\n Veiculo esta inativo!!!";
+                    if (isset($respPl) && empty($respPl)) {
+                        echo"\n Este veiculo nao existe!!!";
                         goto A;
                     }
-                    if (isset($respPl) && empty($respPl)) {
-                        echo"\n Placa nao existe!!!";
+                    $respPl = $this->automovelPDO->findCarByPlacaR($placa);
+                    if (isset($respPl) && !empty($respPl)) {
+                        echo"\n Este veiculo esta inativo!!!";
                         goto A;
                     }
                     $auto = $this->automovelPDO->findCarByPlaca($placa);
@@ -162,14 +162,16 @@ class LocacaoControler {
                             if (isset($cli) && empty($cli)) {
                                 echo "\nCliente nao existe!!";
                                 goto B;
+                            }else{
+                                print_r($cli[0]);
                             }
-                            $cli = $this->clientePDO->findClientByCpfR($cpf);
-                            if (isset($cli) && !empty($cli)) {
+                            $cli2 = $this->clientePDO->findClientByCpfR($cpf);
+                            if (isset($cli2) && !empty($cli2)) {
                                 echo "\nCliente esta inativo!!";
                                 goto B;
                             }
 
-                            print_r($cli);
+                            
                         } else {
                             echo "\nFavor Verifique o CPF voce digitou numeros misturados com letras!!!";
                             goto B;
